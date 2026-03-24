@@ -1,0 +1,17 @@
+{
+  "initial_position_tkm": {
+    "x0": 2.7,
+    "y0": 0.0,
+    "z0": 0.0
+  },
+  "initial_velocity_kms": {
+    "vx0": 0.0,
+    "vy0": 7.3,
+    "vz0": 0.0
+  },
+  "initial_acceleration": {
+    "a0_x": 0.0,
+    "a0_y": 0.0,
+    "a0_z": 0.0
+  }
+}

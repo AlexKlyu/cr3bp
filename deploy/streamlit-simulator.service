@@ -1,0 +1,19 @@
+[Unit]
+Description=Streamlit CR3BP Simulator
+After=network.target
+
+[Service]
+Type=simple
+User=deploy
+WorkingDirectory=/opt/spacerocketlauncher
+ExecStart=/opt/spacerocketlauncher/.venv/bin/streamlit run simulator_streamlit.py \
+    --server.port=8501 \
+    --server.address=127.0.0.1 \
+    --server.baseUrlPath=/streamlit \
+    --server.headless=true
+Restart=on-failure
+RestartSec=5
+Environment=HOME=/opt/spacerocketlauncher
+
+[Install]
+WantedBy=multi-user.target

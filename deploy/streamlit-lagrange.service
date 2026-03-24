@@ -1,0 +1,19 @@
+[Unit]
+Description=Streamlit Lagrange Point Visualization
+After=network.target
+
+[Service]
+Type=simple
+User=deploy
+WorkingDirectory=/opt/spacerocketlauncher/presets/lagrange
+ExecStart=/opt/spacerocketlauncher/.venv/bin/streamlit run lagrange_streamlit.py \
+    --server.port=8502 \
+    --server.address=127.0.0.1 \
+    --server.baseUrlPath=/lagrange \
+    --server.headless=true
+Restart=on-failure
+RestartSec=5
+Environment=HOME=/opt/spacerocketlauncher
+
+[Install]
+WantedBy=multi-user.target

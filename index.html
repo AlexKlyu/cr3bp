@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Моделирование траекторий КА — Задача трёх тел</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #111827;
+            color: #e5e7eb;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 2rem 2rem;
+        }
+        .hero {
+            max-width: 720px;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-size: 1.9rem;
+            color: #f9fafb;
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+        }
+        .hero .description {
+            color: #9ca3af;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.4rem 1.5rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        .meta span {
+            white-space: normal;
+        }
+        .meta .value {
+            color: #9ca3af;
+        }
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: #2da87e;
+            border-radius: 1px;
+            margin: 1.2rem auto;
+            opacity: 0.6;
+        }
+        .cards-heading {
+            color: #6b7280;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 960px;
+            width: 100%;
+        }
+        .card {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 1.75rem;
+            transition: border-color 0.2s, transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            border-color: #2da87e;
+            transform: translateY(-2px);
+        }
+        .card-hero {
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            background: linear-gradient(160deg, #1a2028 0%, #1f2937 50%, #181d26 100%);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.06);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        .card-hero h2 { color: #f9fafb; font-size: 1.35rem; }
+        .card-hero:hover {
+            border-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        .card-hero .badge-static { background: rgba(255, 255, 255, 0.1); color: #f9fafb; }
+        @keyframes pulse-glow {
+            0%, 100% { border-color: rgba(255, 255, 255, 0.25); box-shadow: 0 0 15px rgba(255, 255, 255, 0.04); }
+            50%      { border-color: rgba(255, 255, 255, 0.8); box-shadow: 0 0 35px rgba(255, 255, 255, 0.15); }
+        }
+        .card h2 {
+            color: #2da87e;
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+        }
+        .card p {
+            color: #9ca3af;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+        .badge-wrap {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .badge-static { background: #1e3a2f; color: #2da87e; }
+        .badge-streamlit { background: #1e2a3a; color: #60a5fa; }
+        .badge-pdf { background: #3a2e1e; color: #fbbf24; }
+        .badge-pptx { background: #2e1e3a; color: #c084fc; }
+        .doc-card {
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 1.75rem;
+            transition: border-color 0.2s, transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+        .doc-card:hover {
+            border-color: #fbbf24;
+            transform: translateY(-2px);
+        }
+        .doc-card h2 {
+            color: #fbbf24;
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+        }
+        .doc-card p {
+            color: #9ca3af;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+        footer {
+            margin-top: auto;
+            padding-top: 3rem;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+        footer .value {
+            color: #9ca3af;
+        }
+        /* ── Experiments section ── */
+        .exp-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+        }
+        .exp-tab {
+            padding: 0.35rem 0.9rem;
+            border-radius: 9999px;
+            border: 1px solid #374151;
+            background: transparent;
+            color: #9ca3af;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .exp-tab:hover { border-color: #2da87e; color: #e5e7eb; }
+        .exp-tab.active { background: #2da87e; color: #111827; border-color: #2da87e; font-weight: 600; }
+        .exp-panel { display: none; max-width: 960px; width: 100%; }
+        .exp-panel.active { display: block; }
+        .exp-panel h3 { color: #2da87e; font-size: 1.05rem; margin-bottom: 0.6rem; }
+        .exp-note { color: #9ca3af; font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem; }
+        .exp-imgs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .exp-imgs img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #374151;
+        }
+        .exp-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            margin-bottom: 0.5rem;
+        }
+        .exp-table th {
+            text-align: left;
+            color: #6b7280;
+            font-weight: 600;
+            padding: 0.35rem 0.6rem;
+            border-bottom: 1px solid #374151;
+        }
+        .exp-table td {
+            padding: 0.35rem 0.6rem;
+            color: #d1d5db;
+            border-bottom: 1px solid #1f2937;
+        }
+        .exp-table .val { color: #2da87e; font-weight: 500; }
+        @media (max-width: 480px) {
+            body { padding: 2rem 1.2rem 1.5rem; }
+            h1 { font-size: 1.4rem; }
+            .hero .description { font-size: 0.95rem; }
+            .hero { margin-bottom: 2rem; }
+            .cards { grid-template-columns: 1fr; gap: 1rem; }
+            .card { padding: 1.25rem; }
+            .divider { margin: 1.5rem auto; }
+            .exp-tab { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+            .exp-imgs { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Численное моделирование траекторий КА в круговой ограниченной задаче трёх тел системы Земля&ndash;Луна</h1>
+        <p class="description">Сравнительный анализ интеграторов и разработка веб-симулятора с поддержкой тяги</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="cards-heading">Интерактивные приложения</p>
+
+    <div class="cards">
+        <a href="/simulator" class="card card-hero">
+            <h2>3D-симулятор траекторий</h2>
+            <p>Интерактивная 3D-визуализация траекторий космического аппарата во вращающейся системе координат Земля&ndash;Луна. Работает полностью в браузере.</p>
+            <div class="badge-wrap"><span class="badge badge-static">HTML / JavaScript</span></div>
+        </a>
+
+        <a href="/streamlit/" class="card">
+            <h2>Первоначальная валидация физики</h2>
+            <p>Проверка корректности физической модели методом Эйлера. Графики координат, скорости и ускорения.</p>
+            <div class="badge-wrap"><span class="badge badge-streamlit">Streamlit</span></div>
+        </a>
+
+        <a href="/lagrange/" class="card">
+            <h2>Точки Лагранжа</h2>
+            <p>Визуализация сходимости к точкам Лагранжа L1&ndash;L5 в задаче трёх тел. Исследование положений равновесия.</p>
+            <div class="badge-wrap"><span class="badge badge-streamlit">Streamlit</span></div>
+        </a>
+    </div>
+
+    <div class="divider"></div>
+    <p class="cards-heading">Документы</p>
+
+    <div class="cards">
+        <a href="public/cr3bp_theory.pdf" class="doc-card">
+            <h2>Тезисы</h2>
+            <p>Круговая ограниченная задача трёх тел &mdash; теоретическое обоснование, вывод уравнений, описание модели.</p>
+            <div class="badge-wrap"><span class="badge badge-pdf">PDF</span></div>
+        </a>
+
+        <a href="public/plan_2103.pdf" class="doc-card">
+            <h2>План доклада</h2>
+            <p>Структура выступления на 7 минут: постановка задачи, метод, эксперименты, выводы.</p>
+            <div class="badge-wrap"><span class="badge badge-pdf">PDF</span></div>
+        </a>
+
+        <div class="doc-card">
+            <h2>Презентация</h2>
+            <p>Слайды к защите: модель CR3BP, сравнение интеграторов, результаты экспериментов. Версия 22.03.2026.</p>
+            <div class="badge-wrap"><a href="public/presentation_2203.pdf" class="badge badge-pdf" style="text-decoration:none;">PDF</a> <a href="public/presentation_2203.pptx" class="badge badge-pptx" style="text-decoration:none;">PPTX</a></div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+    <p class="cards-heading">Численные эксперименты</p>
+
+    <div class="exp-tabs">
+        <button class="exp-tab active" onclick="showExp(0)">Обзор</button>
+        <button class="exp-tab" onclick="showExp(1)">01 Якоби</button>
+        <button class="exp-tab" onclick="showExp(2)">02 Log-log</button>
+        <button class="exp-tab" onclick="showExp(3)">03 Лагранж</button>
+        <button class="exp-tab" onclick="showExp(4)">04 Гало</button>
+        <button class="exp-tab" onclick="showExp(5)">05 Возврат</button>
+        <button class="exp-tab" onclick="showExp(6)">06 Хаос</button>
+        <button class="exp-tab" onclick="showExp(7)">07 Тяга</button>
+    </div>
+
+    <div class="exp-panel active" id="expSummary">
+        <h3>Обзор экспериментов</h3>
+        <p class="exp-note">7 численных экспериментов проверяют физическую модель CR3BP и точность интеграторов. Все результаты воспроизводимы из исходного кода.</p>
+        <table class="exp-table">
+            <tr><th>Эксперимент</th><th>Ключевой результат</th></tr>
+            <tr><td>01 Дрейф Якоби</td><td>Итерированный Верле сохраняет интеграл Якоби с точностью 10<sup>&minus;11</sup> &mdash; на 5 порядков лучше Эйлера</td></tr>
+            <tr><td>02 Сходимость (log-log)</td><td>Итерированный Верле: наклон 1.97&plusmn;0.03 (R&sup2;=0.999), ошибка 0.13 м при dt=30 с</td></tr>
+            <tr><td>03 Точки Лагранжа</td><td>L1&ndash;L5 найдены численно; аналитические приближения дают отн. ошибку 0.4&ndash;0.8%</td></tr>
+            <tr><td>04 Гало-орбита</td><td>Периодическая 3D-орбита у L1: период 12.2 дня, ошибка замыкания 3.6 км</td></tr>
+            <tr><td>05 Свободный возврат</td><td>Облёт Луны 3 399 км, возврат 8 081 км; чувствительность: +1 м/с &rarr; +89 км у Луны</td></tr>
+            <tr><td>06 Хаос вблизи L1</td><td>Показатель Ляпунова &lambda; = 0.64 сут<sup>&minus;1</sup>, горизонт предсказуемости ~2 суток</td></tr>
+            <tr><td>07 Малая тяга</td><td>&Delta;v=0.72 м/с уводит от L1 на 101 000 км; топливо 0.12 кг (0.02% от m₀)</td></tr>
+        </table>
+    </div>
+
+    <div class="exp-panel" id="exp0">
+        <h3>Дрейф интеграла Якоби</h3>
+        <p class="exp-note">Интеграл Якоби C<sub>J</sub> — единственная сохраняющаяся величина в CR3BP. Его дрейф — прямая мера точности интегратора. Сравниваются 3 интегратора &times; 2 режима шага на трёх сценариях.</p>
+        <div class="exp-imgs" style="grid-template-columns:1fr">
+            <img src="experiments/01_jacobi_drift/drift_halo.png" alt="Дрейф Якоби: гало-орбита">
+            <img src="experiments/01_jacobi_drift/drift_freereturn.png" alt="Дрейф Якоби: свободный возврат">
+            <img src="experiments/01_jacobi_drift/drift_chaos.png" alt="Дрейф Якоби: хаос вблизи L1">
+        </div>
+        <table class="exp-table">
+            <tr><th>Конфигурация</th><th>Гало-орбита</th><th>Своб. возврат</th><th>Хаос L1</th></tr>
+            <tr><td>Эйлер фикс.</td><td>2.22&times;10<sup>&minus;6</sup></td><td>4.84&times;10<sup>&minus;1</sup></td><td>3.12&times;10<sup>&minus;2</sup></td></tr>
+            <tr><td>Эйлер адапт.</td><td>3.53&times;10<sup>&minus;7</sup></td><td>1.53&times;10<sup>&minus;2</sup></td><td>1.04&times;10<sup>&minus;3</sup></td></tr>
+            <tr><td>Верле полушаг. фикс.</td><td>1.10&times;10<sup>&minus;6</sup></td><td>1.60&times;10<sup>&minus;2</sup></td><td>2.70&times;10<sup>&minus;4</sup></td></tr>
+            <tr><td>Верле полушаг. адапт.</td><td>2.39&times;10<sup>&minus;7</sup></td><td>2.21&times;10<sup>&minus;4</sup></td><td>4.15&times;10<sup>&minus;6</sup></td></tr>
+            <tr><td>Верле итерир. фикс.</td><td>3.83&times;10<sup>&minus;11</sup></td><td>1.15&times;10<sup>&minus;2</sup></td><td>3.98&times;10<sup>&minus;4</sup></td></tr>
+            <tr><td>Верле итерир. адапт.</td><td class="val">1.85&times;10<sup>&minus;12</sup></td><td class="val">1.27&times;10<sup>&minus;5</sup></td><td class="val">4.04&times;10<sup>&minus;7</sup></td></tr>
+        </table>
+    </div>
+
+    <div class="exp-panel" id="exp1">
+        <h3>Сходимость интеграторов (log-log)</h3>
+        <p class="exp-note">Ошибка позиции относительно scipy RK45 при интеграции гало-орбиты 100 ч. Полушаговый Верле деградирует до O(h) из-за силы Кориолиса; итерированный Верле восстанавливает O(h&sup2;).</p>
+        <div class="exp-imgs">
+            <img src="experiments/02_integrator_comparison/loglog.png" alt="Log-log сходимость">
+        </div>
+        <table class="exp-table">
+            <tr><th>Интегратор</th><th>Наклон</th><th>Ошибка при dt=30 с</th><th>Отн. ошибка (d/d<sub>ЗЛ</sub>)</th></tr>
+            <tr><td>Эйлер</td><td>1.00</td><td>8 400 м</td><td>2.2&times;10<sup>&minus;5</sup></td></tr>
+            <tr><td>Верле полушаговый</td><td>1.00</td><td>1 900 м</td><td>4.9&times;10<sup>&minus;6</sup></td></tr>
+            <tr><td>Верле итерированный</td><td class="val">1.97</td><td class="val">0.13 м</td><td class="val">3.4&times;10<sup>&minus;10</sup></td></tr>
+        </table>
+    </div>
+
+    <div class="exp-panel" id="exp2">
+        <h3>Точки Лагранжа L1&ndash;L5</h3>
+        <p class="exp-note">Численное вычисление точек Лагранжа (бисекция / Ньютон) и сравнение с аналитическими приближениями (сфера Хилла).</p>
+        <table class="exp-table">
+            <tr><th>Точка</th><th>x, км</th><th>y, км</th><th>Ошибка, км</th><th>Отн. ошибка</th></tr>
+            <tr><td>L1</td><td>323 696</td><td>0</td><td>2 649</td><td>0.82%</td></tr>
+            <tr><td>L2</td><td>446 531</td><td>0</td><td>1 977</td><td>0.44%</td></tr>
+            <tr><td>L3</td><td>&minus;386 651</td><td>0</td><td>2 779</td><td>0.72%</td></tr>
+            <tr><td>L4</td><td>188 080</td><td>332 920</td><td>2 812</td><td>0.74%</td></tr>
+            <tr><td>L5</td><td>188 080</td><td>&minus;332 920</td><td>2 812</td><td>0.74%</td></tr>
+        </table>
+        <p class="exp-note" style="margin-top:0.8rem">Остаточное ускорение в найденных точках: &lt; 10<sup>&minus;18</sup> м/с&sup2;.</p>
+    </div>
+
+    <div class="exp-panel" id="exp3">
+        <h3>Гало-орбита у точки L1</h3>
+        <p class="exp-note">Периодическая 3D-орбита: начальное приближение Ричардсона (3-й порядок) + дифференциальная коррекция (стрелковый метод).</p>
+        <div class="exp-imgs">
+            <img src="experiments/04_halo_orbit/halo_3d.png" alt="3D гало-орбита">
+        </div>
+        <table class="exp-table">
+            <tr><th>Параметр</th><th>Значение</th></tr>
+            <tr><td>Амплитуда Az</td><td>15 000 км</td></tr>
+            <tr><td>Период</td><td>293.4 ч (12.2 дня)</td></tr>
+            <tr><td>Ошибка замыкания</td><td>3.6 км</td></tr>
+            <tr><td>Дрейф Якоби</td><td>3.8 &times; 10<sup>&minus;11</sup></td></tr>
+        </table>
+    </div>
+
+    <div class="exp-panel" id="exp4">
+        <h3>Траектория свободного возврата</h3>
+        <p class="exp-note">Баллистическая траектория типа Apollo-13: старт с LEO, облёт Луны, возврат к Земле без использования двигателя.</p>
+        <div class="exp-imgs" style="grid-template-columns:1fr">
+            <img src="experiments/05_free_return/free_return_trajectory.png" alt="Свободный возврат">
+            <img src="experiments/05_free_return/sensitivity.png" alt="Чувствительность">
+        </div>
+        <table class="exp-table">
+            <tr><th>Параметр</th><th>Значение</th></tr>
+            <tr><td>Угол старта</td><td>226.5&deg;</td></tr>
+            <tr><td>Скорость TLI (выход на лунную трассу)</td><td>10 779 м/с</td></tr>
+            <tr><td>Пролёт Луны</td><td>3 399 км (t = 63.6 ч)</td></tr>
+            <tr><td>Возврат к Земле</td><td>8 081 км (t = 168.1 ч)</td></tr>
+            <tr><td>Чувствительность: +1 м/с &rarr; &Delta;r Луна</td><td>&asymp; 89 км</td></tr>
+            <tr><td>Чувствительность: +1 м/с &rarr; &Delta;r Земля</td><td>&asymp; 242 км</td></tr>
+        </table>
+    </div>
+
+    <div class="exp-panel" id="exp5">
+        <h3>Хаотическая чувствительность вблизи L1</h3>
+        <p class="exp-note">16 траекторий стартуют из L1 с одинаковой скоростью 10 м/с, но в разных направлениях. Одна скорость — качественно разные судьбы.</p>
+        <div class="exp-imgs" style="grid-template-columns:1fr">
+            <img src="experiments/06_chaos_sensitivity/chaos_fan.png" alt="Траекторный веер">
+            <img src="experiments/06_chaos_sensitivity/divergence.png" alt="Расхождение">
+        </div>
+        <table class="exp-table">
+            <tr><th>Параметр</th><th>Значение</th></tr>
+            <tr><td>Показатель Ляпунова &lambda;</td><td>0.64 &plusmn; 0.16 сут<sup>&minus;1</sup></td></tr>
+            <tr><td>Время Ляпунова &tau; = 1/&lambda;</td><td>1.6 суток</td></tr>
+            <tr><td>Горизонт предсказуемости</td><td>~2 суток</td></tr>
+        </table>
+        <p class="exp-note" style="margin-top:0.8rem">Расхождение траекторий экспоненциальное (пунктир на графике &mdash; аппроксимация e<sup>&lambda;t</sup>). Часть траекторий уходит к Луне (~380 тыс. км), часть совершает петлю вокруг Земли (~80&ndash;120 тыс. км).</p>
+    </div>
+
+    <div class="exp-panel" id="exp6">
+        <h3>Влияние малой тяги на траекторию</h3>
+        <p class="exp-note">Даже малая тяга (&lt;1% начальной скорости) кардинально меняет траекторию в CR3BP.</p>
+        <div class="exp-imgs">
+            <img src="experiments/07_thrust_maneuver/thrust_comparison.png" alt="Сравнение траекторий">
+        </div>
+        <table class="exp-table">
+            <tr><th>Сценарий</th><th>&Delta;v</th><th>Топливо (хим.)</th><th>Результат</th></tr>
+            <tr><td>Земля &rarr; Луна (5 Н, 3 ч)</td><td>108 м/с</td><td>18 кг (3.6%)</td><td>Пролёт Луны: 2 494 км</td></tr>
+            <tr><td>Побег от L1 (0.05 Н, 2 ч)</td><td>0.72 м/с</td><td>0.12 кг (0.02%)</td><td>Уход на 101 000 км</td></tr>
+            <tr><td colspan="4" style="color:#6b7280; font-style:italic">Для сравнения: идеальный перелёт Гомана LEO &rarr; Луна требует &Delta;v &asymp; 3 134 м/с (топливо 328 кг из 500 кг)</td></tr>
+        </table>
+        <p class="exp-note" style="margin-top:0.8rem">Расход топлива по формуле Циолковского (I<sub>sp</sub>=300 с, m<sub>0</sub>=500 кг). Малая тяга &mdash; манёвр коррекции, а не замена импульсного перелёта.</p>
+    </div>
+
+    <script>
+    function showExp(i) {
+        document.querySelectorAll('.exp-tab').forEach((t, j) => t.classList.toggle('active', j === i));
+        document.querySelectorAll('.exp-panel').forEach((p, j) => p.classList.toggle('active', j === i));
+    }
+    </script>
+
+    <footer>
+        <div>Автор: <span class="value">Александр Ключников</span> &middot; <a href="https://t.me/LalPexR" style="color:#9ca3af; text-decoration:none;"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:2px;" viewBox="0 0 24 24" fill="#9ca3af"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>@LalPexR</a></div>
+        <div>Курчатовская школа, ФМО</div>
+        <div>Олимпиада &laquo;Старт в науку&raquo; МФТИ &mdash; Защита научной работы</div>
+    </footer>
+</body>
+</html>

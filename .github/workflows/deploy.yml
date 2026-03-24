@@ -1,0 +1,27 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull latest code
+        run: |
+          cd /opt/spacerocketlauncher
+          git pull origin main
+
+      - name: Install Python dependencies
+        run: |
+          cd /opt/spacerocketlauncher
+          .venv/bin/pip install -r requirements.txt
+
+      - name: Restart Streamlit services
+        run: |
+          sudo systemctl restart streamlit-simulator
+          sudo systemctl restart streamlit-lagrange
+
+      - name: Reload nginx
+        run: sudo systemctl reload nginx

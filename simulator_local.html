@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>Симулятор траекторий — Задача трёх тел Земля–Луна</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; accent-color: #2da87e; }
+        body { background: #111827; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; overflow: hidden; color-scheme: dark; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-size: 14px; line-height: 1.5; }
+        #container { width: 100vw; height: 100vh; }
+        #controls {
+            position: absolute; top: 20px; left: 20px;
+            background: #161b22; padding: 20px;
+            border-radius: 10px; border: 1px solid #30363d; width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        #controls h2 { margin-bottom: 15px; color: #e6edf3; font-weight: 600; }
+        .control-group { margin-bottom: 12px; }
+        .control-group label { display: block; margin-bottom: 4px; color: #8b949e; font-size: 12px; font-weight: 500; }
+        .control-group input, .control-group select { width: 100%; padding: 8px; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 4px; font-family: inherit; font-size: 14px; }
+        .control-group input:focus, .control-group select:focus { border-color: #8b949e; outline: none; }
+        details { margin-bottom: 12px; }
+        summary { cursor: pointer; padding: 8px; background: #1c2128; border-radius: 4px; font-weight: 600; color: #c9d1d9; position: relative; }
+        summary .active-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #2da87e; margin-left: 6px; vertical-align: middle; }
+        summary:hover { background: #262c36; }
+        details[open] summary { border-radius: 4px 4px 0 0; }
+        details .expander-content { padding: 10px; border: 1px solid #30363d; border-top: none; border-radius: 0 0 4px 4px; }
+        button { width: 100%; padding: 12px; margin-top: 8px; background: #2da87e; color: #fff; border: none; border-radius: 5px; font-weight: 600; cursor: pointer; font-family: inherit; font-size: 14px; }
+        button:hover { background: #3fbf96; }
+        #playback { margin-top: 15px; padding-top: 15px; border-top: 1px solid #30363d; }
+        #playback-controls { display: flex; gap: 8px; margin-bottom: 10px; }
+        #playback-controls button { flex: 1; margin: 0; padding: 8px; }
+        #timeline { width: 100%; }
+        #info { position: absolute; top: 20px; right: 20px; background: #161b22; padding: 15px; border-radius: 10px; border: 1px solid #30363d; box-shadow: 0 4px 12px rgba(0,0,0,0.3); min-width: 240px; }
+        #info div { margin: 5px 0; color: #8b949e; font-weight: 500; }
+        #info span { color: #e6edf3; font-weight: 600; }
+        .integrator-switch { display: flex; gap: 5px; margin-top: 5px; }
+        .integrator-switch label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            padding: 6px 8px;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            background: #0d1117;
+            color: #8b949e;
+            font-weight: 500;
+        }
+        .integrator-switch label:has(input:checked) {
+            background: #101c18;
+            border-color: #2da87e;
+            color: #3fbf96;
+        }
+        .integrator-switch input[type="radio"] { margin: 0; width: 12px; height: 12px; }
+        .version-tag { font-size: 10px; color: #484f58; text-align: right; margin-top: 5px; font-weight: 500; }
+        #mobile-bar {
+            display: none;
+            position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+            background: #161b22; border-bottom: 1px solid #30363d;
+            padding: 8px 12px;
+            align-items: center; gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        #mobile-bar button {
+            width: auto; margin: 0; padding: 6px 14px; font-size: 13px;
+        }
+        #mobile-bar .menu-btn {
+            background: none; border: 1px solid #30363d; color: #c9d1d9;
+            border-radius: 6px; padding: 6px 10px; font-size: 18px; line-height: 1;
+        }
+        #mobile-bar .menu-btn:hover { background: #1c2128; }
+        @media (max-width: 640px) {
+            #mobile-bar { display: flex; }
+            #controls {
+                top: 46px; left: 0; right: 0;
+                width: 100%; max-width: 100%;
+                border-radius: 0;
+                max-height: calc(70vh - 46px);
+                z-index: 10;
+                padding: 12px 16px 16px;
+            }
+            #controls.hidden { display: none; }
+            #info {
+                top: auto; bottom: 0; right: 0; left: 0;
+                border-radius: 0;
+                min-width: unset;
+                font-size: 12px;
+                padding: 10px 16px;
+                display: flex; flex-wrap: wrap; gap: 0 16px;
+            }
+            #info > div { white-space: nowrap; }
+        }
+        .preset-row { display: flex; gap: 6px; margin-top: 6px; align-items: center; }
+        .preset-row input[type="text"] { flex: 1; padding: 0 8px; height: 32px; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 4px; font-family: inherit; font-size: 13px; min-width: 0; }
+        .preset-row input[type="text"]::placeholder { color: #484f58; }
+        .preset-row select { flex: 1; height: 32px; padding: 0 8px; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 4px; font-family: inherit; font-size: 13px; min-width: 0; }
+        .preset-btn { all: unset; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; height: 32px; width: 32px; border-radius: 4px; font-family: inherit; font-size: 13px; font-weight: 500; text-align: center; flex: none; }
+        .preset-btn-save { background: #30363d; color: #c9d1d9; border: 1px solid #30363d; }
+        .preset-btn-save:hover { background: #484f58; }
+        .preset-btn-del { background: transparent; color: #f85149; border: 1px solid #30363d; }
+        .preset-btn-del:hover { background: #1c1117; border-color: #f85149; }
+        .preset-btn-del.disabled { color: #30363d; pointer-events: none; cursor: default; }
+        .preset-btn-share { background: transparent; color: #2da87e; border: 1px solid #30363d; }
+        .preset-btn-share:hover { background: #101c18; border-color: #2da87e; }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="mobile-bar">
+        <button class="menu-btn" onclick="document.getElementById('controls').classList.toggle('hidden')">☰</button>
+        <button onclick="playAnimation()">▶</button>
+        <button onclick="pauseAnimation()" style="background:#30363d;">⏸</button>
+        <button onclick="resetAnimation()" style="background:#30363d;">⏹</button>
+    </div>
+
+    <div id="controls">
+        <h2>CR3BP Симулятор</h2>
+
+        <div class="control-group">
+            <label>Сценарий</label>
+            <div class="preset-row" style="margin-top:0;">
+                <select id="presetSelector" onchange="applyPreset(this.value)" style="flex:1; height:32px; padding:0 8px; border-radius:4px; border:1px solid #30363d; background:#0d1117; color:#c9d1d9; font-size:14px; font-family:inherit; min-width:0;">
+                    <option value="">— Выберите сценарий —</option>
+                    <option value="L1">Точка Лагранжа L1</option>
+                    <option value="L2">Точка Лагранжа L2</option>
+                    <option value="L3">Точка Лагранжа L3</option>
+                    <option value="L4">Точка Лагранжа L4</option>
+                    <option value="L5">Точка Лагранжа L5</option>
+                    <option value="e_orbit">Околоземная орбита</option>
+                    <option value="m_orbit">Окололунная орбита</option>
+                    <option value="l1_halo">Гало-орбита у L1</option>
+                    <option value="l2_halo">Гало-орбита у L2</option>
+                    <option value="apollo13">Свободный возврат (облёт Луны)</option>
+                    <option value="earth_moon_thrust">Перелёт Земля→Луна с тягой</option>
+                    <option value="l1_escape">Побег от L1 с микротягой</option>
+                    <option value="hohmann">Прямой перелёт к Луне</option>
+                    <option value="orbit_to_moon">Перелёт с орбиты к Луне (TLI)</option>
+                    <option value="l1_chaos">Хаос у L1</option>
+                    <option disabled>── Сравнение ──</option>
+                    <option value="l1_chaos_compare">Хаос у L1 (сравнение)</option>
+                    <option value="verlet_vs_euler">Верле vs Эйлер (гало L1)</option>
+                </select>
+                <span id="deletePresetBtn" class="preset-btn preset-btn-del disabled" onclick="deleteUserPreset(document.getElementById('presetSelector').value)" title="Удалить">✕</span>
+            </div>
+            <div class="preset-row">
+                <input type="text" id="presetNameInput" placeholder="Имя сценария">
+                <span class="preset-btn preset-btn-save" onclick="saveUserPreset(document.getElementById('presetNameInput').value)" title="Сохранить">✓</span>
+            </div>
+            <div class="preset-row">
+                <span id="shareLinkBtn" class="preset-btn preset-btn-share" style="width:100%; text-align:center;" onclick="paramsToHash()">Поделиться ссылкой</span>
+            </div>
+        </div>
+
+        <details>
+            <summary id="sumPosition">Начальное положение (тыс. км)</summary>
+            <div class="expander-content">
+                <div class="control-group">
+                    <label>X₀ (Земля ≈ -4.7, Луна ≈ 383)</label>
+                    <input type="number" id="x0" value="326" step="10" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Y₀</label>
+                    <input type="number" id="y0" value="0" step="10" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Z₀</label>
+                    <input type="number" id="z0" value="0" step="10" onchange="runSimulation()">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary id="sumVelocity">Начальная скорость (км/с)</summary>
+            <div class="expander-content">
+                <div class="control-group">
+                    <label>Vx₀</label>
+                    <input type="number" id="vx0" max="299792" value="0" step="0.01" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Vy₀</label>
+                    <input type="number" id="vy0" max="299792" value="0" step="0.01" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Vz₀</label>
+                    <input type="number" id="vz0" max="299792" value="0" step="0.01" onchange="runSimulation()">
+                </div>
+                <div class="control-group" style="border-top:1px solid #444; padding-top:6px; margin-top:4px;">
+                    <label>|v₀|</label>
+                    <input type="text" id="v0mag" readonly style="opacity:0.7; cursor:default;">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary id="sumEngine">Двигатель</summary>
+            <div class="expander-content">
+                <div class="control-group">
+                    <label>Fx (Н)</label>
+                    <input type="number" id="Fx" value="0" step="100" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Fy (Н)</label>
+                    <input type="number" id="Fy" value="0" step="100" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Fz (Н)</label>
+                    <input type="number" id="Fz" value="0" step="100" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Масса КА (кг)</label>
+                    <input type="number" id="mass" min="1" value="500" step="100" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Старт двигателя (ч от начала)</label>
+                    <input type="number" id="tOn" min="0" value="0" step="1" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Работа двигателя (с)</label>
+                    <input type="number" id="tDuration" min="0" value="0" step="100" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>Удельный импульс Isp (с)</label>
+                    <input type="number" id="isp" min="1" value="300" step="10" onchange="runSimulation()">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary id="sumAccel">Начальное ускорение (м/с²)</summary>
+            <div class="expander-content">
+                <div class="control-group">
+                    <label>a₀x</label>
+                    <input type="number" id="a0x" value="0" step="0.1" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>a₀y</label>
+                    <input type="number" id="a0y" value="0" step="0.1" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label>a₀z</label>
+                    <input type="number" id="a0z" value="0" step="0.1" onchange="runSimulation()">
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>Интегрирование</summary>
+            <div class="expander-content">
+                <div class="control-group">
+                    <label>Метод</label>
+                    <div class="integrator-switch">
+                        <label>
+                            <input type="radio" name="integrator" value="verlet" checked onchange="runSimulation()"> Verlet
+                        </label>
+                        <label>
+                            <input type="radio" name="integrator" value="euler" onchange="runSimulation()"> Euler
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Время симуляции (часы)</label>
+                    <input type="number" id="tEnd" value="720" step="1" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label id="dtLabel">Шаг dt (сек)</label>
+                    <input type="number" id="dt" value="30" min="1" step="1" onchange="runSimulation()">
+                </div>
+                <div class="control-group">
+                    <label style="font-size:12px; cursor:pointer;">
+                        <input type="checkbox" id="adaptiveStep" onchange="toggleAdaptiveStep(); runSimulation()"> Адаптивный шаг
+                    </label>
+                </div>
+                <div class="control-group" id="dtMinGroup" style="display:none;">
+                    <label>Мин. шаг dt_min (сек)</label>
+                    <input type="number" id="dtMin" value="1" min="0.1" step="0.5" onchange="runSimulation()">
+                </div>
+            </div>
+        </details>
+
+        <details id="track2Section">
+            <summary id="sumTrack2">Сравнение (2-й трек)</summary>
+            <div class="expander-content">
+                <div class="control-group">
+                    <label style="font-size:12px; cursor:pointer;">
+                        <input type="checkbox" id="track2Toggle" onchange="toggleTrack2(this.checked)"> Включить 2-й трек
+                    </label>
+                </div>
+                <div id="track2Options" style="display:none;">
+                    <div class="control-group">
+                        <label>Режим</label>
+                        <div class="integrator-switch">
+                            <label>
+                                <input type="radio" name="track2Mode" value="delta_ic" checked onchange="setTrack2Mode(this.value)"> Δ нач. усл.
+                            </label>
+                            <label>
+                                <input type="radio" name="track2Mode" value="integrator" onchange="setTrack2Mode(this.value)"> Интегратор
+                            </label>
+                        </div>
+                    </div>
+                    <div id="track2DeltaFields">
+                        <div class="control-group">
+                            <label>Δvx (км/с)</label>
+                            <input type="number" id="t2_dvx" value="0.001" step="0.001" onchange="runSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <label>Δvy (км/с)</label>
+                            <input type="number" id="t2_dvy" value="0" step="0.001" onchange="runSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <label>Δvz (км/с)</label>
+                            <input type="number" id="t2_dvz" value="0" step="0.001" onchange="runSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <label>Δx (тыс. км)</label>
+                            <input type="number" id="t2_dx" value="0" step="0.1" onchange="runSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <label>Δy (тыс. км)</label>
+                            <input type="number" id="t2_dy" value="0" step="0.1" onchange="runSimulation()">
+                        </div>
+                        <div class="control-group">
+                            <label>Δz (тыс. км)</label>
+                            <input type="number" id="t2_dz" value="0" step="0.1" onchange="runSimulation()">
+                        </div>
+                    </div>
+                    <div id="track2IntInfo" style="display:none; font-size:12px; color:#8b949e; margin-top:6px;">
+                        Трек 1: <span id="t2_int1" style="color:#88ccff;">Verlet</span> ↔
+                        Трек 2: <span id="t2_int2" style="color:#ff66cc;">Euler</span>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <details>
+            <summary>Визуализация</summary>
+            <div class="expander-content">
+                <div class="control-group">
+                    <label>Масштаб планет: <span id="scaleValue">1x</span> (реальный = 1x)</label>
+                    <input type="range" id="planetScale" min="1" max="10" value="1" step="0.5" oninput="updatePlanetScale(this.value)">
+                    <div style="display:flex; justify-content:space-between; font-size:10px; color:#484f58;">
+                        <span>1x</span>
+                        <span>10x</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Скорость: <span id="speedValue">24</span> ч/сек</label>
+                    <input type="range" id="playbackSpeed" min="0" max="100" value="51" step="1" oninput="updatePlaybackSpeed(this.value)">
+                    <div style="display:flex; justify-content:space-between; font-size:10px; color:#484f58;">
+                        <span>1</span>
+                        <span>5</span>
+                        <span>24</span>
+                        <span>100</span>
+                        <span>500</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Кадрирование камеры</label>
+                    <div class="integrator-switch">
+                        <label>
+                            <input type="radio" name="cameraFrame" value="trajectory" checked onchange="updateCameraFrame()"> Траектория
+                        </label>
+                        <label>
+                            <input type="radio" name="cameraFrame" value="full" onchange="updateCameraFrame()"> Т + З + Л
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label>Отображение</label>
+                    <div style="display:flex; flex-direction:column; gap:5px; margin-top:5px;">
+                        <label style="font-size:12px; cursor:pointer;">
+                            <input type="checkbox" id="showMarkers" onchange="toggleMarkers(this.checked)"> Маркеры траектории
+                        </label>
+                        <label style="font-size:12px; cursor:pointer;">
+                            <input type="checkbox" id="showLagrangeCheck" checked onchange="toggleLagrange(this.checked)"> Точки Лагранжа L1-L5
+                        </label>
+                        <div style="display:flex; gap:15px;">
+                            <label style="font-size:12px; cursor:pointer;">
+                                <input type="checkbox" id="gridXY" checked onchange="toggleGrid('XY', this.checked)"> Сетка XY
+                            </label>
+                            <label style="font-size:12px; cursor:pointer;">
+                                <input type="checkbox" id="gridXZ" checked onchange="toggleGrid('XZ', this.checked)"> Сетка XZ
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </details>
+        <div id="playback">
+            <div id="playback-controls">
+                <button onclick="playAnimation()">Play</button>
+                <button onclick="pauseAnimation()">Pause</button>
+                <button onclick="resetAnimation()">Reset</button>
+            </div>
+            <input type="range" id="timeline" min="0" max="100" value="0" oninput="seekAnimation(this.value)">
+            <div style="text-align:center; color:#484f58; font-size: 12px;">
+                Кадр: <span id="frameNum">0</span> / <span id="totalFrames">0</span>
+            </div>
+        </div>
+        <div style="border-top: 1px solid #30363d; margin-top: 12px; padding-top: 10px;">
+            <details>
+                <summary>О работе</summary>
+                <div class="expander-content" style="font-size: 12px; color: #8b949e; line-height: 1.6;">
+                    <div style="font-weight: 600; color: #e6edf3; margin-bottom: 6px;">Численное моделирование траекторий КА в круговой ограниченной задаче трёх тел системы Земля–Луна</div>
+                    <div style="margin-bottom: 6px;">Обучающий веб-симулятор: наглядная демонстрация динамики полёта в системе Земля–Луна</div>
+                    <div style="margin-bottom: 6px;">Автор: <span style="color: #c9d1d9;">Александр Ключников</span></div>
+                    <div style="margin-bottom: 6px;">Курчатовская школа, ФМО</div>
+                    <div style="margin-bottom: 10px;">Олимпиада «Старт в науку» МФТИ — Защита научной работы</div>
+                    <div style="border-top: 1px solid #30363d; padding-top: 8px; margin-top: 4px;">
+                        <div style="font-weight: 600; color: #e6edf3; margin-bottom: 4px;">Область применимости модели</div>
+                        <div style="margin-bottom: 4px;">Симулятор использует модель CR3BP (круговая ограниченная задача трёх тел) со следующими допущениями:</div>
+                        <div style="margin-left: 8px; margin-bottom: 3px;">• Орбита Луны считается круговой (эксцентриситет ≈ 0.055 не учитывается)</div>
+                        <div style="margin-left: 8px; margin-bottom: 3px;">• Масса космического аппарата пренебрежимо мала</div>
+                        <div style="margin-left: 8px; margin-bottom: 3px;">• Влияние Солнца и других тел не учитывается</div>
+                        <div style="margin-top: 6px;">Симулятор предназначен для <span style="color: #c9d1d9;">учебных целей</span>: качественное изучение динамики, точек Лагранжа, типов траекторий и поведения численных интеграторов. Для расчёта реальных миссий используются полные эфемеридные модели.</div>
+                    </div>
+                </div>
+            </details>
+        </div>
+        <div class="version-tag">v040326_1</div>
+    </div>
+
+    <div id="info">
+        <div>Время: <span id="infoTime">-</span></div>
+        <div>Расстояние: <span id="infoDist">-</span></div>
+        <div>Скорость: <span id="infoVel">-</span></div>
+        <div style="border-top: 1px solid #30363d; margin-top: 8px; padding-top: 8px;">
+            <div>C<sub>J</sub>: <span id="infoJacobi">-</span></div>
+            <div>Дрейф: <span id="infoJacobiDrift">-</span></div>
+            <div>RMS дрейф: <span id="infoJacobiRMS">-</span></div>
+            <div>Макс дрейф: <span id="infoJacobiMax">-</span></div>
+        </div>
+        <div style="border-top: 1px solid #30363d; margin-top: 8px; padding-top: 8px;">
+            <div>ΔV: <span id="infoDeltaV">-</span></div>
+            <div>Расход топлива: <span id="infoFuel">-</span></div>
+        </div>
+        <div id="track2Info" style="display:none; border-top: 1px solid #30363d; margin-top: 8px; padding-top: 8px;">
+            <div style="color:#ff66cc; font-weight:600; font-size:11px; margin-bottom:4px;">2-й трек</div>
+            <div>Расхождение: <span id="infoSeparation">-</span></div>
+            <div>Δv₁₋₂: <span id="infoVelDiff">-</span></div>
+            <div>Дрейф₂: <span id="infoDrift2">-</span></div>
+            <div>Статус₂: <span id="infoStatus2">-</span></div>
+        </div>
+        <div>Метод: <span id="infoIntegrator">Verlet</span></div>
+        <div>Шагов: <span id="infoSteps">-</span></div>
+        <div>Ср. шаг: <span id="infoAvgDt">-</span> сек</div>
+        <div>Тек. шаг: <span id="infoCurDt">-</span> сек</div>
+        <div>Статус: <span id="infoStatus">Ожидание</span></div>
+    </div>
+
+    <script src="lib/three.min.js"></script>
+    <script src="lib/OrbitControls.js"></script>
+
+    <script>
+        
+        const G   = 6.674e-11;
+        const M_E = 5.972e24;
+        const M_M = 7.342e22;
+        const R_E = 6.371;    
+        const R_M = 1.737;    
+        const d_E = 4.67;     
+        const d_M = 382.8;    
+        const w   = 2.662e-6; 
+
+        let scene, camera, renderer, controls;
+        let earth, moon, spacecraft, trajectoryLine, trailLine, startMarker;
+        let trajectoryMarkers = [];
+        let showMarkers = false;
+        let gridXY, gridXZ;
+        let lagrangePoints = [];
+        let showLagrange = true;
+        let trajectoryData = null;
+        let animationFrame = 0;
+        let isPlaying = false;
+        let animationId = null;
+        let playbackSpeed = 24; 
+
+        let track2Enabled = false;
+        let track2Mode = 'delta_ic'; 
+        let trajectoryData2 = null;
+        let trajectoryLine2 = null;
+        let trailLine2 = null;
+        let spacecraft2 = null;
+        let trajectoryMarkers2 = [];
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x111827);
+
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 50000);
+            camera.position.set(190, -300, 100);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.mouseButtons = {
+                LEFT:   THREE.MOUSE.PAN,
+                MIDDLE: THREE.MOUSE.DOLLY,
+                RIGHT:  THREE.MOUSE.ROTATE
+            };
+
+            renderer.domElement.addEventListener('mousedown', (e) => {
+                if (e.button === 0) {
+                    controls.mouseButtons.LEFT = e.shiftKey
+                        ? THREE.MOUSE.ROTATE
+                        : THREE.MOUSE.PAN;
+                }
+            }, { capture: true });
+            controls.target.set(190, 0, 0);
+
+            scene.add(new THREE.AmbientLight(0x404040));
+            const sun = new THREE.DirectionalLight(0xffffff, 1);
+            sun.position.set(500, 200, 300);
+            scene.add(sun);
+
+            const earthGeom = new THREE.SphereGeometry(R_E, 32, 32);
+            const earthMat = new THREE.MeshPhongMaterial({ color: 0x2266dd, emissive: 0x1144aa, shininess: 30 });
+            earth = new THREE.Mesh(earthGeom, earthMat);
+            earth.position.set(-d_E, 0, 0);
+            scene.add(earth);
+
+            const moonGeom = new THREE.SphereGeometry(R_M, 32, 32);
+            const moonMat = new THREE.MeshPhongMaterial({ color: 0xaaaaaa, emissive: 0x444444, shininess: 20 });
+            moon = new THREE.Mesh(moonGeom, moonMat);
+            moon.position.set(d_M, 0, 0);
+            scene.add(moon);
+
+            const scSize = R_M * 0.5;
+            const coneGeom = new THREE.ConeGeometry(scSize * 0.6, scSize * 3, 8);
+            const coneMat = new THREE.MeshPhongMaterial({ color: 0xff3300, emissive: 0xaa1100 });
+            spacecraft = new THREE.Mesh(coneGeom, coneMat);
+            spacecraft.visible = false;
+            scene.add(spacecraft);
+
+            const glowGeom = new THREE.SphereGeometry(scSize * 2, 16, 16);
+            const glowMat = new THREE.MeshBasicMaterial({ color: 0xff6600, transparent: true, opacity: 0.3 });
+            spacecraft.add(new THREE.Mesh(glowGeom, glowMat));
+
+            const glow2Geom = new THREE.SphereGeometry(scSize * 4, 16, 16);
+            const glow2Mat = new THREE.MeshBasicMaterial({ color: 0xff9900, transparent: true, opacity: 0.1 });
+            spacecraft.add(new THREE.Mesh(glow2Geom, glow2Mat));
+
+            const startGeom = new THREE.BoxGeometry(3, 3, 3);
+            const startMat = new THREE.MeshBasicMaterial({ color: 0x2da87e });
+            startMarker = new THREE.Mesh(startGeom, startMat);
+            startMarker.visible = false;
+            scene.add(startMarker);
+
+            const axisGeom = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(-50, 0, 0),
+                new THREE.Vector3(450, 0, 0)
+            ]);
+            scene.add(new THREE.Line(axisGeom, new THREE.LineBasicMaterial({ color: 0x30363d })));
+
+            gridXY = new THREE.GridHelper(800, 20, 0x30363d, 0x1c2128);
+            scene.add(gridXY);
+
+            gridXZ = new THREE.GridHelper(800, 20, 0x30363d, 0x1c2128);
+            gridXZ.rotation.x = Math.PI / 2;
+            scene.add(gridXZ);
+
+            initLagrangePoints();
+
+            trajectoryLine = new THREE.Line(
+                new THREE.BufferGeometry(),
+                new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.7 })
+            );
+            scene.add(trajectoryLine);
+
+            trailLine = new THREE.Line(
+                new THREE.BufferGeometry(),
+                new THREE.LineBasicMaterial({ vertexColors: true })
+            );
+            scene.add(trailLine);
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            initTouchGestures();
+            animate();
+            setTimeout(runSimulation, 100);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            if (earth) earth.rotation.y += 0.001;
+            if (moon) moon.rotation.y += 0.0005;
+
+            const dist = camera.position.distanceTo(controls.target);
+            const markerScale = Math.max(0.5, dist / 200);
+            trajectoryMarkers.forEach(marker => marker.scale.setScalar(markerScale));
+            if (spacecraft) spacecraft.scale.setScalar(markerScale);
+            if (spacecraft2) spacecraft2.scale.setScalar(markerScale);
+
+            renderer.render(scene, camera);
+        }
+
+        function initLagrangePoints() {
+            const L1_x = 321.3;
+            const L2_x = 447.3;
+            const L3_x = -387.5;
+            const L4_x = d_M / 2 - d_E;
+            const L4_y = d_M * Math.sin(Math.PI / 3);
+
+            const lagrangeData = [
+                { name: 'L1', x: L1_x,  y: 0,      color: 0xd97706 },
+                { name: 'L2', x: L2_x,  y: 0,      color: 0xd97706 },
+                { name: 'L3', x: L3_x,  y: 0,      color: 0xd97706 },
+                { name: 'L4', x: L4_x,  y: L4_y,   color: 0xd97706 },
+                { name: 'L5', x: L4_x,  y: -L4_y,  color: 0xd97706 }
+            ];
+
+            lagrangeData.forEach(lp => {
+                
+                const mesh = new THREE.Mesh(
+                    new THREE.OctahedronGeometry(3, 0),
+                    new THREE.MeshBasicMaterial({ color: lp.color, wireframe: true })
+                );
+                mesh.position.set(lp.x, 0, lp.y); 
+                mesh.name = lp.name;
+                scene.add(mesh);
+                lagrangePoints.push(mesh);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = 64;
+                canvas.height = 32;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#' + lp.color.toString(16).padStart(6, '0');
+                ctx.font = 'bold 24px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(lp.name, 32, 24);
+
+                const sprite = new THREE.Sprite(
+                    new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(canvas) })
+                );
+                sprite.position.set(lp.x, 8, lp.y);
+                sprite.scale.set(15, 7.5, 1);
+                scene.add(sprite);
+                lagrangePoints.push(sprite);
+            });
+        }
+
+        function toggleLagrange(visible) {
+            showLagrange = visible;
+            lagrangePoints.forEach(lp => { lp.visible = visible; });
+        }
+
+        function computeAcceleration(x, y, z, vx, vy, vz, t, params) {
+            const { d_E_m, d_M_m, GM_E, GM_M, w2, two_w, Fx, Fy, Fz, mass, tOn, tOff, a0x, a0y, a0z } = params;
+
+            const dx_E = x + d_E_m;
+            const dx_M = x - d_M_m;
+            const r_E  = Math.sqrt(dx_E * dx_E + y * y + z * z);
+            const r_M  = Math.sqrt(dx_M * dx_M + y * y + z * z);
+
+            const K_E   = GM_E / (r_E * r_E * r_E);
+            const K_M   = GM_M / (r_M * r_M * r_M);
+            const K_sum = K_E + K_M;
+
+            let thrustX = 0, thrustY = 0, thrustZ = 0;
+            if (tOff > tOn && t >= tOn && t < tOff) {
+                thrustX = Fx / mass;
+                thrustY = Fy / mass;
+                thrustZ = Fz / mass;
+            }
+
+            return {
+                ax: w2 * x + two_w * vy - K_E * dx_E - K_M * dx_M + thrustX + a0x,
+                ay: w2 * y - two_w * vx - K_sum * y    + thrustY + a0y,
+                az: -K_sum * z                          + thrustZ + a0z
+            };
+        }
+
+        function computeJacobi(x, y, z, vx, vy, vz, params) {
+            const { d_E_m, d_M_m, GM_E, GM_M, w2 } = params;
+
+            const dx_E = x + d_E_m;
+            const dx_M = x - d_M_m;
+            const r_E  = Math.sqrt(dx_E * dx_E + y * y + z * z);
+            const r_M  = Math.sqrt(dx_M * dx_M + y * y + z * z);
+
+            const Omega = 0.5 * w2 * (x * x + y * y) + GM_E / r_E + GM_M / r_M;
+            const v2    = vx * vx + vy * vy + vz * vz;
+            return 2 * Omega - v2;
+        }
+
+        function computeTrajectory(x0, y0, z0, vx0, vy0, vz0, tEndHours, Fx, Fy, Fz, mass, tOn, tOff, a0x, a0y, a0z, integratorOverride) {
+            const integrator = integratorOverride || getSelectedIntegrator();
+            const dt    = parseFloat(document.getElementById('dt').value) || 30;
+            const adaptive = document.getElementById('adaptiveStep').checked;
+            const dtMin = parseFloat(document.getElementById('dtMin').value) || 1;
+            const dtMax = dt;
+            const tEnd  = tEndHours * 3600;
+            const nSteps = Math.floor(tEnd / dt) + 1;
+
+            const scale  = 1e6;
+            let x  = x0  * scale,  y  = y0  * scale,  z  = z0  * scale;
+            let vx = vx0 * 1000,   vy = vy0 * 1000,   vz = vz0 * 1000;
+
+            const params = {
+                d_E_m: d_E * scale,
+                d_M_m: d_M * scale,
+                R_E_m: R_E * scale,
+                R_M_m: R_M * scale,
+                GM_E:  G * M_E,
+                GM_M:  G * M_M,
+                w2:    w * w,
+                two_w: 2 * w,
+                Fx, Fy, Fz, mass, tOn, tOff, a0x, a0y, a0z
+            };
+
+            const F_mag = Math.sqrt(Fx*Fx + Fy*Fy + Fz*Fz);
+            const thrustAccel = mass > 0 ? F_mag / mass : 0;
+
+            const results = {
+                time: [], x: [], y: [], z: [],
+                vx: [], vy: [], vz: [],
+                jacobi: [], deltaV: [], thrusting: [],
+                crush: 0, integrator,
+                adaptiveUsed: adaptive, avgDt: dt,
+                isp: parseFloat(document.getElementById('isp').value) || 300,
+                mass: mass
+            };
+
+            let cumDeltaV = 0;
+
+            if (adaptive) {
+                
+                const v_ref = 1000.0; 
+                const dtRatio = dtMax / dtMin - 1;
+                let t = 0;
+                let dtSum = 0, stepCount = 0;
+
+                while (t < tEnd) {
+                    results.time.push(t);
+                    results.x.push(x / scale);
+                    results.y.push(y / scale);
+                    results.z.push(z / scale);
+                    results.vx.push(vx);
+                    results.vy.push(vy);
+                    results.vz.push(vz);
+                    results.jacobi.push(computeJacobi(x, y, z, vx, vy, vz, params));
+                    results.deltaV.push(cumDeltaV);
+                    results.thrusting.push(F_mag > 0 && tOff > tOn && t >= tOn && t < tOff);
+
+                    const dx_E = x + params.d_E_m;
+                    const dx_M = x - params.d_M_m;
+                    if (Math.sqrt(dx_E*dx_E + y*y + z*z) <= params.R_E_m) { results.crush = 1; break; }
+                    if (Math.sqrt(dx_M*dx_M + y*y + z*z) <= params.R_M_m) { results.crush = 2; break; }
+
+                    const v = Math.sqrt(vx*vx + vy*vy + vz*vz);
+                    const ratio = v / v_ref;
+                    let dt_cur = dtMax / (1 + ratio * dtRatio);
+                    dt_cur = Math.max(dtMin, Math.min(dtMax, dt_cur));
+                    dt_cur = Math.min(dt_cur, tEnd - t);
+
+                    if (tOff > tOn && t >= tOn && t < tOff) {
+                        const burnDt = Math.min(dt_cur, tOff - t);
+                        cumDeltaV += thrustAccel * burnDt;
+                    }
+
+                    dtSum += dt_cur;
+                    stepCount++;
+
+                    if (integrator === 'verlet') {
+                        const a_n = computeAcceleration(x, y, z, vx, vy, vz, t, params);
+                        const x1 = x + vx*dt_cur + 0.5*a_n.ax*dt_cur*dt_cur;
+                        const y1 = y + vy*dt_cur + 0.5*a_n.ay*dt_cur*dt_cur;
+                        const z1 = z + vz*dt_cur + 0.5*a_n.az*dt_cur*dt_cur;
+                        let vx_new = vx + a_n.ax*dt_cur;
+                        let vy_new = vy + a_n.ay*dt_cur;
+                        let vz_new = vz + a_n.az*dt_cur;
+                        for (let it = 0; it < 3; it++) {
+                            const a_1 = computeAcceleration(x1, y1, z1, vx_new, vy_new, vz_new, t + dt_cur, params);
+                            vx_new = vx + 0.5*(a_n.ax + a_1.ax)*dt_cur;
+                            vy_new = vy + 0.5*(a_n.ay + a_1.ay)*dt_cur;
+                            vz_new = vz + 0.5*(a_n.az + a_1.az)*dt_cur;
+                        }
+                        vx = vx_new; vy = vy_new; vz = vz_new;
+                        x = x1; y = y1; z = z1;
+                    } else {
+                        const a = computeAcceleration(x, y, z, vx, vy, vz, t, params);
+                        vx += a.ax*dt_cur; vy += a.ay*dt_cur; vz += a.az*dt_cur;
+                        x  += vx*dt_cur;   y  += vy*dt_cur;   z  += vz*dt_cur;
+                    }
+
+                    t += dt_cur;
+                }
+
+                results.avgDt = stepCount > 0 ? dtSum / stepCount : dt;
+            } else {
+                
+                for (let i = 0; i < nSteps; i++) {
+                    const t = i * dt;
+
+                    results.time.push(t);
+                    results.x.push(x / scale);
+                    results.y.push(y / scale);
+                    results.z.push(z / scale);
+                    results.vx.push(vx);
+                    results.vy.push(vy);
+                    results.vz.push(vz);
+                    results.jacobi.push(computeJacobi(x, y, z, vx, vy, vz, params));
+                    results.deltaV.push(cumDeltaV);
+                    results.thrusting.push(F_mag > 0 && tOff > tOn && t >= tOn && t < tOff);
+
+                    const dx_E = x + params.d_E_m;
+                    const dx_M = x - params.d_M_m;
+                    if (Math.sqrt(dx_E*dx_E + y*y + z*z) <= params.R_E_m) { results.crush = 1; break; }
+                    if (Math.sqrt(dx_M*dx_M + y*y + z*z) <= params.R_M_m) { results.crush = 2; break; }
+
+                    if (tOff > tOn && t >= tOn && t < tOff) {
+                        const burnDt = Math.min(dt, tOff - t);
+                        cumDeltaV += thrustAccel * burnDt;
+                    }
+
+                    if (integrator === 'verlet') {
+                        const a_n = computeAcceleration(x, y, z, vx, vy, vz, t, params);
+                        const x1 = x + vx*dt + 0.5*a_n.ax*dt*dt;
+                        const y1 = y + vy*dt + 0.5*a_n.ay*dt*dt;
+                        const z1 = z + vz*dt + 0.5*a_n.az*dt*dt;
+                        let vx_new = vx + a_n.ax*dt;
+                        let vy_new = vy + a_n.ay*dt;
+                        let vz_new = vz + a_n.az*dt;
+                        for (let it = 0; it < 3; it++) {
+                            const a_1 = computeAcceleration(x1, y1, z1, vx_new, vy_new, vz_new, t + dt, params);
+                            vx_new = vx + 0.5*(a_n.ax + a_1.ax)*dt;
+                            vy_new = vy + 0.5*(a_n.ay + a_1.ay)*dt;
+                            vz_new = vz + 0.5*(a_n.az + a_1.az)*dt;
+                        }
+                        vx = vx_new; vy = vy_new; vz = vz_new;
+                        x = x1; y = y1; z = z1;
+                    } else {
+                        const a = computeAcceleration(x, y, z, vx, vy, vz, t, params);
+                        vx += a.ax*dt; vy += a.ay*dt; vz += a.az*dt;
+                        x  += vx*dt;   y  += vy*dt;   z  += vz*dt;
+                    }
+                }
+            }
+
+            results.nPoints = results.time.length;
+
+            if (results.jacobi.length > 0) {
+                const J0 = results.jacobi[0];
+                let sumSq = 0, maxAbsDrift = 0;
+                for (let i = 0; i < results.jacobi.length; i++) {
+                    const relDrift = J0 !== 0 ? ((results.jacobi[i] - J0) / Math.abs(J0) * 100) : 0;
+                    sumSq += relDrift * relDrift;
+                    if (Math.abs(relDrift) > maxAbsDrift) maxAbsDrift = Math.abs(relDrift);
+                }
+                results.rmsDrift = Math.sqrt(sumSq / results.jacobi.length);
+                results.maxDrift = maxAbsDrift;
+            }
+
+            let minX = Infinity, maxX = -Infinity;
+            let minY = Infinity, maxY = -Infinity;
+            let minZ = Infinity, maxZ = -Infinity;
+            for (let i = 0; i < results.nPoints; i++) {
+                if (results.x[i] < minX) minX = results.x[i];
+                if (results.x[i] > maxX) maxX = results.x[i];
+                if (results.y[i] < minY) minY = results.y[i];
+                if (results.y[i] > maxY) maxY = results.y[i];
+                if (results.z[i] < minZ) minZ = results.z[i];
+                if (results.z[i] > maxZ) maxZ = results.z[i];
+            }
+            results.boundsTrajectory = { minX, maxX, minY, maxY, minZ, maxZ };
+            results.boundsFull = {
+                minX: Math.min(minX, -d_E - R_E),
+                maxX: Math.max(maxX,  d_M + R_M),
+                minY, maxY, minZ, maxZ
+            };
+
+            return results;
+        }
+
+        function runSimulation() {
+            updateExpanderMarkers();
+            const x0       = parseFloat(document.getElementById('x0').value);
+            const y0       = parseFloat(document.getElementById('y0').value);
+            const z0       = parseFloat(document.getElementById('z0').value);
+            const vx0      = parseFloat(document.getElementById('vx0').value);
+            const vy0      = parseFloat(document.getElementById('vy0').value);
+            const vz0      = parseFloat(document.getElementById('vz0').value);
+            document.getElementById('v0mag').value = Math.sqrt(vx0*vx0 + vy0*vy0 + vz0*vz0).toFixed(3) + ' км/с';
+            const tEnd     = parseFloat(document.getElementById('tEnd').value);
+            const Fx       = parseFloat(document.getElementById('Fx').value);
+            const Fy       = parseFloat(document.getElementById('Fy').value);
+            const Fz       = parseFloat(document.getElementById('Fz').value);
+            const mass     = parseFloat(document.getElementById('mass').value);
+            const tOnHours = parseFloat(document.getElementById('tOn').value);
+            const tDuration= parseFloat(document.getElementById('tDuration').value);
+            const tOn      = tOnHours * 3600;
+            const tOff     = tOn + tDuration;
+            const a0x      = parseFloat(document.getElementById('a0x').value);
+            const a0y      = parseFloat(document.getElementById('a0y').value);
+            const a0z      = parseFloat(document.getElementById('a0z').value);
+
+            trajectoryData = computeTrajectory(x0, y0, z0, vx0, vy0, vz0, tEnd, Fx, Fy, Fz, mass, tOn, tOff, a0x, a0y, a0z);
+
+            if (track2Enabled) {
+                if (track2Mode === 'delta_ic') {
+                    const d = getTrack2Params();
+                    trajectoryData2 = computeTrajectory(
+                        x0 + d.dx, y0 + d.dy, z0 + d.dz,
+                        vx0 + d.dvx, vy0 + d.dvy, vz0 + d.dvz,
+                        tEnd, Fx, Fy, Fz, mass, tOn, tOff, a0x, a0y, a0z
+                    );
+                } else {
+                    const altInt = getSelectedIntegrator() === 'verlet' ? 'euler' : 'verlet';
+                    trajectoryData2 = computeTrajectory(
+                        x0, y0, z0, vx0, vy0, vz0,
+                        tEnd, Fx, Fy, Fz, mass, tOn, tOff, a0x, a0y, a0z,
+                        altInt
+                    );
+                }
+            } else {
+                trajectoryData2 = null;
+            }
+
+            startMarker.position.set(x0, z0, y0);
+            startMarker.visible = true;
+
+            trajectoryMarkers.forEach(m => { scene.remove(m); m.geometry.dispose(); m.material.dispose(); });
+            trajectoryMarkers = [];
+
+            const points = [];
+            const colors = [];
+            for (let i = 0; i < trajectoryData.nPoints; i++) {
+                points.push(new THREE.Vector3(trajectoryData.x[i], trajectoryData.z[i], trajectoryData.y[i]));
+                if (trajectoryData.thrusting[i]) {
+                    colors.push(1.0, 0.5, 0.0); 
+                } else {
+                    colors.push(0.53, 0.8, 1.0); 
+                }
+            }
+            trajectoryLine.geometry.dispose();
+            const trajGeom = new THREE.BufferGeometry().setFromPoints(points);
+            trajGeom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            trajectoryLine.geometry = trajGeom;
+
+            const markerInterval = Math.max(1, Math.floor(trajectoryData.nPoints / 50));
+            const markerGeom = new THREE.SphereGeometry(1, 8, 8);
+            const markerMat  = new THREE.MeshBasicMaterial({ color: 0x44aaff });
+            for (let i = 0; i < trajectoryData.nPoints; i += markerInterval) {
+                const marker = new THREE.Mesh(markerGeom, markerMat);
+                marker.position.set(trajectoryData.x[i], trajectoryData.z[i], trajectoryData.y[i]);
+                marker.visible = showMarkers;
+                scene.add(marker);
+                trajectoryMarkers.push(marker);
+            }
+
+            buildTrack2Line();
+
+            document.getElementById('track2Info').style.display = track2Enabled ? 'block' : 'none';
+            if (track2Enabled && trajectoryData2) {
+                document.getElementById('infoStatus2').textContent = trajectoryData2.crush
+                    ? (trajectoryData2.crush === 1 ? 'Столкновение с Землёй!' : 'Столкновение с Луной!')
+                    : 'OK';
+            }
+
+            spacecraft.position.set(x0, z0, y0);
+            spacecraft.visible = true;
+
+            updateCameraFrame();
+
+            document.getElementById('timeline').max = trajectoryData.nPoints - 1;
+            document.getElementById('totalFrames').textContent = trajectoryData.nPoints;
+            document.getElementById('infoStatus').textContent = trajectoryData.crush
+                ? (trajectoryData.crush === 1 ? 'Столкновение с Землёй!' : 'Столкновение с Луной!')
+                : 'OK';
+            document.getElementById('infoIntegrator').textContent =
+                trajectoryData.integrator === 'verlet' ? 'Velocity Verlet (итер.)' : 'Euler';
+
+            document.getElementById('infoSteps').textContent = trajectoryData.nPoints.toLocaleString();
+            document.getElementById('infoAvgDt').textContent = trajectoryData.avgDt.toFixed(2);
+
+            if (trajectoryData.rmsDrift !== undefined) {
+                document.getElementById('infoJacobiRMS').textContent = trajectoryData.rmsDrift.toExponential(2) + ' %';
+                document.getElementById('infoJacobiMax').textContent = trajectoryData.maxDrift.toExponential(2) + ' %';
+
+                const rmsSpan = document.getElementById('infoJacobiRMS');
+                rmsSpan.style.color = trajectoryData.rmsDrift < 0.001 ? '#00aa00'
+                    : trajectoryData.rmsDrift < 0.01 ? '#aaaa00'
+                    : trajectoryData.rmsDrift < 0.1  ? '#ff8800'
+                    : '#ff0000';
+            }
+
+            animationFrame = 0;
+            updateFrame(0);
+        }
+
+        function updateFrame(idx) {
+            if (!trajectoryData || idx >= trajectoryData.nPoints) return;
+
+            const x  = trajectoryData.x[idx];
+            const y  = trajectoryData.y[idx];
+            const z  = trajectoryData.z[idx];
+            const x0 = trajectoryData.x[0];
+            const y0 = trajectoryData.y[0];
+            const z0 = trajectoryData.z[0];
+
+            spacecraft.position.set(x, z, y);
+
+            if (idx + 1 < trajectoryData.nPoints) {
+                const nx = trajectoryData.x[idx + 1] - x;
+                const ny = trajectoryData.y[idx + 1] - y;
+                const nz = trajectoryData.z[idx + 1] - z;
+                const dir = new THREE.Vector3(nx, nz, ny).normalize();
+                if (dir.length() > 0.001) {
+                    const up = new THREE.Vector3(0, 1, 0);
+                    spacecraft.quaternion.setFromUnitVectors(up, dir);
+                }
+            }
+
+            const trailPts = [];
+            const trailColors = [];
+            for (let i = 0; i <= idx; i++) {
+                trailPts.push(new THREE.Vector3(trajectoryData.x[i], trajectoryData.z[i], trajectoryData.y[i]));
+                if (trajectoryData.thrusting[i]) {
+                    trailColors.push(1.0, 0.5, 0.0); 
+                } else {
+                    trailColors.push(0.0, 0.67, 1.0); 
+                }
+            }
+            trailLine.geometry.dispose();
+            const trailGeom = new THREE.BufferGeometry().setFromPoints(trailPts);
+            trailGeom.setAttribute('color', new THREE.Float32BufferAttribute(trailColors, 3));
+            trailLine.geometry = trailGeom;
+
+            const t    = trajectoryData.time[idx];
+            const dist = Math.sqrt((x-x0)**2 + (y-y0)**2 + (z-z0)**2);
+            const vel  = Math.sqrt(trajectoryData.vx[idx]**2 + trajectoryData.vy[idx]**2 + trajectoryData.vz[idx]**2);
+
+            document.getElementById('frameNum').textContent  = idx;
+            document.getElementById('timeline').value        = idx;
+            document.getElementById('infoTime').textContent  = (t / 3600).toFixed(2) + ' ч';
+            document.getElementById('infoDist').textContent  = dist.toFixed(1) + ' тыс.км';
+            const velKms = vel / 1000;
+            document.getElementById('infoVel').textContent = velKms < 1
+                ? vel.toFixed(1) + ' м/с'
+                : velKms.toFixed(3) + ' км/с';
+
+            if (idx > 0) {
+                const curDt = trajectoryData.time[idx] - trajectoryData.time[idx - 1];
+                document.getElementById('infoCurDt').textContent = curDt.toFixed(2);
+            } else {
+                document.getElementById('infoCurDt').textContent = '-';
+            }
+
+            if (trajectoryData.deltaV && trajectoryData.deltaV.length > idx) {
+                const dv = trajectoryData.deltaV[idx];
+                const g0 = 9.80665;
+                const m_sc = trajectoryData.mass;
+                const isp = trajectoryData.isp;
+                document.getElementById('infoDeltaV').textContent = dv < 0.01 && dv > 0
+                    ? (dv * 1000).toFixed(2) + ' мм/с'
+                    : dv.toFixed(2) + ' м/с';
+                if (dv > 0) {
+                    const fuelMass = m_sc * (1 - Math.exp(-dv / (isp * g0)));
+                    document.getElementById('infoFuel').textContent = fuelMass < 0.01
+                        ? (fuelMass * 1000).toFixed(2) + ' г (' + (fuelMass / m_sc * 100).toFixed(2) + '%)'
+                        : fuelMass.toFixed(2) + ' кг (' + (fuelMass / m_sc * 100).toFixed(1) + '%)';
+                } else {
+                    document.getElementById('infoFuel').textContent = '0';
+                }
+            }
+
+            if (trajectoryData.jacobi && trajectoryData.jacobi.length > idx) {
+                const J  = trajectoryData.jacobi[idx];
+                const J0 = trajectoryData.jacobi[0];
+                const relDrift = J0 !== 0 ? ((J - J0) / Math.abs(J0) * 100) : 0;
+                const absRel   = Math.abs(relDrift);
+
+                document.getElementById('infoJacobi').textContent = J.toExponential(4);
+
+                const driftSpan = document.getElementById('infoJacobiDrift');
+                driftSpan.style.color = absRel < 0.001 ? '#00aa00'
+                    : absRel < 0.01 ? '#aaaa00'
+                    : absRel < 0.1  ? '#ff8800'
+                    : '#ff0000';
+                driftSpan.textContent = relDrift.toExponential(2) + ' %';
+            }
+
+            if (trajectoryData2 && track2Enabled) {
+                const t1 = trajectoryData.time[idx];
+                const idx2 = simTimeToFrame2(t1);
+
+                if (spacecraft2) {
+                    spacecraft2.position.set(
+                        trajectoryData2.x[idx2],
+                        trajectoryData2.z[idx2],
+                        trajectoryData2.y[idx2]
+                    );
+                    spacecraft2.visible = true;
+
+                    if (idx2 + 1 < trajectoryData2.nPoints) {
+                        const nx = trajectoryData2.x[idx2 + 1] - trajectoryData2.x[idx2];
+                        const ny = trajectoryData2.y[idx2 + 1] - trajectoryData2.y[idx2];
+                        const nz = trajectoryData2.z[idx2 + 1] - trajectoryData2.z[idx2];
+                        const dir = new THREE.Vector3(nx, nz, ny).normalize();
+                        if (dir.length() > 0.001) {
+                            const up = new THREE.Vector3(0, 1, 0);
+                            spacecraft2.quaternion.setFromUnitVectors(up, dir);
+                        }
+                    }
+                }
+
+                const trail2Pts = [];
+                const trail2Colors = [];
+                for (let i = 0; i <= idx2; i++) {
+                    trail2Pts.push(new THREE.Vector3(
+                        trajectoryData2.x[i], trajectoryData2.z[i], trajectoryData2.y[i]
+                    ));
+                    if (trajectoryData2.thrusting[i]) {
+                        trail2Colors.push(1.0, 0.8, 0.0); 
+                    } else {
+                        trail2Colors.push(1.0, 0.27, 0.67); 
+                    }
+                }
+                if (trailLine2) {
+                    trailLine2.geometry.dispose();
+                    const t2Geom = new THREE.BufferGeometry().setFromPoints(trail2Pts);
+                    t2Geom.setAttribute('color', new THREE.Float32BufferAttribute(trail2Colors, 3));
+                    trailLine2.geometry = t2Geom;
+                }
+
+                const sep = Math.sqrt(
+                    (trajectoryData.x[idx] - trajectoryData2.x[idx2]) ** 2 +
+                    (trajectoryData.y[idx] - trajectoryData2.y[idx2]) ** 2 +
+                    (trajectoryData.z[idx] - trajectoryData2.z[idx2]) ** 2
+                );
+                document.getElementById('infoSeparation').textContent =
+                    sep < 1 ? (sep * 1000).toFixed(1) + ' км' : sep.toFixed(2) + ' тыс. км';
+
+                const dv2 = Math.sqrt(
+                    (trajectoryData.vx[idx] - trajectoryData2.vx[idx2]) ** 2 +
+                    (trajectoryData.vy[idx] - trajectoryData2.vy[idx2]) ** 2 +
+                    (trajectoryData.vz[idx] - trajectoryData2.vz[idx2]) ** 2
+                );
+                document.getElementById('infoVelDiff').textContent =
+                    dv2 < 1000 ? dv2.toFixed(1) + ' м/с' : (dv2 / 1000).toFixed(3) + ' км/с';
+
+                const J2  = trajectoryData2.jacobi[idx2];
+                const J20 = trajectoryData2.jacobi[0];
+                const drift2 = J20 !== 0 ? ((J2 - J20) / Math.abs(J20) * 100) : 0;
+                document.getElementById('infoDrift2').textContent = drift2.toExponential(2) + ' %';
+            } else {
+                if (spacecraft2) spacecraft2.visible = false;
+            }
+        }
+
+        let animSimTime = 0; 
+
+        function frameToSimTime(idx) {
+            return trajectoryData.time[Math.min(idx, trajectoryData.nPoints - 1)];
+        }
+
+        function simTimeToFrame(t) {
+            const times = trajectoryData.time;
+            if (t <= times[0]) return 0;
+            if (t >= times[times.length - 1]) return times.length - 1;
+            let lo = 0, hi = times.length - 1;
+            while (lo < hi - 1) {
+                const mid = (lo + hi) >> 1;
+                if (times[mid] <= t) lo = mid; else hi = mid;
+            }
+            return lo;
+        }
+
+        function playAnimation() {
+            if (isPlaying || !trajectoryData) return;
+            isPlaying = true;
+            animSimTime = frameToSimTime(Math.floor(animationFrame));
+            let lastTime = performance.now();
+
+            function step(currentTime) {
+                if (!isPlaying) return;
+                const deltaTime = (currentTime - lastTime) / 1000;
+                lastTime = currentTime;
+                animSimTime += playbackSpeed * deltaTime * 3600;
+                const frame = simTimeToFrame(animSimTime);
+                animationFrame = frame;
+                if (frame >= trajectoryData.nPoints - 1) {
+                    animationFrame = trajectoryData.nPoints - 1;
+                    isPlaying = false;
+                }
+                updateFrame(Math.floor(animationFrame));
+                if (isPlaying) animationId = requestAnimationFrame(step);
+            }
+            animationId = requestAnimationFrame(step);
+        }
+
+        function pauseAnimation() {
+            isPlaying = false;
+            if (animationId) cancelAnimationFrame(animationId);
+        }
+
+        function resetAnimation() {
+            pauseAnimation();
+            animationFrame = 0;
+            updateFrame(0);
+        }
+
+        function seekAnimation(val) {
+            pauseAnimation();
+            animationFrame = parseInt(val);
+            updateFrame(animationFrame);
+        }
+
+        function getSelectedIntegrator() {
+            for (const radio of document.getElementsByName('integrator')) {
+                if (radio.checked) return radio.value;
+            }
+            return 'verlet';
+        }
+
+        function getTrack2Params() {
+            return {
+                dx:  parseFloat(document.getElementById('t2_dx').value)  || 0,
+                dy:  parseFloat(document.getElementById('t2_dy').value)  || 0,
+                dz:  parseFloat(document.getElementById('t2_dz').value)  || 0,
+                dvx: parseFloat(document.getElementById('t2_dvx').value) || 0,
+                dvy: parseFloat(document.getElementById('t2_dvy').value) || 0,
+                dvz: parseFloat(document.getElementById('t2_dvz').value) || 0,
+            };
+        }
+
+        function simTimeToFrame2(t) {
+            if (!trajectoryData2) return 0;
+            const times = trajectoryData2.time;
+            if (t <= times[0]) return 0;
+            if (t >= times[times.length - 1]) return times.length - 1;
+            let lo = 0, hi = times.length - 1;
+            while (lo < hi - 1) {
+                const mid = (lo + hi) >> 1;
+                if (times[mid] <= t) lo = mid; else hi = mid;
+            }
+            return lo;
+        }
+
+        function toggleTrack2(enabled) {
+            track2Enabled = enabled;
+            document.getElementById('track2Options').style.display = enabled ? 'block' : 'none';
+            
+            const el = document.getElementById('sumTrack2');
+            let dot = el.querySelector('.active-dot');
+            if (enabled) {
+                if (!dot) { dot = document.createElement('span'); dot.className = 'active-dot'; el.appendChild(dot); }
+            } else {
+                if (dot) dot.remove();
+            }
+            if (!enabled) {
+                cleanupTrack2();
+                document.getElementById('track2Info').style.display = 'none';
+            }
+            runSimulation();
+        }
+
+        function setTrack2Mode(mode) {
+            track2Mode = mode;
+            document.getElementById('track2DeltaFields').style.display = mode === 'delta_ic' ? 'block' : 'none';
+            document.getElementById('track2IntInfo').style.display = mode === 'integrator' ? 'block' : 'none';
+            if (mode === 'integrator') {
+                const cur = getSelectedIntegrator();
+                const alt = cur === 'verlet' ? 'euler' : 'verlet';
+                document.getElementById('t2_int1').textContent = cur === 'verlet' ? 'Verlet' : 'Euler';
+                document.getElementById('t2_int2').textContent = alt === 'verlet' ? 'Verlet' : 'Euler';
+            }
+            runSimulation();
+        }
+
+        function cleanupTrack2() {
+            if (trajectoryLine2) { scene.remove(trajectoryLine2); trajectoryLine2.geometry.dispose(); trajectoryLine2 = null; }
+            if (trailLine2) { scene.remove(trailLine2); trailLine2.geometry.dispose(); trailLine2 = null; }
+            if (spacecraft2) { spacecraft2.visible = false; }
+            trajectoryMarkers2.forEach(m => { scene.remove(m); m.geometry.dispose(); m.material.dispose(); });
+            trajectoryMarkers2 = [];
+            trajectoryData2 = null;
+        }
+
+        function buildTrack2Line() {
+            
+            if (trajectoryLine2) { scene.remove(trajectoryLine2); trajectoryLine2.geometry.dispose(); trajectoryLine2 = null; }
+            trajectoryMarkers2.forEach(m => { scene.remove(m); m.geometry.dispose(); m.material.dispose(); });
+            trajectoryMarkers2 = [];
+            if (trailLine2) { scene.remove(trailLine2); trailLine2.geometry.dispose(); trailLine2 = null; }
+
+            if (!trajectoryData2 || !track2Enabled) {
+                if (spacecraft2) spacecraft2.visible = false;
+                return;
+            }
+
+            const td = trajectoryData2;
+            const points = [];
+            const colors = [];
+            for (let i = 0; i < td.nPoints; i++) {
+                points.push(new THREE.Vector3(td.x[i], td.z[i], td.y[i]));
+                if (td.thrusting[i]) {
+                    colors.push(1.0, 0.8, 0.0); 
+                } else {
+                    colors.push(1.0, 0.4, 0.8); 
+                }
+            }
+
+            const geom = new THREE.BufferGeometry().setFromPoints(points);
+            geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            trajectoryLine2 = new THREE.Line(geom, new THREE.LineBasicMaterial({
+                vertexColors: true, transparent: true, opacity: 0.5
+            }));
+            scene.add(trajectoryLine2);
+
+            trailLine2 = new THREE.Line(
+                new THREE.BufferGeometry(),
+                new THREE.LineBasicMaterial({ vertexColors: true })
+            );
+            scene.add(trailLine2);
+
+            if (!spacecraft2) {
+                const scSize = R_M * 0.5;
+                const cone2Geom = new THREE.ConeGeometry(scSize * 0.6, scSize * 3, 8);
+                const cone2Mat = new THREE.MeshPhongMaterial({ color: 0xff66cc, emissive: 0xcc3399 });
+                spacecraft2 = new THREE.Mesh(cone2Geom, cone2Mat);
+
+                const glow2a = new THREE.Mesh(
+                    new THREE.SphereGeometry(scSize * 2, 16, 16),
+                    new THREE.MeshBasicMaterial({ color: 0xff66cc, transparent: true, opacity: 0.3 })
+                );
+                spacecraft2.add(glow2a);
+
+                const glow2b = new THREE.Mesh(
+                    new THREE.SphereGeometry(scSize * 4, 16, 16),
+                    new THREE.MeshBasicMaterial({ color: 0xff99dd, transparent: true, opacity: 0.1 })
+                );
+                spacecraft2.add(glow2b);
+
+                scene.add(spacecraft2);
+            }
+            spacecraft2.position.set(td.x[0], td.z[0], td.y[0]);
+            spacecraft2.visible = true;
+        }
+
+        function getSelectedCameraFrame() {
+            for (const radio of document.getElementsByName('cameraFrame')) {
+                if (radio.checked) return radio.value;
+            }
+            return 'trajectory';
+        }
+
+        function updateCameraFrame() {
+            if (!trajectoryData) return;
+            const b0 = getSelectedCameraFrame() === 'trajectory'
+                ? trajectoryData.boundsTrajectory
+                : trajectoryData.boundsFull;
+            
+            const b = { ...b0 };
+            if (trajectoryData2 && track2Enabled) {
+                const b2 = getSelectedCameraFrame() === 'trajectory'
+                    ? trajectoryData2.boundsTrajectory
+                    : trajectoryData2.boundsFull;
+                b.minX = Math.min(b.minX, b2.minX);
+                b.maxX = Math.max(b.maxX, b2.maxX);
+                b.minY = Math.min(b.minY, b2.minY);
+                b.maxY = Math.max(b.maxY, b2.maxY);
+                b.minZ = Math.min(b.minZ, b2.minZ);
+                b.maxZ = Math.max(b.maxZ, b2.maxZ);
+            }
+
+            const cx = (b.minX + b.maxX) / 2;
+            const cy = (b.minY + b.maxY) / 2;
+            const cz = (b.minZ + b.maxZ) / 2;
+            const maxSize  = Math.max(b.maxX-b.minX, b.maxY-b.minY, b.maxZ-b.minZ, 10);
+            const fovRad   = camera.fov * Math.PI / 180;
+            const distance = (maxSize / 2) / Math.tan(fovRad / 2) * 1.25;
+
+            controls.target.set(cx, cz, cy);
+            camera.position.set(cx, cz + distance * 0.5, cy + distance * 0.8);
+            controls.update();
+        }
+
+        function updatePlanetScale(val) {
+            const s = parseFloat(val);
+            document.getElementById('scaleValue').textContent = s + 'x';
+            earth.geometry.dispose();
+            earth.geometry = new THREE.SphereGeometry(R_E * s, 32, 32);
+            moon.geometry.dispose();
+            moon.geometry = new THREE.SphereGeometry(R_M * s, 32, 32);
+        }
+
+        function sliderToSpeed(sliderVal) {
+            
+            return Math.round(Math.exp(sliderVal * Math.log(500) / 100));
+        }
+
+        function updatePlaybackSpeed(val) {
+            playbackSpeed = sliderToSpeed(parseFloat(val));
+            document.getElementById('speedValue').textContent = playbackSpeed;
+        }
+
+        function updateExpanderMarkers() {
+            const sections = [
+                { id: 'sumPosition', active: () => {
+                    const x = parseFloat(document.getElementById('x0').value) || 0;
+                    const y = parseFloat(document.getElementById('y0').value) || 0;
+                    const z = parseFloat(document.getElementById('z0').value) || 0;
+                    return x !== 0 || y !== 0 || z !== 0;
+                }},
+                { id: 'sumVelocity', active: () => {
+                    const vx = parseFloat(document.getElementById('vx0').value) || 0;
+                    const vy = parseFloat(document.getElementById('vy0').value) || 0;
+                    const vz = parseFloat(document.getElementById('vz0').value) || 0;
+                    return vx !== 0 || vy !== 0 || vz !== 0;
+                }},
+                { id: 'sumEngine', active: () => {
+                    const fx = parseFloat(document.getElementById('Fx').value) || 0;
+                    const fy = parseFloat(document.getElementById('Fy').value) || 0;
+                    const fz = parseFloat(document.getElementById('Fz').value) || 0;
+                    const dur = parseFloat(document.getElementById('tDuration').value) || 0;
+                    return (fx !== 0 || fy !== 0 || fz !== 0) && dur > 0;
+                }},
+                { id: 'sumAccel', active: () => {
+                    const ax = parseFloat(document.getElementById('a0x').value) || 0;
+                    const ay = parseFloat(document.getElementById('a0y').value) || 0;
+                    const az = parseFloat(document.getElementById('a0z').value) || 0;
+                    return ax !== 0 || ay !== 0 || az !== 0;
+                }}
+            ];
+            for (const s of sections) {
+                const el = document.getElementById(s.id);
+                let dot = el.querySelector('.active-dot');
+                if (s.active()) {
+                    if (!dot) { dot = document.createElement('span'); dot.className = 'active-dot'; el.appendChild(dot); }
+                } else {
+                    if (dot) dot.remove();
+                }
+            }
+        }
+
+        function toggleAdaptiveStep() {
+            const checked = document.getElementById('adaptiveStep').checked;
+            document.getElementById('dtMinGroup').style.display = checked ? 'block' : 'none';
+            document.getElementById('dtLabel').textContent = checked
+                ? 'Макс. шаг dt_max (сек)'
+                : 'Шаг интегрирования dt (сек)';
+        }
+
+        function toggleGrid(plane, visible) {
+            if (plane === 'XY') gridXY.visible = visible;
+            else if (plane === 'XZ') gridXZ.visible = visible;
+        }
+
+        function toggleMarkers(visible) {
+            showMarkers = visible;
+            trajectoryMarkers.forEach(m => { m.visible = visible; });
+        }
+
+        const PRESETS = {
+            'L1': {
+                name: 'Точка Лагранжа L1',
+                x0: 323.6959407655473, y0: 0, z0: 0,
+                vx0: 0, vy0: 0, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400
+            },
+            'L2': {
+                name: 'Точка Лагранжа L2',
+                x0: 446.5306841108591, y0: 0, z0: 0,
+                vx0: 0, vy0: 0, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400
+            },
+            'L3': {
+                name: 'Точка Лагранжа L3',
+                x0: -386.6513186627400, y0: 0, z0: 0,
+                vx0: 0, vy0: 0, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400
+            },
+            'L4': {
+                name: 'Точка Лагранжа L4',
+                x0: 188.08051852, y0: 332.924827609, z0: 0,
+                vx0: 0, vy0: 0, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400
+            },
+            'L5': {
+                name: 'Точка Лагранжа L5',
+                x0: 188.08051852, y0: -332.924827609, z0: 0,
+                vx0: 0, vy0: 0, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400
+            },
+            'e_orbit': {
+                name: 'Околоземная орбита',
+                x0: 45.33, y0: 0, z0: 0,
+                vx0: 0, vy0: 2.8233713181, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400
+            },
+            'm_orbit': {
+                name: 'Окололунная орбита',
+                x0: 332.8, y0: 0, z0: 0,
+                vx0: 0, vy0: 0.3130511396, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400
+            },
+            'l1_halo': {
+                name: 'Гало-орбита у L1',
+                x0: 318.1876117274, y0: 0, z0: 15.2283001434,
+                vx0: 0, vy0: 0.1528358467, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 293
+            },
+            'l2_halo': {
+                name: 'Гало-орбита у L2',
+                x0: 426.9628397382, y0: 0, z0: 17.6013535641,
+                vx0: 0, vy0: 0.2274251675, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 347
+            },
+            'apollo13': {
+                name: 'Свободный возврат (облёт Луны)',
+                x0: -9.3308488320, y0: -4.9115098661, z0: 0,
+                vx0: 7.8190279575, vy0: -7.4199804778, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 168
+            },
+            'earth_moon_thrust': {
+                name: 'Перелёт Земля→Луна с тягой',
+                x0: -9.3305877540, y0: -4.9117576067, z0: 0,
+                vx0: 7.7654698808, vy0: -7.3683713099, vz0: 0,
+                Fx: 5, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 10800,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 72
+            },
+            'l1_escape': {
+                name: 'Побег от L1 с микротягой',
+                x0: 323.6959407655473, y0: 0, z0: 0,
+                vx0: 0, vy0: 0, vz0: 0,
+                Fx: 0.01, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 30,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 500
+            },
+            'l1_chaos': {
+                name: 'Хаос у L1',
+                x0: 323.6959407655473, y0: 0, z0: 0,
+                vx0: 0.05, vy0: 0.05, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400
+            },
+            'l1_chaos_compare': {
+                name: 'Хаос у L1 (сравнение)',
+                x0: 323.6959407655473, y0: 0, z0: 0,
+                vx0: -0.005, vy0: 0, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 2400,
+                t2_enabled: true, t2_mode: 'delta_ic',
+                t2_dvx: '0.01', t2_dvy: '0', t2_dvz: '0',
+                t2_dx: '0', t2_dy: '0', t2_dz: '0'
+            },
+            'verlet_vs_euler': {
+                name: 'Верле vs Эйлер (гало L1)',
+                x0: 318.1876117274, y0: 0, z0: 15.2283001434,
+                vx0: 0, vy0: 0.1528358467, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 293,
+                t2_enabled: true, t2_mode: 'integrator'
+            },
+            'hohmann': {
+                name: 'Прямой перелёт к Луне',
+                x0: -9.4633858070, y0: -4.7822477461, z0: 0,
+                vx0: 7.6255353576, vy0: -7.6432955579, vz0: 0,
+                Fx: 0, Fy: 0, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 0,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 58
+            },
+            'orbit_to_moon': {
+                name: 'Перелёт с орбиты к Луне (TLI)',
+                x0: -4.67, y0: -50.0, z0: 0,
+                vx0: 2.8233713181, vy0: 0, vz0: 0,
+                Fx: 15300, Fy: 2600, Fz: 0,
+                mass: 500, tOn: 0, tDuration: 120,
+                a0x: 0, a0y: 0, a0z: 0,
+                tEnd: 19, dt: 5, dtMin: 1, adaptiveStep: true
+            },
+        };
+
+        const PRESET_STORAGE_KEY = 'cr3bp_user_presets';
+        const PARAM_FIELDS = ['x0','y0','z0','vx0','vy0','vz0','Fx','Fy','Fz','mass','tOn','tDuration','isp','a0x','a0y','a0z','tEnd','dt','dtMin'];
+        const TRACK2_FIELDS = ['t2_dx','t2_dy','t2_dz','t2_dvx','t2_dvy','t2_dvz'];
+
+        function getCurrentParams() {
+            const p = {};
+            PARAM_FIELDS.forEach(id => { p[id] = document.getElementById(id).value; });
+            p.adaptiveStep = document.getElementById('adaptiveStep').checked;
+            p.integrator = getSelectedIntegrator();
+            
+            if (track2Enabled) {
+                p.t2_enabled = true;
+                p.t2_mode = track2Mode;
+                TRACK2_FIELDS.forEach(id => { p[id] = document.getElementById(id).value; });
+            }
+            return p;
+        }
+
+        function setAllParams(p) {
+            PARAM_FIELDS.forEach(id => {
+                if (p[id] !== undefined) document.getElementById(id).value = p[id];
+            });
+            if (p.adaptiveStep !== undefined) {
+                document.getElementById('adaptiveStep').checked = (p.adaptiveStep === true || p.adaptiveStep === 'true');
+                toggleAdaptiveStep();
+            }
+            if (p.integrator) {
+                for (const radio of document.getElementsByName('integrator')) {
+                    radio.checked = (radio.value === p.integrator);
+                }
+            }
+            
+            if (p.t2_enabled !== undefined) {
+                const enabled = p.t2_enabled === true || p.t2_enabled === 'true';
+                document.getElementById('track2Toggle').checked = enabled;
+                toggleTrack2(enabled);
+            } else {
+                document.getElementById('track2Toggle').checked = false;
+                toggleTrack2(false);
+            }
+            if (p.t2_mode) {
+                for (const radio of document.getElementsByName('track2Mode')) {
+                    radio.checked = (radio.value === p.t2_mode);
+                }
+                setTrack2Mode(p.t2_mode);
+            }
+            TRACK2_FIELDS.forEach(id => {
+                if (p[id] !== undefined) document.getElementById(id).value = p[id];
+            });
+        }
+
+        const USER_PRESET_PREFIX = 'user:';
+
+        function isUserPreset(key) { return key.startsWith(USER_PRESET_PREFIX); }
+
+        function saveUserPreset(name) {
+            name = (name || '').trim();
+            if (!name) return;
+            const all = JSON.parse(localStorage.getItem(PRESET_STORAGE_KEY) || '{}');
+            all[name] = getCurrentParams();
+            localStorage.setItem(PRESET_STORAGE_KEY, JSON.stringify(all));
+            document.getElementById('presetNameInput').value = '';
+            refreshUserPresetsList();
+            document.getElementById('presetSelector').value = USER_PRESET_PREFIX + name;
+            document.getElementById('deletePresetBtn').classList.remove('disabled');
+        }
+
+        function deleteUserPreset(key) {
+            if (!key || !isUserPreset(key)) return;
+            const name = key.slice(USER_PRESET_PREFIX.length);
+            const all = JSON.parse(localStorage.getItem(PRESET_STORAGE_KEY) || '{}');
+            delete all[name];
+            localStorage.setItem(PRESET_STORAGE_KEY, JSON.stringify(all));
+            document.getElementById('presetSelector').value = '';
+            document.getElementById('deletePresetBtn').classList.add('disabled');
+            refreshUserPresetsList();
+        }
+
+        function refreshUserPresetsList() {
+            const all = JSON.parse(localStorage.getItem(PRESET_STORAGE_KEY) || '{}');
+            const names = Object.keys(all);
+            const sel = document.getElementById('presetSelector');
+            sel.querySelectorAll('option[data-user]').forEach(o => o.remove());
+            if (names.length) {
+                const sep = document.createElement('option');
+                sep.disabled = true;
+                sep.textContent = '── Мои сценарии ──';
+                sep.dataset.user = '1';
+                sel.appendChild(sep);
+                names.forEach(n => {
+                    const opt = document.createElement('option');
+                    opt.value = USER_PRESET_PREFIX + n;
+                    opt.textContent = n;
+                    opt.dataset.user = '1';
+                    sel.appendChild(opt);
+                });
+            }
+        }
+
+        function paramsToHash() {
+            const p = getCurrentParams();
+            const parts = [];
+            for (const [k, v] of Object.entries(p)) parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(v));
+            const url = window.location.origin + window.location.pathname + '#' + parts.join('&');
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = document.getElementById('shareLinkBtn');
+                const orig = btn.textContent;
+                btn.textContent = 'Скопировано!';
+                setTimeout(() => { btn.textContent = orig; }, 1500);
+            });
+        }
+
+        function loadFromHash() {
+            const hash = window.location.hash.slice(1);
+            if (!hash) return false;
+            const params = {};
+            hash.split('&').forEach(pair => {
+                const [k, v] = pair.split('=').map(decodeURIComponent);
+                if (k) params[k] = v;
+            });
+            if (Object.keys(params).length === 0) return false;
+            setAllParams(params);
+            document.getElementById('presetSelector').value = '';
+            runSimulation();
+            window.history.replaceState(null, '', window.location.pathname);
+            return true;
+        }
+
+        function applyPreset(presetKey) {
+            if (!presetKey) {
+                document.getElementById('deletePresetBtn').classList.add('disabled');
+                return;
+            }
+
+            if (isUserPreset(presetKey)) {
+                const name = presetKey.slice(USER_PRESET_PREFIX.length);
+                const all = JSON.parse(localStorage.getItem(PRESET_STORAGE_KEY) || '{}');
+                if (!all[name]) return;
+                setAllParams(all[name]);
+                document.getElementById('deletePresetBtn').classList.remove('disabled');
+            } else {
+                if (!PRESETS[presetKey]) return;
+                const p = PRESETS[presetKey];
+                document.getElementById('x0').value        = p.x0;
+                document.getElementById('y0').value        = p.y0;
+                document.getElementById('z0').value        = p.z0;
+                document.getElementById('vx0').value       = p.vx0;
+                document.getElementById('vy0').value       = p.vy0;
+                document.getElementById('vz0').value       = p.vz0;
+                document.getElementById('Fx').value        = p.Fx;
+                document.getElementById('Fy').value        = p.Fy;
+                document.getElementById('Fz').value        = p.Fz;
+                document.getElementById('mass').value      = p.mass;
+                document.getElementById('tOn').value       = p.tOn;
+                document.getElementById('tDuration').value = p.tDuration;
+                document.getElementById('a0x').value       = p.a0x;
+                document.getElementById('a0y').value       = p.a0y;
+                document.getElementById('a0z').value       = p.a0z;
+                document.getElementById('tEnd').value      = p.tEnd;
+                if (p.dt !== undefined) document.getElementById('dt').value = p.dt;
+                if (p.dtMin !== undefined) document.getElementById('dtMin').value = p.dtMin;
+                if (p.adaptiveStep !== undefined) {
+                    document.getElementById('adaptiveStep').checked = !!p.adaptiveStep;
+                    toggleAdaptiveStep();
+                }
+                
+                if (p.t2_enabled) {
+                    document.getElementById('track2Toggle').checked = true;
+                    toggleTrack2(true);
+                    if (p.t2_mode) {
+                        for (const radio of document.getElementsByName('track2Mode')) {
+                            radio.checked = (radio.value === p.t2_mode);
+                        }
+                        setTrack2Mode(p.t2_mode);
+                    }
+                    TRACK2_FIELDS.forEach(id => {
+                        if (p[id] !== undefined) document.getElementById(id).value = p[id];
+                    });
+                } else {
+                    document.getElementById('track2Toggle').checked = false;
+                    toggleTrack2(false);
+                }
+                document.getElementById('deletePresetBtn').classList.add('disabled');
+            }
+            runSimulation();
+        }
+
+        function initTouchGestures() {
+            let panStart = null;
+
+            function avgTouch(touches) {
+                let x = 0, y = 0;
+                for (let i = 0; i < touches.length; i++) {
+                    x += touches[i].clientX;
+                    y += touches[i].clientY;
+                }
+                return { x: x / touches.length, y: y / touches.length };
+            }
+
+            renderer.domElement.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 3) {
+                    e.preventDefault();
+                    e.stopPropagation();       
+                    controls.enabled = false;  
+                    panStart = avgTouch(e.touches);
+                }
+            }, { passive: false, capture: true });
+
+            renderer.domElement.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 3 && panStart) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const current = avgTouch(e.touches);
+                    const dx = current.x - panStart.x;
+                    const dy = current.y - panStart.y;
+                    panStart = current;
+
+                    const dist  = camera.position.distanceTo(controls.target);
+                    const speed = dist / window.innerHeight * 2;
+
+                    const right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+                    const up    = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+                    const delta = new THREE.Vector3()
+                        .addScaledVector(right, -dx * speed)
+                        .addScaledVector(up,     dy * speed);
+
+                    camera.position.add(delta);
+                    controls.target.add(delta);
+                    controls.update();
+                }
+            }, { passive: false, capture: true });
+
+            renderer.domElement.addEventListener('touchend', (e) => {
+                if (e.touches.length < 3) {
+                    panStart = null;
+                    controls.enabled = true;   
+                }
+            }, { passive: false, capture: true });
+        }
+
+        if (window.innerWidth <= 640) {
+            document.querySelectorAll('#controls details').forEach(d => d.removeAttribute('open'));
+            document.getElementById('controls').classList.add('hidden');
+        }
+
+        init();
+        refreshUserPresetsList();
+        if (!loadFromHash()) {
+            document.getElementById('presetSelector').value = 'l1_chaos_compare';
+            applyPreset('l1_chaos_compare');
+        }
+    </script>
+</body>
+</html>
