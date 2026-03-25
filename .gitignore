@@ -18,6 +18,13 @@ CLAUDE.md
 .DS_Store
 Thumbs.db
 
+# PDFs (except public/)
+*.pdf
+!public/*.pdf
+
+# Markdown notes
+*.md
+
 # Working docs (generated PDFs, peers, scratch — all local-only)
 docs/
 
