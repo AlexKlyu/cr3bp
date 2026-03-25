@@ -227,8 +227,8 @@
                     <input type="number" id="tDuration" min="0" value="0" step="100" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
-                    <label>Удельный импульс Isp (с)</label>
-                    <input type="number" id="isp" min="1" value="300" step="10" onchange="runSimulation()">
+                    <label>Расход топлива (кг/с)</label>
+                    <input type="number" id="fuelRate" min="0.0001" value="0.002" step="0.001" onchange="runSimulation()">
                 </div>
             </div>
         </details>
@@ -732,8 +732,9 @@
                 jacobi: [], deltaV: [], thrusting: [],
                 crush: 0, integrator,
                 adaptiveUsed: adaptive, avgDt: dt,
-                isp: parseFloat(document.getElementById('isp').value) || 300,
-                mass: mass
+                fuelRate: parseFloat(document.getElementById('fuelRate').value) || 0.002,
+                mass: mass,
+                F_mag: F_mag
             };
 
             let cumDeltaV = 0;
@@ -1063,14 +1064,12 @@
 
             if (trajectoryData.deltaV && trajectoryData.deltaV.length > idx) {
                 const dv = trajectoryData.deltaV[idx];
-                const g0 = 9.80665;
                 const m_sc = trajectoryData.mass;
-                const isp = trajectoryData.isp;
                 document.getElementById('infoDeltaV').textContent = dv < 0.01 && dv > 0
                     ? (dv * 1000).toFixed(2) + ' мм/с'
                     : dv.toFixed(2) + ' м/с';
                 if (dv > 0) {
-                    const fuelMass = m_sc * (1 - Math.exp(-dv / (isp * g0)));
+                    const fuelMass = trajectoryData.F_mag > 0 ? trajectoryData.fuelRate * dv * m_sc / trajectoryData.F_mag : 0;
                     document.getElementById('infoFuel').textContent = fuelMass < 0.01
                         ? (fuelMass * 1000).toFixed(2) + ' г (' + (fuelMass / m_sc * 100).toFixed(2) + '%)'
                         : fuelMass.toFixed(2) + ' кг (' + (fuelMass / m_sc * 100).toFixed(1) + '%)';
@@ -1628,7 +1627,7 @@
         };
 
         const PRESET_STORAGE_KEY = 'cr3bp_user_presets';
-        const PARAM_FIELDS = ['x0','y0','z0','vx0','vy0','vz0','Fx','Fy','Fz','mass','tOn','tDuration','isp','a0x','a0y','a0z','tEnd','dt','dtMin'];
+        const PARAM_FIELDS = ['x0','y0','z0','vx0','vy0','vz0','Fx','Fy','Fz','mass','tOn','tDuration','fuelRate','a0x','a0y','a0z','tEnd','dt','dtMin'];
         const TRACK2_FIELDS = ['t2_dx','t2_dy','t2_dz','t2_dvx','t2_dvy','t2_dvz'];
 
         function getCurrentParams() {
