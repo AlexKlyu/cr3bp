@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,15 +17,15 @@
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/108335923" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <!-- /Yandex.Metrika counter -->
-    <title>Моделирование траекторий КА — Задача трёх тел</title>
-    <meta name="description" content="Численное моделирование траекторий космического аппарата в круговой ограниченной задаче трёх тел (CR3BP) системы Земля–Луна. 3D-симулятор, точки Лагранжа, гало-орбиты, свободный возврат.">
-    <meta name="keywords" content="задача трёх тел, CR3BP, траектория космического аппарата, Земля-Луна, точки Лагранжа, гало-орбита, свободный возврат, численное моделирование, симулятор">
+    <title>Spacecraft Trajectory Simulation — Three-Body Problem</title>
+    <meta name="description" content="Numerical simulation of spacecraft trajectories in the Circular Restricted Three-Body Problem (CR3BP) for the Earth–Moon system. 3D simulator, Lagrange points, halo orbits, free return trajectories.">
+    <meta name="keywords" content="three-body problem, CR3BP, spacecraft trajectory, Earth-Moon, Lagrange points, halo orbit, free return, numerical simulation, simulator">
     <link rel="canonical" href="https://rocketlauncher.space/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Моделирование траекторий КА — Задача трёх тел">
-    <meta property="og:description" content="3D-симулятор траекторий в системе Земля–Луна. Сравнение интеграторов, точки Лагранжа, гало-орбиты, свободный возврат.">
+    <meta property="og:title" content="Spacecraft Trajectory Simulation — Three-Body Problem">
+    <meta property="og:description" content="3D trajectory simulator for the Earth–Moon system. Integrator comparison, Lagrange points, halo orbits, free return trajectories.">
     <meta property="og:url" content="https://rocketlauncher.space/">
-    <meta property="og:locale" content="ru_RU">
+    <meta property="og:locale" content="en_US">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -260,195 +260,195 @@
 </head>
 <body>
     <div class="hero">
-        <h1>Численное моделирование траекторий КА в круговой ограниченной задаче трёх тел системы Земля&ndash;Луна</h1>
-        <p class="description">Сравнительный анализ интеграторов и разработка веб-симулятора с поддержкой тяги</p>
+        <h1>Numerical Simulation of Spacecraft Trajectories in the Circular Restricted Three-Body Problem for the Earth&ndash;Moon System</h1>
+        <p class="description">Comparative analysis of integrators and development of a web simulator with thrust support</p>
     </div>
 
     <div class="divider"></div>
 
-    <p class="cards-heading">Интерактивные приложения</p>
+    <p class="cards-heading">Interactive Applications</p>
 
     <div class="cards">
         <a href="/simulator" class="card card-hero">
-            <h2>3D-симулятор траекторий</h2>
-            <p>Интерактивная 3D-визуализация траекторий космического аппарата во вращающейся системе координат Земля&ndash;Луна. Работает полностью в браузере.</p>
+            <h2>3D Trajectory Simulator</h2>
+            <p>Interactive 3D visualization of spacecraft trajectories in the rotating Earth&ndash;Moon coordinate frame. Runs entirely in the browser.</p>
             <div class="badge-wrap"><span class="badge badge-static">HTML / JavaScript</span></div>
         </a>
 
         <a href="/streamlit/" class="card">
-            <h2>Первоначальная валидация физики</h2>
-            <p>Проверка корректности физической модели методом Эйлера. Графики координат, скорости и ускорения.</p>
+            <h2>Initial Physics Validation</h2>
+            <p>Verification of the physical model correctness using the Euler method. Plots of position, velocity, and acceleration components.</p>
             <div class="badge-wrap"><span class="badge badge-streamlit">Streamlit</span></div>
         </a>
 
         <a href="/lagrange/" class="card">
-            <h2>Точки Лагранжа</h2>
-            <p>Визуализация сходимости к точкам Лагранжа L1&ndash;L5 в задаче трёх тел. Исследование положений равновесия.</p>
+            <h2>Lagrange Points</h2>
+            <p>Visualization of convergence to Lagrange points L1&ndash;L5 in the three-body problem. Exploration of equilibrium positions.</p>
             <div class="badge-wrap"><span class="badge badge-streamlit">Streamlit</span></div>
         </a>
     </div>
 
     <div class="divider"></div>
-    <p class="cards-heading">Документы</p>
+    <p class="cards-heading">Documents</p>
 
     <div class="cards">
         <a href="public/cr3bp_theory.pdf" class="doc-card">
-            <h2>Тезисы</h2>
-            <p>Круговая ограниченная задача трёх тел &mdash; теоретическое обоснование, описание модели.</p>
+            <h2>Abstract</h2>
+            <p>Circular Restricted Three-Body Problem &mdash; theoretical background and model description.</p>
             <div class="badge-wrap"><span class="badge badge-pdf">PDF</span></div>
         </a>
 
         <a href="public/plan_2503.pdf" class="doc-card">
-            <h2>План доклада</h2>
-            <p>Структура выступления</p>
+            <h2>Talk Outline</h2>
+            <p>Presentation structure</p>
             <div class="badge-wrap"><span class="badge badge-pdf">PDF</span></div>
         </a>
 
         <div class="doc-card">
-            <h2>Презентация</h2>
-            <p>Слайды к защите: модель CR3BP, сравнение интеграторов, результаты экспериментов. Версия 25.03.2026.</p>
+            <h2>Presentation</h2>
+            <p>Defense slides: CR3BP model, integrator comparison, experiment results. Version 25.03.2026.</p>
             <div class="badge-wrap"><a href="public/presentation_2503.pdf" class="badge badge-pdf" style="text-decoration:none;">PDF</a> <a href="public/presentation_2503.pptx" class="badge badge-pptx" style="text-decoration:none;">PPTX</a></div>
         </div>
     </div>
 
     <div class="divider"></div>
-    <p class="cards-heading">Численные эксперименты</p>
+    <p class="cards-heading">Numerical Experiments</p>
 
     <div class="exp-tabs">
-        <button class="exp-tab active" onclick="showExp(0)">Обзор</button>
-        <button class="exp-tab" onclick="showExp(1)">01 Якоби</button>
+        <button class="exp-tab active" onclick="showExp(0)">Overview</button>
+        <button class="exp-tab" onclick="showExp(1)">01 Jacobi</button>
         <button class="exp-tab" onclick="showExp(2)">02 Log-log</button>
-        <button class="exp-tab" onclick="showExp(3)">03 Лагранж</button>
-        <button class="exp-tab" onclick="showExp(4)">04 Гало</button>
-        <button class="exp-tab" onclick="showExp(5)">05 Возврат</button>
-        <button class="exp-tab" onclick="showExp(6)">06 Хаос</button>
-        <button class="exp-tab" onclick="showExp(7)">07 Тяга</button>
+        <button class="exp-tab" onclick="showExp(3)">03 Lagrange</button>
+        <button class="exp-tab" onclick="showExp(4)">04 Halo</button>
+        <button class="exp-tab" onclick="showExp(5)">05 Free Return</button>
+        <button class="exp-tab" onclick="showExp(6)">06 Chaos</button>
+        <button class="exp-tab" onclick="showExp(7)">07 Thrust</button>
     </div>
 
     <div class="exp-panel active" id="expSummary">
-        <h3>Обзор экспериментов</h3>
-        <p class="exp-note">7 численных экспериментов проверяют физическую модель CR3BP и точность интеграторов. Все результаты воспроизводимы из исходного кода.</p>
+        <h3>Experiment Overview</h3>
+        <p class="exp-note">7 numerical experiments validate the CR3BP physical model and integrator accuracy. All results are reproducible from source code.</p>
         <table class="exp-table">
-            <tr><th>Эксперимент</th><th>Ключевой результат</th></tr>
-            <tr><td>01 Дрейф Якоби</td><td>Итерированный Верле сохраняет интеграл Якоби с точностью 10<sup>&minus;11</sup> &mdash; на 5 порядков лучше Эйлера</td></tr>
-            <tr><td>02 Сходимость (log-log)</td><td>Итерированный Верле: наклон 1.97&plusmn;0.03 (R&sup2;=0.999), ошибка 0.13 м при dt=30 с</td></tr>
-            <tr><td>03 Точки Лагранжа</td><td>L1&ndash;L5 найдены численно; аналитические приближения дают отн. ошибку 0.4&ndash;0.8%</td></tr>
-            <tr><td>04 Гало-орбита</td><td>Периодическая 3D-орбита у L1: период 12.2 дня, ошибка замыкания 3.6 км</td></tr>
-            <tr><td>05 Свободный возврат</td><td>Облёт Луны 3 399 км, возврат 8 081 км; чувствительность: +1 м/с &rarr; +89 км у Луны</td></tr>
-            <tr><td>06 Хаос вблизи L1</td><td>Показатель Ляпунова &lambda; = 0.64 сут<sup>&minus;1</sup>, горизонт предсказуемости ~2 суток</td></tr>
-            <tr><td>07 Малая тяга</td><td>&Delta;v=0.72 м/с уводит от L1 на 101 000 км; топливо 0.12 кг (0.02% от m₀)</td></tr>
+            <tr><th>Experiment</th><th>Key Result</th></tr>
+            <tr><td>01 Jacobi Drift</td><td>Iterated Störmer-Verlet preserves the Jacobi integral to 10<sup>&minus;11</sup> &mdash; 5 orders of magnitude better than Euler</td></tr>
+            <tr><td>02 Convergence (log-log)</td><td>Iterated Verlet: slope 1.97&plusmn;0.03 (R&sup2;=0.999), error 0.13 m at dt=30 s</td></tr>
+            <tr><td>03 Lagrange Points</td><td>L1&ndash;L5 found numerically; analytical approximations give relative error 0.4&ndash;0.8%</td></tr>
+            <tr><td>04 Halo Orbit</td><td>Periodic 3D orbit near L1: period 12.2 days, closure error 3.6 km</td></tr>
+            <tr><td>05 Free Return</td><td>Lunar flyby at 3,399 km, Earth return at 8,081 km; sensitivity: +1 m/s &rarr; +89 km at Moon</td></tr>
+            <tr><td>06 Chaos near L1</td><td>Lyapunov exponent &lambda; = 0.64 day<sup>&minus;1</sup>, predictability horizon ~2 days</td></tr>
+            <tr><td>07 Low Thrust</td><td>&Delta;v=0.72 m/s deflects from L1 by 101,000 km; fuel 0.12 kg (0.02% of m₀)</td></tr>
         </table>
     </div>
 
     <div class="exp-panel" id="exp0">
-        <h3>Дрейф интеграла Якоби</h3>
-        <p class="exp-note">Интеграл Якоби C<sub>J</sub> — единственная сохраняющаяся величина в CR3BP. Его дрейф — прямая мера точности интегратора. Сравниваются 3 интегратора &times; 2 режима шага на трёх сценариях.</p>
+        <h3>Jacobi Integral Drift</h3>
+        <p class="exp-note">The Jacobi integral C<sub>J</sub> is the only conserved quantity in CR3BP. Its drift is a direct measure of integrator accuracy. 3 integrators &times; 2 step modes are compared across three scenarios.</p>
         <div class="exp-imgs" style="grid-template-columns:1fr">
-            <img src="experiments/01_jacobi_drift/drift_halo.png" alt="Дрейф Якоби: гало-орбита">
-            <img src="experiments/01_jacobi_drift/drift_freereturn.png" alt="Дрейф Якоби: свободный возврат">
-            <img src="experiments/01_jacobi_drift/drift_chaos.png" alt="Дрейф Якоби: хаос вблизи L1">
+            <img src="experiments/01_jacobi_drift/drift_halo.png" alt="Jacobi drift: halo orbit">
+            <img src="experiments/01_jacobi_drift/drift_freereturn.png" alt="Jacobi drift: free return">
+            <img src="experiments/01_jacobi_drift/drift_chaos.png" alt="Jacobi drift: chaos near L1">
         </div>
         <table class="exp-table">
-            <tr><th>Конфигурация</th><th>Гало-орбита</th><th>Своб. возврат</th><th>Хаос L1</th></tr>
-            <tr><td>Эйлер фикс.</td><td>2.22&times;10<sup>&minus;6</sup></td><td>4.84&times;10<sup>&minus;1</sup></td><td>3.12&times;10<sup>&minus;2</sup></td></tr>
-            <tr><td>Эйлер адапт.</td><td>3.53&times;10<sup>&minus;7</sup></td><td>1.53&times;10<sup>&minus;2</sup></td><td>1.04&times;10<sup>&minus;3</sup></td></tr>
-            <tr><td>Верле полушаг. фикс.</td><td>1.10&times;10<sup>&minus;6</sup></td><td>1.60&times;10<sup>&minus;2</sup></td><td>2.70&times;10<sup>&minus;4</sup></td></tr>
-            <tr><td>Верле полушаг. адапт.</td><td>2.39&times;10<sup>&minus;7</sup></td><td>2.21&times;10<sup>&minus;4</sup></td><td>4.15&times;10<sup>&minus;6</sup></td></tr>
-            <tr><td>Верле итерир. фикс.</td><td>3.83&times;10<sup>&minus;11</sup></td><td>1.15&times;10<sup>&minus;2</sup></td><td>3.98&times;10<sup>&minus;4</sup></td></tr>
-            <tr><td>Верле итерир. адапт.</td><td class="val">1.85&times;10<sup>&minus;12</sup></td><td class="val">1.27&times;10<sup>&minus;5</sup></td><td class="val">4.04&times;10<sup>&minus;7</sup></td></tr>
+            <tr><th>Configuration</th><th>Halo Orbit</th><th>Free Return</th><th>Chaos L1</th></tr>
+            <tr><td>Euler fixed</td><td>2.22&times;10<sup>&minus;6</sup></td><td>4.84&times;10<sup>&minus;1</sup></td><td>3.12&times;10<sup>&minus;2</sup></td></tr>
+            <tr><td>Euler adaptive</td><td>3.53&times;10<sup>&minus;7</sup></td><td>1.53&times;10<sup>&minus;2</sup></td><td>1.04&times;10<sup>&minus;3</sup></td></tr>
+            <tr><td>Verlet half-step fixed</td><td>1.10&times;10<sup>&minus;6</sup></td><td>1.60&times;10<sup>&minus;2</sup></td><td>2.70&times;10<sup>&minus;4</sup></td></tr>
+            <tr><td>Verlet half-step adaptive</td><td>2.39&times;10<sup>&minus;7</sup></td><td>2.21&times;10<sup>&minus;4</sup></td><td>4.15&times;10<sup>&minus;6</sup></td></tr>
+            <tr><td>Verlet iterated fixed</td><td>3.83&times;10<sup>&minus;11</sup></td><td>1.15&times;10<sup>&minus;2</sup></td><td>3.98&times;10<sup>&minus;4</sup></td></tr>
+            <tr><td>Verlet iterated adaptive</td><td class="val">1.85&times;10<sup>&minus;12</sup></td><td class="val">1.27&times;10<sup>&minus;5</sup></td><td class="val">4.04&times;10<sup>&minus;7</sup></td></tr>
         </table>
     </div>
 
     <div class="exp-panel" id="exp1">
-        <h3>Сходимость интеграторов (log-log)</h3>
-        <p class="exp-note">Ошибка позиции относительно scipy RK45 при интеграции гало-орбиты 100 ч. Полушаговый Верле деградирует до O(h) из-за силы Кориолиса; итерированный Верле восстанавливает O(h&sup2;).</p>
+        <h3>Integrator Convergence (log-log)</h3>
+        <p class="exp-note">Position error relative to scipy RK45 when integrating a halo orbit for 100 h. The half-step Verlet degrades to O(h) due to the Coriolis force; iterated Verlet recovers O(h&sup2;).</p>
         <div class="exp-imgs">
-            <img src="experiments/02_integrator_comparison/loglog.png" alt="Log-log сходимость">
+            <img src="experiments/02_integrator_comparison/loglog.png" alt="Log-log convergence">
         </div>
         <table class="exp-table">
-            <tr><th>Интегратор</th><th>Наклон</th><th>Ошибка при dt=30 с</th><th>Отн. ошибка (d/d<sub>ЗЛ</sub>)</th></tr>
-            <tr><td>Эйлер</td><td>1.00</td><td>8 400 м</td><td>2.2&times;10<sup>&minus;5</sup></td></tr>
-            <tr><td>Верле полушаговый</td><td>1.00</td><td>1 900 м</td><td>4.9&times;10<sup>&minus;6</sup></td></tr>
-            <tr><td>Верле итерированный</td><td class="val">1.97</td><td class="val">0.13 м</td><td class="val">3.4&times;10<sup>&minus;10</sup></td></tr>
+            <tr><th>Integrator</th><th>Slope</th><th>Error at dt=30 s</th><th>Relative error (d/d<sub>EL</sub>)</th></tr>
+            <tr><td>Euler</td><td>1.00</td><td>8,400 m</td><td>2.2&times;10<sup>&minus;5</sup></td></tr>
+            <tr><td>Verlet half-step</td><td>1.00</td><td>1,900 m</td><td>4.9&times;10<sup>&minus;6</sup></td></tr>
+            <tr><td>Verlet iterated</td><td class="val">1.97</td><td class="val">0.13 m</td><td class="val">3.4&times;10<sup>&minus;10</sup></td></tr>
         </table>
     </div>
 
     <div class="exp-panel" id="exp2">
-        <h3>Точки Лагранжа L1&ndash;L5</h3>
-        <p class="exp-note">Численное вычисление точек Лагранжа (бисекция / Ньютон) и сравнение с аналитическими приближениями (сфера Хилла).</p>
+        <h3>Lagrange Points L1&ndash;L5</h3>
+        <p class="exp-note">Numerical computation of Lagrange points (bisection / Newton) and comparison with analytical approximations (Hill sphere).</p>
         <table class="exp-table">
-            <tr><th>Точка</th><th>x, км</th><th>y, км</th><th>Ошибка, км</th><th>Отн. ошибка</th></tr>
-            <tr><td>L1</td><td>323 696</td><td>0</td><td>2 649</td><td>0.82%</td></tr>
-            <tr><td>L2</td><td>446 531</td><td>0</td><td>1 977</td><td>0.44%</td></tr>
-            <tr><td>L3</td><td>&minus;386 651</td><td>0</td><td>2 779</td><td>0.72%</td></tr>
-            <tr><td>L4</td><td>188 080</td><td>332 920</td><td>2 812</td><td>0.74%</td></tr>
-            <tr><td>L5</td><td>188 080</td><td>&minus;332 920</td><td>2 812</td><td>0.74%</td></tr>
+            <tr><th>Point</th><th>x, km</th><th>y, km</th><th>Error, km</th><th>Relative error</th></tr>
+            <tr><td>L1</td><td>323,696</td><td>0</td><td>2,649</td><td>0.82%</td></tr>
+            <tr><td>L2</td><td>446,531</td><td>0</td><td>1,977</td><td>0.44%</td></tr>
+            <tr><td>L3</td><td>&minus;386,651</td><td>0</td><td>2,779</td><td>0.72%</td></tr>
+            <tr><td>L4</td><td>188,080</td><td>332,920</td><td>2,812</td><td>0.74%</td></tr>
+            <tr><td>L5</td><td>188,080</td><td>&minus;332,920</td><td>2,812</td><td>0.74%</td></tr>
         </table>
-        <p class="exp-note" style="margin-top:0.8rem">Остаточное ускорение в найденных точках: &lt; 10<sup>&minus;18</sup> м/с&sup2;.</p>
+        <p class="exp-note" style="margin-top:0.8rem">Residual acceleration at found points: &lt; 10<sup>&minus;18</sup> m/s&sup2;.</p>
     </div>
 
     <div class="exp-panel" id="exp3">
-        <h3>Гало-орбита у точки L1</h3>
-        <p class="exp-note">Периодическая 3D-орбита: начальное приближение Ричардсона (3-й порядок) + дифференциальная коррекция (стрелковый метод).</p>
+        <h3>Halo Orbit near L1</h3>
+        <p class="exp-note">Periodic 3D orbit: Richardson initial approximation (3rd order) + differential correction (shooting method).</p>
         <div class="exp-imgs">
-            <img src="experiments/04_halo_orbit/halo_3d.png" alt="3D гало-орбита">
+            <img src="experiments/04_halo_orbit/halo_3d.png" alt="3D halo orbit">
         </div>
         <table class="exp-table">
-            <tr><th>Параметр</th><th>Значение</th></tr>
-            <tr><td>Амплитуда Az</td><td>15 000 км</td></tr>
-            <tr><td>Период</td><td>293.4 ч (12.2 дня)</td></tr>
-            <tr><td>Ошибка замыкания</td><td>3.6 км</td></tr>
-            <tr><td>Дрейф Якоби</td><td>3.8 &times; 10<sup>&minus;11</sup></td></tr>
+            <tr><th>Parameter</th><th>Value</th></tr>
+            <tr><td>Amplitude Az</td><td>15,000 km</td></tr>
+            <tr><td>Period</td><td>293.4 h (12.2 days)</td></tr>
+            <tr><td>Closure error</td><td>3.6 km</td></tr>
+            <tr><td>Jacobi drift</td><td>3.8 &times; 10<sup>&minus;11</sup></td></tr>
         </table>
     </div>
 
     <div class="exp-panel" id="exp4">
-        <h3>Траектория свободного возврата</h3>
-        <p class="exp-note">Баллистическая траектория типа Apollo-13: старт с LEO, облёт Луны, возврат к Земле без использования двигателя.</p>
+        <h3>Free Return Trajectory</h3>
+        <p class="exp-note">Apollo-13 type ballistic trajectory: launch from LEO, lunar flyby, Earth return with no engine use.</p>
         <div class="exp-imgs" style="grid-template-columns:1fr">
-            <img src="experiments/05_free_return/free_return_trajectory.png" alt="Свободный возврат">
-            <img src="experiments/05_free_return/sensitivity.png" alt="Чувствительность">
+            <img src="experiments/05_free_return/free_return_trajectory.png" alt="Free return trajectory">
+            <img src="experiments/05_free_return/sensitivity.png" alt="Sensitivity">
         </div>
         <table class="exp-table">
-            <tr><th>Параметр</th><th>Значение</th></tr>
-            <tr><td>Угол старта</td><td>226.5&deg;</td></tr>
-            <tr><td>Скорость TLI (выход на лунную трассу)</td><td>10 779 м/с</td></tr>
-            <tr><td>Пролёт Луны</td><td>3 399 км (t = 63.6 ч)</td></tr>
-            <tr><td>Возврат к Земле</td><td>8 081 км (t = 168.1 ч)</td></tr>
-            <tr><td>Чувствительность: +1 м/с &rarr; &Delta;r Луна</td><td>&asymp; 89 км</td></tr>
-            <tr><td>Чувствительность: +1 м/с &rarr; &Delta;r Земля</td><td>&asymp; 242 км</td></tr>
+            <tr><th>Parameter</th><th>Value</th></tr>
+            <tr><td>Launch angle</td><td>226.5&deg;</td></tr>
+            <tr><td>TLI velocity (trans-lunar injection)</td><td>10,779 m/s</td></tr>
+            <tr><td>Lunar flyby</td><td>3,399 km (t = 63.6 h)</td></tr>
+            <tr><td>Earth return</td><td>8,081 km (t = 168.1 h)</td></tr>
+            <tr><td>Sensitivity: +1 m/s &rarr; &Delta;r Moon</td><td>&asymp; 89 km</td></tr>
+            <tr><td>Sensitivity: +1 m/s &rarr; &Delta;r Earth</td><td>&asymp; 242 km</td></tr>
         </table>
     </div>
 
     <div class="exp-panel" id="exp5">
-        <h3>Хаотическая чувствительность вблизи L1</h3>
-        <p class="exp-note">16 траекторий стартуют из L1 с одинаковой скоростью 10 м/с, но в разных направлениях. Одна скорость — качественно разные судьбы.</p>
+        <h3>Chaotic Sensitivity near L1</h3>
+        <p class="exp-note">16 trajectories launch from L1 with the same speed of 10 m/s but in different directions. Same speed &mdash; qualitatively different fates.</p>
         <div class="exp-imgs" style="grid-template-columns:1fr">
-            <img src="experiments/06_chaos_sensitivity/chaos_fan.png" alt="Траекторный веер">
-            <img src="experiments/06_chaos_sensitivity/divergence.png" alt="Расхождение">
+            <img src="experiments/06_chaos_sensitivity/chaos_fan.png" alt="Trajectory fan">
+            <img src="experiments/06_chaos_sensitivity/divergence.png" alt="Divergence">
         </div>
         <table class="exp-table">
-            <tr><th>Параметр</th><th>Значение</th></tr>
-            <tr><td>Показатель Ляпунова &lambda;</td><td>0.64 &plusmn; 0.16 сут<sup>&minus;1</sup></td></tr>
-            <tr><td>Время Ляпунова &tau; = 1/&lambda;</td><td>1.6 суток</td></tr>
-            <tr><td>Горизонт предсказуемости</td><td>~2 суток</td></tr>
+            <tr><th>Parameter</th><th>Value</th></tr>
+            <tr><td>Lyapunov exponent &lambda;</td><td>0.64 &plusmn; 0.16 day<sup>&minus;1</sup></td></tr>
+            <tr><td>Lyapunov time &tau; = 1/&lambda;</td><td>1.6 days</td></tr>
+            <tr><td>Predictability horizon</td><td>~2 days</td></tr>
         </table>
-        <p class="exp-note" style="margin-top:0.8rem">Расхождение траекторий экспоненциальное (пунктир на графике &mdash; аппроксимация e<sup>&lambda;t</sup>). Часть траекторий уходит к Луне (~380 тыс. км), часть совершает петлю вокруг Земли (~80&ndash;120 тыс. км).</p>
+        <p class="exp-note" style="margin-top:0.8rem">Trajectory divergence is exponential (dashed line on the plot &mdash; e<sup>&lambda;t</sup> fit). Some trajectories escape toward the Moon (~380,000 km), others loop around the Earth (~80&ndash;120,000 km).</p>
     </div>
 
     <div class="exp-panel" id="exp6">
-        <h3>Влияние малой тяги на траекторию</h3>
-        <p class="exp-note">Даже малая тяга (&lt;1% начальной скорости) кардинально меняет траекторию в CR3BP.</p>
+        <h3>Low-Thrust Trajectory Effects</h3>
+        <p class="exp-note">Even a small thrust (&lt;1% of initial velocity) radically changes the trajectory in CR3BP.</p>
         <div class="exp-imgs">
-            <img src="experiments/07_thrust_maneuver/thrust_comparison.png" alt="Сравнение траекторий">
+            <img src="experiments/07_thrust_maneuver/thrust_comparison.png" alt="Trajectory comparison">
         </div>
         <table class="exp-table">
-            <tr><th>Сценарий</th><th>&Delta;v</th><th>Топливо (хим.)</th><th>Результат</th></tr>
-            <tr><td>Земля &rarr; Луна (5 Н, 3 ч)</td><td>108 м/с</td><td>18 кг (3.6%)</td><td>Пролёт Луны: 2 494 км</td></tr>
-            <tr><td>Побег от L1 (0.05 Н, 2 ч)</td><td>0.72 м/с</td><td>0.12 кг (0.02%)</td><td>Уход на 101 000 км</td></tr>
-            <tr><td colspan="4" style="color:#6b7280; font-style:italic">Для сравнения: идеальный перелёт Гомана LEO &rarr; Луна требует &Delta;v &asymp; 3 134 м/с (топливо 328 кг из 500 кг)</td></tr>
+            <tr><th>Scenario</th><th>&Delta;v</th><th>Fuel (chem.)</th><th>Result</th></tr>
+            <tr><td>Earth &rarr; Moon (5 N, 3 h)</td><td>108 m/s</td><td>18 kg (3.6%)</td><td>Lunar flyby: 2,494 km</td></tr>
+            <tr><td>Escape from L1 (0.05 N, 2 h)</td><td>0.72 m/s</td><td>0.12 kg (0.02%)</td><td>Departure: 101,000 km</td></tr>
+            <tr><td colspan="4" style="color:#6b7280; font-style:italic">For reference: ideal Hohmann transfer LEO &rarr; Moon requires &Delta;v &asymp; 3,134 m/s (fuel 328 kg out of 500 kg)</td></tr>
         </table>
-        <p class="exp-note" style="margin-top:0.8rem">Расход топлива по формуле Циолковского (I<sub>sp</sub>=300 с, m<sub>0</sub>=500 кг). Малая тяга &mdash; манёвр коррекции, а не замена импульсного перелёта.</p>
+        <p class="exp-note" style="margin-top:0.8rem">Fuel consumption via Tsiolkovsky equation (I<sub>sp</sub>=300 s, m<sub>0</sub>=500 kg). Low thrust is a correction maneuver, not a replacement for an impulsive transfer.</p>
     </div>
 
     <script>
@@ -459,9 +459,9 @@
     </script>
 
     <footer>
-        <div>Автор: <span class="value">Александр Ключников</span> &middot; <a href="https://t.me/LalPexR" style="color:#9ca3af; text-decoration:none;"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:2px;" viewBox="0 0 24 24" fill="#9ca3af"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>@LalPexR</a> &middot; <a href="https://github.com/AlexKlyu/cr3bp" style="color:#9ca3af; text-decoration:none;"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:2px;" viewBox="0 0 24 24" fill="#9ca3af"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a></div>
-        <div>Курчатовская школа, ФМО</div>
-        <div>Олимпиада &laquo;Старт в науку&raquo; МФТИ &mdash; Защита научной работы</div>
+        <div>Author: <span class="value">Alexander Klyuchnikov</span> &middot; <a href="https://t.me/LalPexR" style="color:#9ca3af; text-decoration:none;"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:2px;" viewBox="0 0 24 24" fill="#9ca3af"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>@LalPexR</a> &middot; <a href="https://github.com/AlexKlyu/cr3bp" style="color:#9ca3af; text-decoration:none;"><svg style="width:14px;height:14px;vertical-align:-2px;margin-right:2px;" viewBox="0 0 24 24" fill="#9ca3af"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a></div>
+        <div>Kurchatov School, Physics and Mathematics Department</div>
+        <div>MIPT &ldquo;Start in Science&rdquo; Olympiad &mdash; Research Defense</div>
     </footer>
 </body>
 </html>

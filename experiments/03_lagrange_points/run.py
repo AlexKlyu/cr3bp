@@ -1,7 +1,7 @@
 """
-Эксперимент 03: Точки Лагранжа — обёртка над presets/lagrange/lagrange.py.
+Experiment 03: Lagrange Points — wrapper over presets/lagrange/lagrange.py.
 
-Вычисляет L1-L5 численно и сравнивает с аналитическими приближениями.
+Computes L1-L5 numerically and compares with analytical approximations.
 """
 
 import os
@@ -19,14 +19,14 @@ OUT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def analytical_approximations():
-    """Аналитические приближения для L1-L5 (ведущий порядок).
+    """Analytical approximations for L1-L5 (leading order).
 
-    Источники:
-      L1, L2 — разложение по (μ/3)^(1/3) (радиус сферы Хилла):
+    Sources:
+      L1, L2 — expansion in (μ/3)^(1/3) (Hill sphere radius):
         Murray C.D., Dermott S.F. "Solar System Dynamics", Cambridge, 1999, §3.4
-      L3 — разложение по μ:
-        Szebehely V. "Theory of Orbits", Academic Press, 1967, гл. 5
-      L4, L5 — точное решение (вершины равносторонних треугольников):
+      L3 — expansion in μ:
+        Szebehely V. "Theory of Orbits", Academic Press, 1967, ch. 5
+      L4, L5 — exact solution (vertices of equilateral triangles):
         Lagrange J.-L. "Essai sur le Problème des Trois Corps", 1772
     """
     mu = engine.M_M / (engine.M_E + engine.M_M)
@@ -57,9 +57,9 @@ def main():
     analytical = analytical_approximations()
 
     rows = []
-    print("Точки Лагранжа (тыс. км):")
-    print(f"{'Имя':<5} {'x_числ (тыс.км)':>16} {'y_числ (тыс.км)':>16} "
-          f"{'x_аналит (тыс.км)':>18} {'y_аналит (тыс.км)':>18} {'ошибка (км)':>12}")
+    print("Lagrange Points (thousand km):")
+    print(f"{'Name':<5} {'x_num (Tkm)':>16} {'y_num (Tkm)':>16} "
+          f"{'x_analyt (Tkm)':>18} {'y_analyt (Tkm)':>18} {'error (km)':>12}")
     print("-" * 90)
 
     for name in ['L1', 'L2', 'L3', 'L4', 'L5']:
@@ -90,7 +90,7 @@ def main():
         w = csv.DictWriter(f, fieldnames=rows[0].keys())
         w.writeheader()
         w.writerows(rows)
-    print(f"\nСохранено: {csv_path}")
+    print(f"\nSaved: {csv_path}")
 
 
 if __name__ == '__main__':

@@ -1,22 +1,22 @@
 """
-Эксперимент 07: Сравнение манёвров с тягой.
+Experiment 07: Thrust Maneuver Comparison.
 
-Гипотеза: малая тяга (~Н) в течение нескольких часов создаёт Δv,
-достаточный для качественного изменения траектории вблизи неустойчивых
-точек, при минимальном расходе топлива.
+Hypothesis: low thrust (~N) over several hours produces a Δv
+sufficient to qualitatively change the trajectory near unstable
+equilibrium points, with minimal fuel expenditure.
 
-Два пресета:
-  1. Перелёт Земля-Луна (5 Н, 3 ч)
-  2. Побег от L1 с микротягой (0.05 Н, 2 ч)
+Two presets:
+  1. Earth-Moon transfer (5 N, 3 h)
+  2. Escape from L1 with micro-thrust (0.05 N, 2 h)
 
-Для каждого сценария дополнительно вычисляется:
-  - Массовая доля топлива по формуле Циолковского:
+For each scenario additionally computed:
+  - Fuel mass fraction via Tsiolkovsky equation:
         m_fuel / m_0 = 1 - exp(-Δv / (g0 * Isp))
-    для химического (Isp=300 с) и электрического (Isp=3000 с) двигателей.
-  - Сравнение с Δv идеального перелёта Гомана (Земля → Луна).
+    for chemical (Isp=300 s) and electric (Isp=3000 s) engines.
+  - Comparison with Δv of an ideal Hohmann transfer (Earth → Moon).
 
-Используется engine.run_trajectory() для траекторий,
-presets/thrust_demos/find_thrust_params.py:simulate() для кросс-валидации.
+Uses engine.run_trajectory() for trajectories,
+presets/thrust_demos/find_thrust_params.py:simulate() for cross-validation.
 """
 
 import os
@@ -44,15 +44,15 @@ M0_KG = 500.0
 
 
 def tsiolkovsky_fuel_mass(dv_ms, m0, isp):
-    """Масса топлива по уравнению Циолковского: m_fuel = m0 * (1 - exp(-Δv / (g0·Isp)))."""
+    """Fuel mass via Tsiolkovsky equation: m_fuel = m0 * (1 - exp(-Δv / (g0·Isp)))."""
     return m0 * (1.0 - np.exp(-dv_ms / (g0 * isp)))
 
 
 def hohmann_dv():
     """
-    Δv идеального перелёта Гомана (Земля → Луна).
+    Δv of ideal Hohmann transfer (Earth → Moon).
 
-    v_LEO = sqrt(GM_E / r_LEO),  r_LEO = R_E + 200 км
+    v_LEO = sqrt(GM_E / r_LEO),  r_LEO = R_E + 200 km
     v_transfer = sqrt(GM_E * (2/r_LEO - 2/(r_LEO + d_moon)))
     Δv = v_transfer - v_LEO
     """
@@ -63,7 +63,7 @@ def hohmann_dv():
     return v_transfer - v_LEO, v_LEO, v_transfer
 
 PRESET1 = {
-    'name': 'Перелёт Земля\u2192Луна (5 Н, 3 ч)',
+    'name': 'Earth\u2192Moon transfer (5 N, 3 h)',
     'x0_tkm': -9.3305877540,
     'y0_tkm': -4.9117576067,
     'vx0_kms': 7.7654698808,
@@ -77,7 +77,7 @@ PRESET1 = {
 }
 
 PRESET2 = {
-    'name': 'Побег от L1 (0.05 Н, 2 ч)',
+    'name': 'Escape from L1 (0.05 N, 2 h)',
     'Fx': 0.05,
     'Fy': 0.0,
     'mass': 500.0,
@@ -88,7 +88,7 @@ PRESET2 = {
 
 
 def run_preset(preset, ax_plot):
-    """Запуск одного пресета: с тягой и без, график, статистика."""
+    """Run one preset: with and without thrust, plot, statistics."""
     name = preset['name']
     x0_tkm = preset['x0_tkm']
     y0_tkm = preset['y0_tkm']
@@ -110,8 +110,8 @@ def run_preset(preset, ax_plot):
 
     r_cross = simulate(x0_tkm, y0_tkm, vx0_kms, vy0_kms,
                        Fx, Fy, mass, tOn_s, tOff_s, tEnd_h)
-    print(f"  Кросс-валидация: мин_Луна={r_cross['min_moon_km']:.0f} км, "
-          f"столкн={r_cross['crash']}, дрейф={r_cross['rms_drift_pct']:.4f}%")
+    print(f"  Cross-validation: min_Moon={r_cross['min_moon_km']:.0f} km, "
+          f"crash={r_cross['crash']}, drift={r_cross['rms_drift_pct']:.4f}%")
 
     def thrust_fn(t):
         if tOn_s <= t < tOff_s:
@@ -127,21 +127,21 @@ def run_preset(preset, ax_plot):
     pos_t = r_thrust['pos'] / 1e6
     pos_n = r_no['pos'] / 1e6
 
-    ax_plot.plot(pos_n[:, 0], pos_n[:, 1], 'b--', linewidth=0.6, alpha=0.7, label='Без тяги')
-    ax_plot.plot(pos_t[:, 0], pos_t[:, 1], 'r-', linewidth=0.8, label='С тягой')
+    ax_plot.plot(pos_n[:, 0], pos_n[:, 1], 'b--', linewidth=0.6, alpha=0.7, label='No thrust')
+    ax_plot.plot(pos_t[:, 0], pos_t[:, 1], 'r-', linewidth=0.8, label='With thrust')
     ax_plot.plot(pos_t[0, 0], pos_t[0, 1], 'go', markersize=6)
 
     earth_x = -engine.d_E / 1e6
     moon_x = engine.d_M / 1e6
     ax_plot.plot(earth_x, 0, 'o', color='#2196F3', markersize=8, zorder=5)
-    ax_plot.annotate('Земля', (earth_x, 0), fontsize=9, ha='left', va='bottom',
+    ax_plot.annotate('Earth', (earth_x, 0), fontsize=9, ha='left', va='bottom',
                      xytext=(10, 5), textcoords='offset points', color='#2196F3')
     ax_plot.plot(moon_x, 0, 'o', color='gray', markersize=5, zorder=5)
-    ax_plot.annotate('Луна', (moon_x, 0), fontsize=9, ha='right', va='bottom',
+    ax_plot.annotate('Moon', (moon_x, 0), fontsize=9, ha='right', va='bottom',
                      xytext=(-10, 5), textcoords='offset points', color='gray')
 
-    ax_plot.set_xlabel('x (тыс. км)')
-    ax_plot.set_ylabel('y (тыс. км)')
+    ax_plot.set_xlabel('x (Tkm)')
+    ax_plot.set_ylabel('y (Tkm)')
     ax_plot.set_title(name)
     ax_plot.legend(fontsize=8)
     ax_plot.grid(True, alpha=0.3)
@@ -153,14 +153,14 @@ def run_preset(preset, ax_plot):
 
     fuel_chem = tsiolkovsky_fuel_mass(dv, M0_KG, ISP_CHEM)
     fuel_elec = tsiolkovsky_fuel_mass(dv, M0_KG, ISP_ELEC)
-    print(f"  Циолковский (Isp={ISP_CHEM} с, хим.):  m_топл = {fuel_chem:.3f} кг "
-          f"({fuel_chem / M0_KG * 100:.2f}% от m₀)")
-    print(f"  Циолковский (Isp={ISP_ELEC} с, эл.):  m_топл = {fuel_elec:.4f} кг "
-          f"({fuel_elec / M0_KG * 100:.4f}% от m₀)")
+    print(f"  Tsiolkovsky (Isp={ISP_CHEM} s, chem.):  m_fuel = {fuel_chem:.3f} kg "
+          f"({fuel_chem / M0_KG * 100:.2f}% of m₀)")
+    print(f"  Tsiolkovsky (Isp={ISP_ELEC} s, elec.):  m_fuel = {fuel_elec:.4f} kg "
+          f"({fuel_elec / M0_KG * 100:.4f}% of m₀)")
 
     dv_hohmann, _, _ = hohmann_dv()
-    print(f"  Δv Гомана ≈ {dv_hohmann / 1e3:.2f} км/с vs малая тяга Δv = {dv:.0f} м/с "
-          f"(но за {tDur_s / 3600:.0f} ч работы двигателя)")
+    print(f"  Hohmann Δv ≈ {dv_hohmann / 1e3:.2f} km/s vs low thrust Δv = {dv:.0f} m/s "
+          f"(over {tDur_s / 3600:.0f} h of engine burn)")
 
     return {
         'preset': name,
@@ -190,34 +190,34 @@ def main():
         print(f"\n{preset['name']}:")
         row = run_preset(preset, ax)
         rows.append(row)
-        print(f"  \u0394v={row['dv_ms']:.2f} м/с, расхождение={row['separation_km']:.0f} км")
+        print(f"  \u0394v={row['dv_ms']:.2f} m/s, separation={row['separation_km']:.0f} km")
 
     dv_h, v_leo, v_tr = hohmann_dv()
     print(f"\n{'=' * 60}")
-    print(f"Справка: идеальный перелёт Гомана (LEO → Луна)")
-    print(f"  v_LEO       = {v_leo:.1f} м/с")
-    print(f"  v_перигей   = {v_tr:.1f} м/с")
-    print(f"  Δv Гомана   = {dv_h:.1f} м/с ≈ {dv_h / 1e3:.2f} км/с")
-    print(f"  Топливо (хим., Isp={ISP_CHEM} с): "
-          f"{tsiolkovsky_fuel_mass(dv_h, M0_KG, ISP_CHEM):.1f} кг из {M0_KG:.0f} кг")
-    print(f"  Топливо (эл., Isp={ISP_ELEC} с):  "
-          f"{tsiolkovsky_fuel_mass(dv_h, M0_KG, ISP_ELEC):.1f} кг из {M0_KG:.0f} кг")
-    print(f"\nВывод: непрерывная малая тяга — это манёвр коррекции/управления,")
-    print(f"а не замена импульсного перелёта Гомана для выхода на переходную орбиту.")
+    print(f"Reference: ideal Hohmann transfer (LEO → Moon)")
+    print(f"  v_LEO       = {v_leo:.1f} m/s")
+    print(f"  v_periapsis = {v_tr:.1f} m/s")
+    print(f"  Hohmann Δv  = {dv_h:.1f} m/s ≈ {dv_h / 1e3:.2f} km/s")
+    print(f"  Fuel (chem., Isp={ISP_CHEM} s): "
+          f"{tsiolkovsky_fuel_mass(dv_h, M0_KG, ISP_CHEM):.1f} kg out of {M0_KG:.0f} kg")
+    print(f"  Fuel (elec., Isp={ISP_ELEC} s):  "
+          f"{tsiolkovsky_fuel_mass(dv_h, M0_KG, ISP_ELEC):.1f} kg out of {M0_KG:.0f} kg")
+    print(f"\nConclusion: continuous low thrust is a correction/control maneuver,")
+    print(f"not a replacement for an impulsive Hohmann transfer to a transit orbit.")
     print(f"{'=' * 60}")
 
     fig.tight_layout()
     png_path = os.path.join(OUT_DIR, 'thrust_comparison.png')
     fig.savefig(png_path, dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print(f"\nСохранено: {png_path}")
+    print(f"\nSaved: {png_path}")
 
     csv_path = os.path.join(OUT_DIR, 'thrust_table.csv')
     with open(csv_path, 'w', newline='') as f:
         w = csv.DictWriter(f, fieldnames=rows[0].keys())
         w.writeheader()
         w.writerows(rows)
-    print(f"Сохранено: {csv_path}")
+    print(f"Saved: {csv_path}")
 
 
 if __name__ == '__main__':

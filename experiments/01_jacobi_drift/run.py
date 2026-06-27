@@ -1,11 +1,11 @@
 """
-Эксперимент 01: Дрейф интеграла Якоби.
+Experiment 01: Jacobi Integral Drift.
 
-6 конфигураций интегратора (Эйлер / Верле полушаг. / Верле итерир.)
-x (фикс / адапт) x 3 сценария (гало-орбита, свободный возврат, хаос вблизи L1).
+6 integrator configurations (Euler / Verlet half-step / Verlet iterated)
+x (fixed / adaptive) x 3 scenarios (halo orbit, free return, chaos near L1).
 
-Для каждого сценария — два графика рядом (фикс. шаг и адапт. шаг)
-с одинаковой шкалой Y для удобства сравнения.
+For each scenario — two side-by-side plots (fixed step and adaptive step)
+with a shared Y axis for easy comparison.
 """
 
 import os
@@ -54,25 +54,25 @@ def get_chaos_ic():
     return [L1_m, 0.0, 0.0, 0.0, vy0, 0.0], T_h * 3600
 
 SCENARIOS = {
-    'halo': ('Гало-орбита L1', get_halo_ic),
-    'freereturn': ('Свободный возврат', get_free_return_ic),
-    'chaos': ('Хаос вблизи L1', get_chaos_ic),
+    'halo': ('Halo Orbit L1', get_halo_ic),
+    'freereturn': ('Free Return', get_free_return_ic),
+    'chaos': ('Chaos near L1', get_chaos_ic),
 }
 
 CONFIGS = [
-    ('Эйлер фикс',           'euler',       False),
-    ('Эйлер адапт',          'euler',       True),
-    ('Верле полушаг. фикс',  'verlet_half', False),
-    ('Верле полушаг. адапт', 'verlet_half', True),
-    ('Верле итерир. фикс',   'verlet',      False),
-    ('Верле итерир. адапт',  'verlet',      True),
+    ('Euler fixed',          'euler',       False),
+    ('Euler adaptive',       'euler',       True),
+    ('Verlet half-step fixed',  'verlet_half', False),
+    ('Verlet half-step adaptive', 'verlet_half', True),
+    ('Verlet iterated fixed',   'verlet',      False),
+    ('Verlet iterated adaptive', 'verlet',      True),
 ]
 
 DT = 30.0
 
 
 def jacobi_drift_series(state0, T, integrator, adaptive):
-    """Интегрируем траекторию, возвращаем (времена, массив относительного дрейфа)."""
+    """Integrate trajectory, return (times, relative drift array)."""
     result = engine.run_trajectory(state0, T, DT, integrator=integrator,
                                    adaptive=adaptive, dt_min=1.0)
     J = result['jacobi']
@@ -88,12 +88,12 @@ def main():
     fig_data = {}
 
     for sc_key, (sc_name, ic_fn) in SCENARIOS.items():
-        print(f"Сценарий: {sc_name}")
+        print(f"Scenario: {sc_name}")
         state0, T = ic_fn()
         fig_data[sc_key] = []
 
         for cfg_name, integ, adap in CONFIGS:
-            print(f"  Конфигурация: {cfg_name} ...", end=' ', flush=True)
+            print(f"  Config: {cfg_name} ...", end=' ', flush=True)
             times, drift = jacobi_drift_series(list(state0), T, integ, adap)
             if len(drift) == 0:
                 max_drift = float('nan')
@@ -116,7 +116,7 @@ def main():
         w = csv.DictWriter(f, fieldnames=['scenario', 'config', 'max_drift', 'rms_drift', 'steps'])
         w.writeheader()
         w.writerows(rows)
-    print(f"\nСохранено: {csv_path}")
+    print(f"\nSaved: {csv_path}")
 
     colors = {
         'euler': '#e74c3c',
@@ -124,9 +124,9 @@ def main():
         'verlet': '#2ecc71',
     }
     labels = {
-        'euler': 'Эйлер',
-        'verlet_half': 'Верле полушаг.',
-        'verlet': 'Верле итерир.',
+        'euler': 'Euler',
+        'verlet_half': 'Verlet half-step',
+        'verlet': 'Verlet iterated',
     }
 
     for sc_key, (sc_name, _) in SCENARIOS.items():
@@ -139,14 +139,14 @@ def main():
             ax.semilogy(times / 3600, drift + 1e-20,
                         label=labels[integ], color=colors[integ], linewidth=0.9)
 
-        ax_fix.set_xlabel('Время (часы)')
-        ax_fix.set_ylabel('Относительный дрейф Якоби |e(t)|')
-        ax_fix.set_title(f'{sc_name}: фиксированный шаг (dt={DT:.0f} с)')
+        ax_fix.set_xlabel('Time (hours)')
+        ax_fix.set_ylabel('Relative Jacobi drift |e(t)|')
+        ax_fix.set_title(f'{sc_name}: fixed step (dt={DT:.0f} s)')
         ax_fix.legend(fontsize=9)
         ax_fix.grid(True, alpha=0.3)
 
-        ax_adp.set_xlabel('Время (часы)')
-        ax_adp.set_title(f'{sc_name}: адаптивный шаг (dt=1..{DT:.0f} с)')
+        ax_adp.set_xlabel('Time (hours)')
+        ax_adp.set_title(f'{sc_name}: adaptive step (dt=1..{DT:.0f} s)')
         ax_adp.legend(fontsize=9)
         ax_adp.grid(True, alpha=0.3)
 
@@ -154,7 +154,7 @@ def main():
         png_path = os.path.join(OUT_DIR, f'drift_{sc_key}.png')
         fig.savefig(png_path, dpi=150, bbox_inches='tight')
         plt.close(fig)
-        print(f"Сохранено: {png_path}")
+        print(f"Saved: {png_path}")
 
 
 if __name__ == '__main__':
