@@ -1,22 +1,22 @@
 """
-Эксперимент 05: Траектория свободного возврата (стиль Apollo-13).
+Experiment 05: Free Return Trajectory (Apollo-13 style).
 
-Используются известные оптимальные НУ, найденные скриптом
-presets/free_return/find_free_return.py (Нелдер-Мид: угол~226.5°, v~10.78 км/с).
-Интеграция через engine.run_trajectory() для построения графика.
+Uses known optimal initial conditions found by
+presets/free_return/find_free_return.py (Nelder-Mead: angle~226.5°, v~10.78 km/s).
+Integration via engine.run_trajectory() for plotting.
 
-Критерий оптимальности:
-  «Оптимальной» считается траектория, минимизирующая расстояние
-  возврата к Земле (ближайший подход после лунного пролёта) при условии,
-  что пролёт Луны состоялся (расстояние < ~70 000 км).
-  Это обеспечивает безопасное баллистическое возвращение к Земле
-  без дополнительных коррекций — ключевое требование свободного возврата.
+Optimality criterion:
+  A trajectory is considered 'optimal' if it minimizes the Earth return
+  distance (closest approach after lunar flyby) subject to the condition
+  that a lunar flyby occurred (distance < ~70,000 km).
+  This ensures safe ballistic Earth return without additional corrections —
+  the key requirement of a free return trajectory.
 
-Анализ чувствительности:
-  После основной траектории проводится параметрический прогон v_TLI ± 50 м/с
-  (5 значений). Для каждого запуска фиксируются: минимальное расстояние
-  до Луны, расстояние возврата к Земле, интеграл Якоби (контроль энергии).
-  Результаты сохраняются в sensitivity.csv и визуализируются в sensitivity.png.
+Sensitivity analysis:
+  After the main trajectory, a parametric sweep of v_TLI ± 50 m/s
+  (5 values) is performed. For each run the following are recorded:
+  minimum Moon distance, Earth return distance, Jacobi integral (energy check).
+  Results are saved to sensitivity.csv and visualized in sensitivity.png.
 """
 
 import os
@@ -53,7 +53,7 @@ SENSITIVITY_DV = [-50, -25, 0, +25, +50]
 
 
 def _compute_ic(v_tli_kms):
-    """Начальные условия для заданной v_TLI (км/с) при фиксированном угле."""
+    """Initial conditions for a given v_TLI (km/s) at a fixed angle."""
     v_ms = v_tli_kms * 1e3
     x0 = -engine.d_E + r_LEO * math.cos(angle_rad)
     y0 = r_LEO * math.sin(angle_rad)
@@ -64,8 +64,8 @@ def _compute_ic(v_tli_kms):
 
 def _analyze_trajectory(result):
     """
-    Из результата интеграции извлечь пролёт Луны и возврат к Земле.
-    Возвращает (moon_flyby_km, earth_return_km, jacobi_mean).
+    Extract lunar flyby and Earth return from integration result.
+    Returns (moon_flyby_km, earth_return_km, jacobi_mean).
     """
     pos = result['pos']
     r_moon = np.sqrt((pos[:, 0] - engine.d_M)**2 + pos[:, 1]**2 + pos[:, 2]**2)
@@ -88,8 +88,8 @@ def _analyze_trajectory(result):
 
 def run_sensitivity():
     """
-    Параметрический прогон: v_TLI ± 50 м/с.
-    Возвращает список словарей с результатами.
+    Parametric sweep: v_TLI ± 50 m/s.
+    Returns a list of result dicts.
     """
     rows = []
     for dv in SENSITIVITY_DV:
@@ -104,14 +104,14 @@ def run_sensitivity():
             'earth_return_km': earth_km,
             'jacobi': jacobi,
         })
-        print(f"  Δv={dv:+.0f} м/с → v_TLI={v_tli:.4f} км/с: "
-              f"r_Луна={moon_km:.0f} км, r_Земля={earth_km:.0f} км, "
+        print(f"  Δv={dv:+.0f} m/s → v_TLI={v_tli:.4f} km/s: "
+              f"r_Moon={moon_km:.0f} km, r_Earth={earth_km:.0f} km, "
               f"C_J={jacobi:.6e}")
     return rows
 
 
 def save_sensitivity_csv(rows):
-    """Сохранение результатов чувствительности в CSV."""
+    """Save sensitivity results to CSV."""
     csv_path = os.path.join(OUT_DIR, 'sensitivity.csv')
     with open(csv_path, 'w', newline='') as f:
         w = csv.writer(f)
@@ -124,14 +124,14 @@ def save_sensitivity_csv(rows):
                 f"{r['earth_return_km']:.1f}",
                 f"{r['jacobi']:.6e}",
             ])
-    print(f"Сохранено: {csv_path}")
+    print(f"Saved: {csv_path}")
     return csv_path
 
 
 def plot_sensitivity(rows):
     """
-    График чувствительности: два подграфика —
-    расстояние пролёта Луны и расстояние возврата к Земле vs Δv.
+    Sensitivity plot: two subplots —
+    lunar flyby distance and Earth return distance vs Δv.
     """
     dvs = [r['dv_ms'] for r in rows]
     moon_kms = [r['moon_flyby_km'] for r in rows]
@@ -140,15 +140,15 @@ def plot_sensitivity(rows):
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 8), sharex=True)
 
     ax1.plot(dvs, moon_kms, 'o-', color='#FF6F00', linewidth=1.5, markersize=6)
-    ax1.set_ylabel('Мин. расстояние до Луны (км)')
-    ax1.set_title('Чувствительность свободного возврата к v_TLI')
+    ax1.set_ylabel('Min distance to Moon (km)')
+    ax1.set_title('Free return sensitivity to v_TLI')
     ax1.grid(True, alpha=0.3)
-    ax1.axvline(0, color='gray', linestyle='--', alpha=0.5, label='Оптимум')
+    ax1.axvline(0, color='gray', linestyle='--', alpha=0.5, label='Optimum')
     ax1.legend()
 
     ax2.plot(dvs, earth_kms, 's-', color='#1976D2', linewidth=1.5, markersize=6)
-    ax2.set_xlabel('Δv_TLI (м/с)')
-    ax2.set_ylabel('Расстояние возврата к Земле (км)')
+    ax2.set_xlabel('Δv_TLI (m/s)')
+    ax2.set_ylabel('Earth return distance (km)')
     ax2.grid(True, alpha=0.3)
     ax2.axvline(0, color='gray', linestyle='--', alpha=0.5)
 
@@ -156,14 +156,14 @@ def plot_sensitivity(rows):
     png_path = os.path.join(OUT_DIR, 'sensitivity.png')
     fig.savefig(png_path, dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print(f"Сохранено: {png_path}")
+    print(f"Saved: {png_path}")
     return png_path
 
 
 def print_sensitivity_gradient(rows):
     """
-    Оценка градиента чувствительности по конечным разностям
-    вокруг оптимального значения (Δv=0).
+    Estimate sensitivity gradient via finite differences
+    around the optimal value (Δv=0).
     """
     by_dv = {r['dv_ms']: r for r in rows}
     if -25 in by_dv and +25 in by_dv:
@@ -171,18 +171,18 @@ def print_sensitivity_gradient(rows):
         dr_earth = by_dv[+25]['earth_return_km'] - by_dv[-25]['earth_return_km']
         grad_moon = dr_moon / 50.0
         grad_earth = dr_earth / 50.0
-        print(f"\n  Чувствительность: +1 м/с → Δr_Луна ≈ {grad_moon:.1f} км")
-        print(f"  Чувствительность: +1 м/с → Δr_Земля ≈ {grad_earth:.1f} км")
+        print(f"\n  Sensitivity: +1 m/s → Δr_Moon ≈ {grad_moon:.1f} km")
+        print(f"  Sensitivity: +1 m/s → Δr_Earth ≈ {grad_earth:.1f} km")
     else:
-        print("  Не удалось вычислить градиент (нет точек ±25 м/с)")
+        print("  Could not compute gradient (no ±25 m/s points)")
 
 
 def main():
-    print(f"НУ свободного возврата: угол={ANGLE_DEG}°, v={V_TLI_KMS} км/с")
-    print(f"  x0  = {X0_M/1e6:.10f} тыс.км")
-    print(f"  y0  = {Y0_M/1e6:.10f} тыс.км")
-    print(f"  vx0 = {VX0_MS/1e3:.10f} км/с")
-    print(f"  vy0 = {VY0_MS/1e3:.10f} км/с")
+    print(f"Free return IC: angle={ANGLE_DEG}°, v={V_TLI_KMS} km/s")
+    print(f"  x0  = {X0_M/1e6:.10f} Tkm")
+    print(f"  y0  = {Y0_M/1e6:.10f} Tkm")
+    print(f"  vx0 = {VX0_MS/1e3:.10f} km/s")
+    print(f"  vy0 = {VY0_MS/1e3:.10f} km/s")
 
     state0 = [X0_M, Y0_M, 0.0, VX0_MS, VY0_MS, 0.0]
     result = engine.run_trajectory(state0, T_HOURS * 3600, dt=30, integrator='verlet')
@@ -196,7 +196,7 @@ def main():
     i_flyby = np.argmin(r_moon)
     min_moon_km = r_moon[i_flyby] / 1e3
     t_flyby_h = result['t'][i_flyby] / 3600
-    print(f"\n  Пролёт Луны: {min_moon_km:.0f} км при t={t_flyby_h:.1f} ч")
+    print(f"\n  Lunar flyby: {min_moon_km:.0f} km at t={t_flyby_h:.1f} h")
 
     if i_flyby + 10 < len(r_earth):
         r_earth_post = r_earth[i_flyby:]
@@ -204,51 +204,51 @@ def main():
         i_return = i_flyby + i_return_rel
         min_earth_km = r_earth[i_return] / 1e3
         t_return_h = result['t'][i_return] / 3600
-        print(f"  Возврат к Земле: {min_earth_km:.0f} км при t={t_return_h:.1f} ч")
+        print(f"  Earth return: {min_earth_km:.0f} km at t={t_return_h:.1f} h")
     else:
         min_earth_km = float('nan')
         t_return_h = float('nan')
-        print("  Возврат к Земле: не обнаружен")
+        print("  Earth return: not detected")
 
     csv_path = os.path.join(OUT_DIR, 'free_return_ic.csv')
     with open(csv_path, 'w', newline='') as f:
         w = csv.writer(f)
-        w.writerow(['параметр', 'значение', 'единица'])
-        w.writerow(['угол', f'{ANGLE_DEG:.2f}', 'град'])
-        w.writerow(['v_TLI', f'{V_TLI_KMS:.4f}', 'км/с'])
-        w.writerow(['x0', f'{X0_M / 1e6:.10f}', 'тыс.км'])
-        w.writerow(['y0', f'{Y0_M / 1e6:.10f}', 'тыс.км'])
-        w.writerow(['vx0', f'{VX0_MS / 1e3:.10f}', 'км/с'])
-        w.writerow(['vy0', f'{VY0_MS / 1e3:.10f}', 'км/с'])
-        w.writerow(['мин_расст_Луна_км', f'{min_moon_km:.0f}', 'км'])
-        w.writerow(['t_пролёт', f'{t_flyby_h:.1f}', 'часы'])
-        w.writerow(['мин_расст_Земля_км', f'{min_earth_km:.0f}', 'км'])
-        w.writerow(['t_возврат', f'{t_return_h:.1f}', 'часы'])
-    print(f"Сохранено: {csv_path}")
+        w.writerow(['parameter', 'value', 'unit'])
+        w.writerow(['angle', f'{ANGLE_DEG:.2f}', 'deg'])
+        w.writerow(['v_TLI', f'{V_TLI_KMS:.4f}', 'km/s'])
+        w.writerow(['x0', f'{X0_M / 1e6:.10f}', 'Tkm'])
+        w.writerow(['y0', f'{Y0_M / 1e6:.10f}', 'Tkm'])
+        w.writerow(['vx0', f'{VX0_MS / 1e3:.10f}', 'km/s'])
+        w.writerow(['vy0', f'{VY0_MS / 1e3:.10f}', 'km/s'])
+        w.writerow(['min_dist_moon_km', f'{min_moon_km:.0f}', 'km'])
+        w.writerow(['t_flyby', f'{t_flyby_h:.1f}', 'hours'])
+        w.writerow(['min_dist_earth_km', f'{min_earth_km:.0f}', 'km'])
+        w.writerow(['t_return', f'{t_return_h:.1f}', 'hours'])
+    print(f"Saved: {csv_path}")
 
     fig, ax = plt.subplots(figsize=(10, 8))
 
-    ax.plot(pos_tkm[:, 0], pos_tkm[:, 1], 'b-', linewidth=0.8, label='Траектория')
+    ax.plot(pos_tkm[:, 0], pos_tkm[:, 1], 'b-', linewidth=0.8, label='Trajectory')
 
-    ax.plot(pos_tkm[0, 0], pos_tkm[0, 1], 'go', markersize=8, label='Старт', zorder=10)
+    ax.plot(pos_tkm[0, 0], pos_tkm[0, 1], 'go', markersize=8, label='Start', zorder=10)
     ax.plot(pos_tkm[i_flyby, 0], pos_tkm[i_flyby, 1], 'r*', markersize=12,
-            label=f'Пролёт Луны ({min_moon_km:.0f} км)', zorder=10)
+            label=f'Lunar flyby ({min_moon_km:.0f} km)', zorder=10)
     if not math.isnan(t_return_h):
         ax.plot(pos_tkm[i_return, 0], pos_tkm[i_return, 1], 'ms', markersize=8,
-                label=f'Возврат к Земле ({min_earth_km:.0f} км)', zorder=10)
+                label=f'Earth return ({min_earth_km:.0f} km)', zorder=10)
 
     earth_x = -engine.d_E / 1e6
     ax.plot(earth_x, 0, 'o', color='#2196F3', markersize=10, zorder=5)
-    ax.annotate('Земля', (earth_x, 4), fontsize=9, ha='center', color='#2196F3')
+    ax.annotate('Earth', (earth_x, 4), fontsize=9, ha='center', color='#2196F3')
 
     moon_x = engine.d_M / 1e6
     ax.plot(moon_x, 0, 'o', color='gray', markersize=6, zorder=5)
-    ax.annotate('Луна', (moon_x, 4), fontsize=9, ha='center', color='gray')
+    ax.annotate('Moon', (moon_x, 4), fontsize=9, ha='center', color='gray')
 
-    ax.set_xlabel('x (тыс. км)')
-    ax.set_ylabel('y (тыс. км)')
-    ax.set_title(f'Свободный возврат (v={V_TLI_KMS:.2f} км/с, '
-                 f'угол={ANGLE_DEG:.1f}°, T={t_return_h:.0f} ч)')
+    ax.set_xlabel('x (Tkm)')
+    ax.set_ylabel('y (Tkm)')
+    ax.set_title(f'Free return (v={V_TLI_KMS:.2f} km/s, '
+                 f'angle={ANGLE_DEG:.1f}°, T={t_return_h:.0f} h)')
     ax.legend(loc='lower left')
     ax.set_aspect('equal')
     ax.grid(True, alpha=0.3)
@@ -256,10 +256,10 @@ def main():
     png_path = os.path.join(OUT_DIR, 'free_return_trajectory.png')
     fig.savefig(png_path, dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print(f"Сохранено: {png_path}")
+    print(f"Saved: {png_path}")
 
     print(f"\n{'='*60}")
-    print("Анализ чувствительности: v_TLI ± 50 м/с")
+    print("Sensitivity analysis: v_TLI ± 50 m/s")
     print(f"{'='*60}")
     sens_rows = run_sensitivity()
     save_sensitivity_csv(sens_rows)

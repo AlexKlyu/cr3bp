@@ -1,9 +1,9 @@
 """
-Эксперимент 06: Хаотическая чувствительность вблизи L1.
+Experiment 06: Chaotic Sensitivity near L1.
 
-16 траекторий стартуют из L1 со скоростью v=10 м/с в разных направлениях.
-Базовой скорости нет — каждый импульс определяет судьбу траектории.
-Интеграция 30 суток, Верле dt=30 с.
+16 trajectories launch from L1 with speed v=10 m/s in different directions.
+No base velocity — each impulse determines the trajectory fate.
+Integration 30 days, Verlet dt=30 s.
 """
 
 import os
@@ -30,29 +30,29 @@ DV = 10.0
 
 def main():
     L1_m = bisect(-engine.d_E + 1e3, engine.d_M - 1e3)
-    print(f"L1 = {L1_m / 1e6:.6f} тыс. км")
+    print(f"L1 = {L1_m / 1e6:.6f} Tkm")
 
     angles = np.linspace(0, 2 * np.pi, N_PERT, endpoint=False)
     results = []
     colors = plt.cm.hsv(np.linspace(0, 1, N_PERT, endpoint=False))
 
-    print(f"Интеграция {N_PERT} траекторий (v={DV} м/с, {T_DAYS} суток)...")
+    print(f"Integrating {N_PERT} trajectories (v={DV} m/s, {T_DAYS} days)...")
     for i, angle in enumerate(angles):
         vx = DV * np.cos(angle)
         vy = DV * np.sin(angle)
         state = [L1_m, 0.0, 0.0, vx, vy, 0.0]
         result = engine.run_trajectory(state, T_SEC, DT, integrator='verlet')
         results.append(result)
-        fate = "ОК"
+        fate = "OK"
         if result['crush'] == 1:
-            fate = "Земля"
+            fate = "Earth"
         elif result['crush'] == 2:
-            fate = "Луна"
+            fate = "Moon"
         t_end_days = result['t'][-1] / 86400
         pos_final = result['pos'][-1] / 1e6
-        print(f"  {i+1:2d}) угол={np.degrees(angle):5.1f}°  "
-              f"исход={fate:<6s}  t={t_end_days:5.1f} сут  "
-              f"конец=({pos_final[0]:.0f}, {pos_final[1]:.0f}) тыс.км")
+        print(f"  {i+1:2d}) angle={np.degrees(angle):5.1f}°  "
+              f"fate={fate:<6s}  t={t_end_days:5.1f} days  "
+              f"end=({pos_final[0]:.0f}, {pos_final[1]:.0f}) Tkm")
 
     fig, ax = plt.subplots(figsize=(10, 9))
 
@@ -66,26 +66,26 @@ def main():
 
     ax.plot(L1_m / 1e6, 0, 'k^', markersize=12, zorder=20, label='L1')
     ax.plot(-engine.d_E / 1e6, 0, 'o', color='#2196F3', markersize=10, zorder=20)
-    ax.annotate('Земля', (-engine.d_E / 1e6, 0), fontsize=9,
+    ax.annotate('Earth', (-engine.d_E / 1e6, 0), fontsize=9,
                 ha='center', va='bottom', xytext=(0, 8), textcoords='offset points',
                 color='#2196F3')
     ax.plot(engine.d_M / 1e6, 0, 'o', color='gray', markersize=8, zorder=20)
-    ax.annotate('Луна', (engine.d_M / 1e6, 0), fontsize=9,
+    ax.annotate('Moon', (engine.d_M / 1e6, 0), fontsize=9,
                 ha='center', va='bottom', xytext=(0, 8), textcoords='offset points',
                 color='gray')
 
-    ax.set_xlabel('x (тыс. км)')
-    ax.set_ylabel('y (тыс. км)')
-    ax.set_title(f'Хаос вблизи L1: {N_PERT} траекторий, одна скорость ({DV} м/с), '
-                 f'разные направления, {T_DAYS} сут')
-    ax.legend(fontsize=8, title='Направление', loc='best')
+    ax.set_xlabel('x (Tkm)')
+    ax.set_ylabel('y (Tkm)')
+    ax.set_title(f'Chaos near L1: {N_PERT} trajectories, same speed ({DV} m/s), '
+                 f'different directions, {T_DAYS} days')
+    ax.legend(fontsize=8, title='Direction', loc='best')
     ax.grid(True, alpha=0.3)
     ax.set_aspect('equal')
 
     png_path = os.path.join(OUT_DIR, 'chaos_fan.png')
     fig.savefig(png_path, dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print(f"Сохранено: {png_path}")
+    print(f"Saved: {png_path}")
 
     divergences = []
     for i in range(N_PERT):
@@ -99,7 +99,7 @@ def main():
     FIT_T_MAX = 5.0
 
     def _compute_r_squared(t_fit, log_dr, coeffs):
-        """Вычисляет R² для линейного фита."""
+        """Compute R² for a linear fit."""
         fitted = np.polyval(coeffs, t_fit)
         ss_res = np.sum((log_dr - fitted) ** 2)
         ss_tot = np.sum((log_dr - np.mean(log_dr)) ** 2)
@@ -129,22 +129,22 @@ def main():
         lam_std = np.std(lyapunov_exponents)
         r2_mean = np.mean(r_squared_values)
         tau_days = 1.0 / lam_mean
-        print(f"\n── Показатель Ляпунова ──")
-        print(f"  λ = {lam_mean:.2f} ± {lam_std:.2f} сут⁻¹  ({len(lyapunov_exponents)} пар)")
-        print(f"  R² (среднее) = {r2_mean:.4f}")
-        print(f"  Время Ляпунова τ = 1/λ = {tau_days:.1f} суток")
-        print(f"  Интерпретация: предсказуемость траектории вблизи L1 ~ {tau_days:.0f} суток")
-        print(f"\n── Сравнение с теорией ──")
-        print(f"  λ_теор (линеаризация L1) ≈ {LAMBDA_THEORY_LOW}–{LAMBDA_THEORY_HIGH} сут⁻¹  "
-              f"(τ ≈ 3–4 суток)")
-        print(f"  λ_изм  (наш эксперимент) = {lam_mean:.2f} сут⁻¹")
+        print(f"\n── Lyapunov Exponent ──")
+        print(f"  λ = {lam_mean:.2f} ± {lam_std:.2f} day⁻¹  ({len(lyapunov_exponents)} pairs)")
+        print(f"  R² (mean) = {r2_mean:.4f}")
+        print(f"  Lyapunov time τ = 1/λ = {tau_days:.1f} days")
+        print(f"  Interpretation: trajectory predictability near L1 ~ {tau_days:.0f} days")
+        print(f"\n── Comparison with theory ──")
+        print(f"  λ_theory (L1 linearization) ≈ {LAMBDA_THEORY_LOW}–{LAMBDA_THEORY_HIGH} day⁻¹  "
+              f"(τ ≈ 3–4 days)")
+        print(f"  λ_measured (this experiment) = {lam_mean:.2f} day⁻¹")
         ratio = lam_mean / LAMBDA_THEORY_MID
-        print(f"  Отношение λ_изм / λ_теор ≈ {ratio:.1f}×")
-        print(f"  Причина расхождения: конечные возмущения ({DV} м/с) зондируют "
-              f"нелинейную область, где расхождение быстрее линеаризации.")
+        print(f"  Ratio λ_meas / λ_theory ≈ {ratio:.1f}×")
+        print(f"  Reason for discrepancy: finite perturbations ({DV} m/s) probe "
+              f"the nonlinear regime where divergence is faster than linearization.")
 
         FIT_WINDOWS = [(0.5, 3.0), (0.5, 5.0), (0.5, 7.0)]
-        print(f"\n── Чувствительность λ к окну фита ──")
+        print(f"\n── λ sensitivity to fit window ──")
         for t_lo, t_hi in FIT_WINDOWS:
             lam_window = []
             for (t_d, dr_k) in divergences:
@@ -155,10 +155,10 @@ def main():
                 if c[0] > 0:
                     lam_window.append(c[0])
             if lam_window:
-                print(f"  [{t_lo}–{t_hi}] сут:  λ = {np.mean(lam_window):.2f} ± "
-                      f"{np.std(lam_window):.2f} сут⁻¹  ({len(lam_window)} пар)")
+                print(f"  [{t_lo}–{t_hi}] days:  λ = {np.mean(lam_window):.2f} ± "
+                      f"{np.std(lam_window):.2f} day⁻¹  ({len(lam_window)} pairs)")
             else:
-                print(f"  [{t_lo}–{t_hi}] сут:  недостаточно данных")
+                print(f"  [{t_lo}–{t_hi}] days:  insufficient data")
 
     fig, ax = plt.subplots(figsize=(10, 5))
 
@@ -178,23 +178,23 @@ def main():
         dr0_median = np.median(dr0_values) if dr0_values else 1.0
         dr_fit = dr0_median * np.exp(lam_mean * (t_fit_line - FIT_T_MIN))
         ax.semilogy(t_fit_line, dr_fit, 'k--', linewidth=2.0, alpha=0.7,
-                    label=f'e$^{{\\lambda t}}$, λ={lam_mean:.1f} сут$^{{-1}}$ '
-                          f'(R²={r2_mean:.3f}), τ={tau_days:.1f} сут')
+                    label=f'e$^{{\\lambda t}}$, λ={lam_mean:.1f} day$^{{-1}}$ '
+                          f'(R²={r2_mean:.3f}), τ={tau_days:.1f} days')
         dr_theory = dr0_median * np.exp(LAMBDA_THEORY_MID * (t_fit_line - FIT_T_MIN))
         ax.semilogy(t_fit_line, dr_theory, 'k:', linewidth=1.5, alpha=0.5,
-                    label=f'Линеаризация L1: λ≈{LAMBDA_THEORY_MID:.2f} сут$^{{-1}}$')
+                    label=f'L1 linearization: λ≈{LAMBDA_THEORY_MID:.2f} day$^{{-1}}$')
         ax.axvspan(FIT_T_MIN, FIT_T_MAX, alpha=0.08, color='yellow')
 
-    ax.set_xlabel('Время (сутки)')
-    ax.set_ylabel('Расхождение между соседями (км)')
-    ax.set_title(f'Расхождение соседних траекторий (\u0394угол={360/N_PERT:.1f}°, v={DV} м/с)')
+    ax.set_xlabel('Time (days)')
+    ax.set_ylabel('Divergence between neighbors (km)')
+    ax.set_title(f'Neighboring trajectory divergence (\u0394angle={360/N_PERT:.1f}°, v={DV} m/s)')
     ax.legend(fontsize=7, loc='upper left')
     ax.grid(True, alpha=0.3)
 
     png_path = os.path.join(OUT_DIR, 'divergence.png')
     fig.savefig(png_path, dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print(f"Сохранено: {png_path}")
+    print(f"Saved: {png_path}")
 
     import csv
     csv_path = os.path.join(OUT_DIR, 'lyapunov.csv')
@@ -222,7 +222,7 @@ def main():
         w.writerow(['std', '', '', f'{lam_std:.4f}', ''])
         w.writerow(['lyapunov_time_days', '', '', f'{tau_days:.2f}', ''])
         w.writerow(['lambda_theory_range', '', '', f'{LAMBDA_THEORY_LOW}-{LAMBDA_THEORY_HIGH}', ''])
-    print(f"Сохранено: {csv_path}")
+    print(f"Saved: {csv_path}")
 
 
 if __name__ == '__main__':
