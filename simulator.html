@@ -43,6 +43,22 @@
         .control-group { margin-bottom: 12px; }
         .control-group label { display: block; margin-bottom: 4px; color: #8b949e; font-size: 12px; font-weight: 500; }
         .control-group input, .control-group select { width: 100%; padding: 8px; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; border-radius: 4px; font-family: inherit; font-size: 14px; }
+        /* Checkboxes and radios must not stretch to the full column width -
+           otherwise their label is pushed onto the next line. */
+        .control-group input[type="checkbox"], .control-group input[type="radio"],
+        label input[type="checkbox"], label input[type="radio"] {
+            width: auto;
+            padding: 0;
+            margin-right: 4px;
+            vertical-align: middle;
+            accent-color: #2da87e;
+        }
+        .control-group label:has(> input[type="checkbox"]),
+        .control-group label:has(> input[type="radio"]) {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
         .control-group input:focus, .control-group select:focus { border-color: #8b949e; outline: none; }
         details { margin-bottom: 12px; }
         summary { cursor: pointer; padding: 8px; background: #1c2128; border-radius: 4px; font-weight: 600; color: #c9d1d9; position: relative; }
@@ -220,9 +236,9 @@
     <link rel="alternate" hreflang="en" href="https://rocketlauncher.space/simulator">
     <link rel="alternate" hreflang="ru" href="https://rocketlauncher.space/simulator?lang=ru">
     <link rel="alternate" hreflang="x-default" href="https://rocketlauncher.space/simulator">
-    <link rel="stylesheet" href="lib/i18n.css?v=1">
-    <script src="lib/i18n.simulator.js?v=1"></script>
-    <script src="lib/i18n.js?v=1"></script>
+    <link rel="stylesheet" href="lib/i18n.css?v=2">
+    <script src="lib/i18n.simulator.js?v=2"></script>
+    <script src="lib/i18n.js?v=2"></script>
 </head>
 <body>
     <div id="container"></div>
@@ -241,7 +257,10 @@
     <div id="hideControls" class="panel-hide" onclick="togglePanel('controls')">‹</div>
     <div id="hideInfo" class="panel-hide" onclick="togglePanel('info')">›</div>
     <div id="controls">
-        <a href="/" class="back-home" style="display:inline-flex; align-items:center; gap:4px; color:#8b949e; text-decoration:none; font-size:12px; margin-bottom:4px;" onmouseover="this.style.color='#c9d1d9'" onmouseout="this.style.color='#8b949e'" data-i18n="sim.home">← На главную</a>
+        <div class="panel-topbar">
+            <a href="/" class="back-home" style="display:inline-flex; align-items:center; gap:4px; color:#8b949e; text-decoration:none; font-size:12px; margin-bottom:4px;" onmouseover="this.style.color='#c9d1d9'" onmouseout="this.style.color='#8b949e'" data-i18n="sim.home">← На главную</a>
+            <div id="langSwitch" class="lang-inline"></div>
+        </div>
         <h2 style="margin-top:0;" data-i18n="sim.cr3bp_simulator">CR3BP Симулятор</h2>
 
         <div class="control-group">

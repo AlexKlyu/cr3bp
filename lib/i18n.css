@@ -31,3 +31,22 @@
     #langSwitch { top: 8px; right: 8px; }
     #langSwitch .lang-btn { padding: 4px 7px; font-size: 10px; }
 }
+
+/* Inline placement: when a page provides its own #langSwitch container
+   (e.g. inside the simulator's control panel) the switcher sits in the
+   normal flow instead of floating over the page. */
+#langSwitch.lang-inline {
+    position: static;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    backdrop-filter: none;
+}
+.panel-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.panel-topbar h2 { margin: 0; }
