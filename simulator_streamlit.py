@@ -5,6 +5,45 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 
+import st_i18n
+
+STRINGS = {
+    "page_title":     {"ru": "CR3BP Симулятор", "en": "CR3BP Simulator"},
+    "params":         {"ru": "Параметры", "en": "Parameters"},
+    "pos_header":     {"ru": "Начальное положение (тыс. км)", "en": "Initial position (10³ km)"},
+    "vel_header":     {"ru": "Начальная скорость (км/с)", "en": "Initial velocity (km/s)"},
+    "method_header":  {"ru": "Метод интегрирования", "en": "Integration method"},
+    "method":         {"ru": "Метод", "en": "Method"},
+    "simtime_header": {"ru": "Время симуляции", "en": "Simulation time"},
+    "time_s":         {"ru": "Время (с)", "en": "Time (s)"},
+    "engine_header":  {"ru": "Двигатель", "en": "Engine"},
+    "engine_enable":  {"ru": "Включить двигатель", "en": "Enable engine"},
+    "fx":             {"ru": "Fx (Н)", "en": "Fx (N)"},
+    "fy":             {"ru": "Fy (Н)", "en": "Fy (N)"},
+    "fz":             {"ru": "Fz (Н)", "en": "Fz (N)"},
+    "mass":           {"ru": "Масса (кг)", "en": "Mass (kg)"},
+    "engine_on":      {"ru": "Вкл (с)", "en": "On (s)"},
+    "engine_off":     {"ru": "Выкл (с)", "en": "Off (s)"},
+    "spinner":        {"ru": "Вычисление траектории...", "en": "Computing trajectory..."},
+    "results_title":  {"ru": "Результаты симуляции", "en": "Simulation results"},
+    "flight_time":    {"ru": "Время полёта", "en": "Flight time"},
+    "unit_s":         {"ru": "с", "en": "s"},
+    "points":         {"ru": "Точек траектории", "en": "Trajectory points"},
+    "crush_earth":    {"ru": "Столкновение с Землёй", "en": "Collision with Earth"},
+    "crush_moon":     {"ru": "Столкновение с Луной", "en": "Collision with the Moon"},
+    "status":         {"ru": "Статус", "en": "Status"},
+    "motion_params":  {"ru": "Параметры движения", "en": "Motion parameters"},
+    "plot_coords":    {"ru": "Координаты (км)", "en": "Coordinates (km)"},
+    "plot_vel":       {"ru": "Скорости (м/с)", "en": "Velocities (m/s)"},
+    "plot_mod":       {"ru": "Модули: расстояние (км), скорость (м/с), ускорение (м/с²)",
+                       "en": "Magnitudes: distance (km), velocity (m/s), acceleration (m/s²)"},
+    "axis_t":         {"ru": "t (с)", "en": "t (s)"},
+}
+
+LANG = st_i18n.resolve_lang()
+t = st_i18n.translator(STRINGS, LANG)
+
+
 with open("config.json", "r") as f:
     config = json.load(f)
 
@@ -33,8 +72,8 @@ def compute_trajectory(x0, y0, z0, vx0, vy0, vz0, t_end, dt=1.0,
                        F_x=0.0, F_y=0.0, F_z=0.0, M_0=1.0, t_on=0.0, t_off=0.0,
                        a0_x=0.0, a0_y=0.0, a0_z=0.0, method='Verlet'):
     """
-    Численное интегрирование CR3BP (Velocity Verlet).
-    Оптимизировано с предвычислением констант.
+    Numerical integration of the CR3BP (velocity Verlet).
+    Optimised by pre-computing constants.
     """
     n_steps = int(t_end / dt) + 1
 
@@ -146,7 +185,7 @@ def compute_trajectory(x0, y0, z0, vx0, vy0, vz0, t_end, dt=1.0,
 
 
 def create_2d_plots(data):
-    """2D графики параметров"""
+    """2D parameter plots."""
 
     time = data['time']
 
@@ -154,55 +193,58 @@ def create_2d_plots(data):
     fig_pos.add_trace(go.Scatter(x=time, y=data['cx']/1000, name='X', line=dict(color='red')), row=1, col=1)
     fig_pos.add_trace(go.Scatter(x=time, y=data['cy']/1000, name='Y', line=dict(color='green')), row=1, col=2)
     fig_pos.add_trace(go.Scatter(x=time, y=data['cz']/1000, name='Z', line=dict(color='blue')), row=1, col=3)
-    fig_pos.update_layout(height=300, title_text='Координаты (км)', showlegend=False)
-    fig_pos.update_xaxes(title_text='t (с)')
+    fig_pos.update_layout(height=300, title_text=t("plot_coords"), showlegend=False)
+    fig_pos.update_xaxes(title_text=t("axis_t"))
 
     fig_vel = make_subplots(rows=1, cols=3, subplot_titles=('Vx(t)', 'Vy(t)', 'Vz(t)'))
     fig_vel.add_trace(go.Scatter(x=time, y=data['velx'], name='Vx', line=dict(color='red')), row=1, col=1)
     fig_vel.add_trace(go.Scatter(x=time, y=data['vely'], name='Vy', line=dict(color='green')), row=1, col=2)
     fig_vel.add_trace(go.Scatter(x=time, y=data['velz'], name='Vz', line=dict(color='blue')), row=1, col=3)
-    fig_vel.update_layout(height=300, title_text='Скорости (м/с)', showlegend=False)
-    fig_vel.update_xaxes(title_text='t (с)')
+    fig_vel.update_layout(height=300, title_text=t("plot_vel"), showlegend=False)
+    fig_vel.update_xaxes(title_text=t("axis_t"))
 
     fig_mod = make_subplots(rows=1, cols=3, subplot_titles=('|R|(t)', '|V|(t)', '|A|(t)'))
     fig_mod.add_trace(go.Scatter(x=time, y=data['radius']/1000, name='R', line=dict(color='cyan')), row=1, col=1)
     fig_mod.add_trace(go.Scatter(x=time, y=data['fullvelocity'], name='V', line=dict(color='orange')), row=1, col=2)
     fig_mod.add_trace(go.Scatter(x=time, y=data['fullacceleration'], name='A', line=dict(color='magenta')), row=1, col=3)
-    fig_mod.update_layout(height=300, title_text='Модули: расстояние (км), скорость (м/с), ускорение (м/с²)', showlegend=False)
-    fig_mod.update_xaxes(title_text='t (с)')
+    fig_mod.update_layout(height=300, title_text=t("plot_mod"), showlegend=False)
+    fig_mod.update_xaxes(title_text=t("axis_t"))
 
     return fig_pos, fig_vel, fig_mod
 
 
-st.set_page_config(page_title="CR3BP Симулятор", layout="wide")
+st.set_page_config(page_title=t("page_title"), layout="wide")
 
-st.sidebar.title("Параметры")
+LANG = st_i18n.language_picker(LANG)
+t = st_i18n.translator(STRINGS, LANG)
 
-st.sidebar.subheader("Начальное положение (тыс. км)")
+st.sidebar.title(t("params"))
+
+st.sidebar.subheader(t("pos_header"))
 x0_tkm = st.sidebar.number_input("x₀", value=DEFAULT_X0_TKM, step=0.1, format="%.3f")
 y0_tkm = st.sidebar.number_input("y₀", value=DEFAULT_Y0_TKM, step=0.1, format="%.3f")
 z0_tkm = st.sidebar.number_input("z₀", value=DEFAULT_Z0_TKM, step=0.1, format="%.3f")
 
-st.sidebar.subheader("Начальная скорость (км/с)")
+st.sidebar.subheader(t("vel_header"))
 vx0_kms = st.sidebar.number_input("Vx₀", value=DEFAULT_VX0_KMS, step=0.1, format="%.3f")
 vy0_kms = st.sidebar.number_input("Vy₀", value=DEFAULT_VY0_KMS, step=0.1, format="%.3f")
 vz0_kms = st.sidebar.number_input("Vz₀", value=DEFAULT_VZ0_KMS, step=0.1, format="%.3f")
 
-st.sidebar.subheader("Метод интегрирования")
-integrator = st.sidebar.radio("Метод", ["Verlet", "Euler"], horizontal=True)
+st.sidebar.subheader(t("method_header"))
+integrator = st.sidebar.radio(t("method"), ["Verlet", "Euler"], horizontal=True)
 
-st.sidebar.subheader("Время симуляции")
-t_end = st.sidebar.slider("Время (с)", 100, 10000, 3600, 100)
+st.sidebar.subheader(t("simtime_header"))
+t_end = st.sidebar.slider(t("time_s"), 100, 10000, 3600, 100)
 
-st.sidebar.subheader("Двигатель")
-use_engine = st.sidebar.checkbox("Включить двигатель")
+st.sidebar.subheader(t("engine_header"))
+use_engine = st.sidebar.checkbox(t("engine_enable"))
 if use_engine:
-    F_x = st.sidebar.number_input("Fx (Н)", value=0, step=100)
-    F_y = st.sidebar.number_input("Fy (Н)", value=1000, step=100)
-    F_z = st.sidebar.number_input("Fz (Н)", value=0, step=100)
-    M_0 = st.sidebar.number_input("Масса (кг)", value=1000, min_value=1, step=100)
-    t_on = st.sidebar.number_input("Вкл (с)", value=0, step=100)
-    t_off = st.sidebar.number_input("Выкл (с)", value=1000, step=100)
+    F_x = st.sidebar.number_input(t("fx"), value=0, step=100)
+    F_y = st.sidebar.number_input(t("fy"), value=1000, step=100)
+    F_z = st.sidebar.number_input(t("fz"), value=0, step=100)
+    M_0 = st.sidebar.number_input(t("mass"), value=1000, min_value=1, step=100)
+    t_on = st.sidebar.number_input(t("engine_on"), value=0, step=100)
+    t_off = st.sidebar.number_input(t("engine_off"), value=1000, step=100)
 else:
     F_x, F_y, F_z, M_0, t_on, t_off = 0, 0, 0, 1, 0, 0
 
@@ -213,7 +255,7 @@ vx0 = vx0_kms * 1000
 vy0 = vy0_kms * 1000
 vz0 = vz0_kms * 1000
 
-with st.spinner("Вычисление траектории..."):
+with st.spinner(t("spinner")):
     result = compute_trajectory(
         x0, y0, z0, vx0, vy0, vz0, t_end,
         F_x=F_x, F_y=F_y, F_z=F_z, M_0=M_0, t_on=t_on, t_off=t_off,
@@ -223,20 +265,20 @@ with st.spinner("Вычисление траектории..."):
 
 if result:
 
-    st.title("Результаты симуляции")
+    st.title(t("results_title"))
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Время полёта", f"{result['time'][-1]:.0f} с")
-    col2.metric("Точек траектории", f"{result['n_points']}")
+    col1.metric(t("flight_time"), f"{result['time'][-1]:.0f} {t('unit_s')}")
+    col2.metric(t("points"), f"{result['n_points']}")
 
     status = "OK"
     if result['crush'] == 1:
-        status = "Столкновение с Землёй"
+        status = t("crush_earth")
     elif result['crush'] == 2:
-        status = "Столкновение с Луной"
-    col3.metric("Статус", status)
+        status = t("crush_moon")
+    col3.metric(t("status"), status)
 
-    st.subheader("Параметры движения")
+    st.subheader(t("motion_params"))
     fig_pos, fig_vel, fig_mod = create_2d_plots(result)
     st.plotly_chart(fig_pos, use_container_width=True)
     st.plotly_chart(fig_vel, use_container_width=True)

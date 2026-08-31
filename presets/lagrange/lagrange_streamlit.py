@@ -1,7 +1,56 @@
 """
-Визуализация сходимости алгоритмов вычисления точек Лагранжа (CR3BP Земля-Луна).
-Интерактивный слайдер для пошагового просмотра итераций.
+Convergence visualisation for the Lagrange-point algorithms (CR3BP Earth-Moon).
+Interactive slider for stepping through the iterations.
 """
+
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+import st_i18n
+
+STRINGS = {
+    "page_title":    {"ru": "Точки Лагранжа — сходимость", "en": "Lagrange points — convergence"},
+    "title":         {"ru": "Визуализация сходимости: точки Лагранжа (CR3BP)",
+                      "en": "Convergence visualisation: Lagrange points (CR3BP)"},
+    "point":         {"ru": "Точка Лагранжа", "en": "Lagrange point"},
+    "iteration":     {"ru": "Итерация", "en": "Iteration"},
+    "map_header":    {"ru": "Карта системы Земля—Луна", "en": "Map of the Earth—Moon system"},
+    "earth":         {"ru": "Земля", "en": "Earth"},
+    "moon":          {"ru": "Луна", "en": "Moon"},
+    "interval":      {"ru": "Интервал [a, b]", "en": "Interval [a, b]"},
+    "iter_path":     {"ru": "Путь итераций", "en": "Iteration path"},
+    "axis_x_tkm":    {"ru": "x (тыс. км)", "en": "x (10³ km)"},
+    "axis_y_tkm":    {"ru": "y (тыс. км)", "en": "y (10³ km)"},
+    "fx_title":      {"ru": "f(x) = ускорение на оси x — итерация",
+                      "en": "f(x) = acceleration along x — iteration"},
+    "axis_fx":       {"ru": "f(x) (м/с²)", "en": "f(x) (m/s²)"},
+    "current":       {"ru": "текущая", "en": "current"},
+    "conv_mid":      {"ru": "Сходимость середины интервала", "en": "Convergence of the interval midpoint"},
+    "iter_table":    {"ru": "Таблица итераций", "en": "Iteration table"},
+    "col_a_m":       {"ru": "a (м)", "en": "a (m)"},
+    "col_b_m":       {"ru": "b (м)", "en": "b (m)"},
+    "col_mid_m":     {"ru": "mid (м)", "en": "mid (m)"},
+    "col_fmid":      {"ru": "f(mid) (м/с²)", "en": "f(mid) (m/s²)"},
+    "col_a_tkm":     {"ru": "a (тыс. км)", "en": "a (10³ km)"},
+    "col_b_tkm":     {"ru": "b (тыс. км)", "en": "b (10³ km)"},
+    "col_mid_tkm":   {"ru": "mid (тыс. км)", "en": "mid (10³ km)"},
+    "accel_abs":     {"ru": "|ускорение|", "en": "|acceleration|"},
+    "conv_accel":    {"ru": "Сходимость |ускорения|", "en": "Convergence of |acceleration|"},
+    "axis_accel":    {"ru": "|a| (м/с²)", "en": "|a| (m/s²)"},
+    "iterations":    {"ru": "Итерации", "en": "Iterations"},
+    "closeup":       {"ru": "Крупный план: путь →", "en": "Close-up: path →"},
+    "col_x_m":       {"ru": "x (м)", "en": "x (m)"},
+    "col_y_m":       {"ru": "y (м)", "en": "y (m)"},
+    "col_ax":        {"ru": "ax (м/с²)", "en": "ax (m/s²)"},
+    "col_ay":        {"ru": "ay (м/с²)", "en": "ay (m/s²)"},
+    "col_x_tkm":     {"ru": "x (тыс. км)", "en": "x (10³ km)"},
+    "col_y_tkm":     {"ru": "y (тыс. км)", "en": "y (10³ km)"},
+    "col_a_abs":     {"ru": "|a| (м/с²)", "en": "|a| (m/s²)"},
+}
+
+LANG = st_i18n.resolve_lang()
+t = st_i18n.translator(STRINGS, LANG)
 
 import math
 import numpy as np
@@ -16,12 +65,16 @@ from lagrange import (
     compute_lagrange_points,
 )
 
-st.set_page_config(page_title="Точки Лагранжа — сходимость", layout="wide")
-st.title("Визуализация сходимости: точки Лагранжа (CR3BP)")
+st.set_page_config(page_title=t("page_title"), layout="wide")
+
+LANG = st_i18n.language_picker(LANG)
+t = st_i18n.translator(STRINGS, LANG)
+
+st.title(t("title"))
 
 
 def to_tkm(v):
-    """Метры → тыс. км."""
+    """Metres -> 10^3 km."""
     return v / 1e6
 
 
@@ -39,7 +92,7 @@ newton_params = {
     'L5': (D / 2 - d_E, -D * math.sin(math.pi / 3)),
 }
 
-selected = st.sidebar.selectbox("Точка Лагранжа", ["L1", "L2", "L3", "L4", "L5"])
+selected = st.sidebar.selectbox(t("point"), ["L1", "L2", "L3", "L4", "L5"])
 
 if selected in bisect_params:
     a0, b0 = bisect_params[selected]
@@ -49,21 +102,21 @@ else:
     trace = newton_2d_trace(x0, y0)
 
 max_iter = len(trace) - 1
-step = st.sidebar.number_input("Итерация", 0, max_iter, 0, step=1)
+step = st.sidebar.number_input(t("iteration"), 0, max_iter, 0, step=1)
 
-st.subheader("Карта системы Земля—Луна")
+st.subheader(t("map_header"))
 
 map_fig = go.Figure()
 
 map_fig.add_trace(go.Scatter(
     x=[to_tkm(-d_E)], y=[0], mode='markers+text',
-    marker=dict(size=16, color='deepskyblue'), text=['Земля'], textposition='bottom center',
-    name='Земля',
+    marker=dict(size=16, color='deepskyblue'), text=[t("earth")], textposition='bottom center',
+    name=t("earth"),
 ))
 map_fig.add_trace(go.Scatter(
     x=[to_tkm(d_M)], y=[0], mode='markers+text',
-    marker=dict(size=12, color='gray'), text=['Луна'], textposition='bottom center',
-    name='Луна',
+    marker=dict(size=12, color='gray'), text=[t("moon")], textposition='bottom center',
+    name=t("moon"),
 ))
 
 for name, (px, py) in points.items():
@@ -79,7 +132,7 @@ if selected in bisect_params:
     map_fig.add_trace(go.Scatter(
         x=[to_tkm(a_cur), to_tkm(b_cur)], y=[0, 0],
         mode='lines', line=dict(color='orange', width=6),
-        name='Интервал [a, b]',
+        name=t("interval"),
     ))
 else:
     cur_x, cur_y = trace[step][0], trace[step][1]
@@ -88,13 +141,13 @@ else:
     map_fig.add_trace(go.Scatter(
         x=xs, y=ys, mode='lines+markers',
         marker=dict(size=4, color='green'), line=dict(dash='dot', color='green'),
-        name='Путь итераций',
+        name=t("iter_path"),
     ))
 
 map_fig.add_trace(go.Scatter(
     x=[to_tkm(cur_x)], y=[to_tkm(cur_y)],
     mode='markers', marker=dict(size=16, color='red', symbol='star'),
-    name=f'Итерация {step}',
+    name=f'{t("iteration")} {step}',
 ))
 
 lx, ly = points[selected]
@@ -122,7 +175,7 @@ pad_x = max((x_max - x_min) * 0.15, 10)
 pad_y = max((y_max - y_min) * 0.15, 10)
 
 map_fig.update_layout(
-    xaxis_title='x (тыс. км)', yaxis_title='y (тыс. км)',
+    xaxis_title=t("axis_x_tkm"), yaxis_title=t("axis_y_tkm"),
     height=500, showlegend=True,
     xaxis=dict(range=[x_min - pad_x, x_max + pad_x]),
     yaxis=dict(range=[y_min - pad_y, y_max + pad_y], scaleanchor='x'),
@@ -151,11 +204,11 @@ if selected in bisect_params:
     fx_fig.add_trace(go.Scatter(
         x=[to_tkm(m_cur)], y=[f_cur],
         mode='markers', marker=dict(size=12, color='red', symbol='x'),
-        name=f'mid (итерация {step})',
+        name=f'mid ({t("iteration").lower()} {step})',
     ))
     fx_fig.update_layout(
-        title=f'f(x) = ускорение на оси x — итерация {step}',
-        xaxis_title='x (тыс. км)', yaxis_title='f(x) (м/с²)', height=450,
+        title=f'{t("fx_title")} {step}',
+        xaxis_title=t("axis_x_tkm"), yaxis_title=t("axis_fx"), height=450,
     )
     with col1:
         st.plotly_chart(fx_fig, use_container_width=True)
@@ -175,24 +228,24 @@ if selected in bisect_params:
     conv_fig.add_trace(go.Scatter(
         x=[step], y=[to_tkm(m_cur)],
         mode='markers', marker=dict(size=12, color='red', symbol='circle'),
-        name='текущая', showlegend=False,
+        name=t("current"), showlegend=False,
     ))
     conv_fig.update_layout(
-        title='Сходимость середины интервала',
-        xaxis_title='Итерация', yaxis_title='x (тыс. км)',
+        title=t("conv_mid"),
+        xaxis_title=t("iteration"), yaxis_title=t("axis_x_tkm"),
         xaxis=dict(range=[0, max_iter]), height=450,
     )
     with col2:
         st.plotly_chart(conv_fig, use_container_width=True)
 
-    st.subheader(f"Таблица итераций (0..{step})")
+    st.subheader(f'{t("iter_table")} (0..{step})')
     rows = trace[:step + 1]
-    df = pd.DataFrame(rows, columns=['a (м)', 'b (м)', 'mid (м)', 'f(mid) (м/с²)'])
-    df.index.name = 'Итерация'
-    df['a (тыс. км)'] = df['a (м)'] / 1e6
-    df['b (тыс. км)'] = df['b (м)'] / 1e6
-    df['mid (тыс. км)'] = df['mid (м)'] / 1e6
-    st.dataframe(df[['a (тыс. км)', 'b (тыс. км)', 'mid (тыс. км)', 'f(mid) (м/с²)']],
+    df = pd.DataFrame(rows, columns=[t("col_a_m"), t("col_b_m"), t("col_mid_m"), t("col_fmid")])
+    df.index.name = t("iteration")
+    df[t("col_a_tkm")] = df[t("col_a_m")] / 1e6
+    df[t("col_b_tkm")] = df[t("col_b_m")] / 1e6
+    df[t("col_mid_tkm")] = df[t("col_mid_m")] / 1e6
+    st.dataframe(df[[t("col_a_tkm"), t("col_b_tkm"), t("col_mid_tkm"), t("col_fmid")]],
                  use_container_width=True, height=300)
 
 else:
@@ -207,17 +260,17 @@ else:
     conv_fig = go.Figure()
     conv_fig.add_trace(go.Scatter(
         x=iters_so_far, y=accel_mag, mode='lines+markers',
-        name='|ускорение|', marker=dict(size=5), line=dict(color='royalblue'),
+        name=t("accel_abs"), marker=dict(size=5), line=dict(color='royalblue'),
     ))
     cur_mag = math.sqrt(ax_cur**2 + ay_cur**2)
     conv_fig.add_trace(go.Scatter(
         x=[step], y=[cur_mag],
         mode='markers', marker=dict(size=12, color='red'),
-        name='текущая', showlegend=False,
+        name=t("current"), showlegend=False,
     ))
     conv_fig.update_layout(
-        title='Сходимость |ускорения|',
-        xaxis_title='Итерация', yaxis_title='|a| (м/с²)',
+        title=t("conv_accel"),
+        xaxis_title=t("iteration"), yaxis_title=t("axis_accel"),
         yaxis_type='log', xaxis=dict(range=[0, max_iter]), height=450,
     )
     with col1:
@@ -229,7 +282,7 @@ else:
     path_fig.add_trace(go.Scatter(
         x=path_xs, y=path_ys, mode='lines+markers+text',
         text=[str(i) for i in range(step + 1)], textposition='top right',
-        marker=dict(size=6, color='green'), name='Итерации',
+        marker=dict(size=6, color='green'), name=t("iterations"),
     ))
     px, py = points[selected]
     path_fig.add_trace(go.Scatter(
@@ -237,19 +290,19 @@ else:
         marker=dict(size=12, color='red', symbol='star'), name=selected,
     ))
     path_fig.update_layout(
-        title=f'Крупный план: путь → {selected}',
-        xaxis_title='x (тыс. км)', yaxis_title='y (тыс. км)',
+        title=f'{t("closeup")} {selected}',
+        xaxis_title=t("axis_x_tkm"), yaxis_title=t("axis_y_tkm"),
         yaxis=dict(scaleanchor='x'), height=450,
     )
     with col2:
         st.plotly_chart(path_fig, use_container_width=True)
 
-    st.subheader(f"Таблица итераций (0..{step})")
+    st.subheader(f'{t("iter_table")} (0..{step})')
     rows = trace[:step + 1]
-    df = pd.DataFrame(rows, columns=['x (м)', 'y (м)', 'ax (м/с²)', 'ay (м/с²)'])
-    df.index.name = 'Итерация'
-    df['x (тыс. км)'] = df['x (м)'] / 1e6
-    df['y (тыс. км)'] = df['y (м)'] / 1e6
-    df['|a| (м/с²)'] = np.sqrt(df['ax (м/с²)']**2 + df['ay (м/с²)']**2)
-    st.dataframe(df[['x (тыс. км)', 'y (тыс. км)', 'ax (м/с²)', 'ay (м/с²)', '|a| (м/с²)']],
+    df = pd.DataFrame(rows, columns=[t("col_x_m"), t("col_y_m"), t("col_ax"), t("col_ay")])
+    df.index.name = t("iteration")
+    df[t("col_x_tkm")] = df[t("col_x_m")] / 1e6
+    df[t("col_y_tkm")] = df[t("col_y_m")] / 1e6
+    df[t("col_a_abs")] = np.sqrt(df[t("col_ax")]**2 + df[t("col_ay")]**2)
+    st.dataframe(df[[t("col_x_tkm"), t("col_y_tkm"), t("col_ax"), t("col_ay"), t("col_a_abs")]],
                  use_container_width=True, height=300)

@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://rocketlauncher.space/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rocketlauncher.space/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rocketlauncher.space/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rocketlauncher.space/"/>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://rocketlauncher.space/?lang=ru</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rocketlauncher.space/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rocketlauncher.space/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rocketlauncher.space/"/>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://rocketlauncher.space/simulator</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rocketlauncher.space/simulator"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rocketlauncher.space/simulator?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rocketlauncher.space/simulator"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://rocketlauncher.space/simulator?lang=ru</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rocketlauncher.space/simulator"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rocketlauncher.space/simulator?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rocketlauncher.space/simulator"/>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://rocketlauncher.space/streamlit/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rocketlauncher.space/streamlit/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rocketlauncher.space/streamlit/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rocketlauncher.space/streamlit/"/>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://rocketlauncher.space/lagrange/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://rocketlauncher.space/lagrange/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://rocketlauncher.space/lagrange/?lang=ru"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rocketlauncher.space/lagrange/"/>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

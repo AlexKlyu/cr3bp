@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="favicon.png">
-    <title>Симулятор траекторий — Задача трёх тел Земля–Луна</title>
+    <title data-i18n="sim.trajectory_simulator_earthmoon_thr">Симулятор траекторий — Задача трёх тел Земля–Луна</title>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; accent-color: #2da87e; }
@@ -111,6 +111,9 @@
         .preset-btn-share { background: transparent; color: #2da87e; border: 1px solid #30363d; }
         .preset-btn-share:hover { background: #101c18; border-color: #2da87e; }
     </style>
+    <link rel="stylesheet" href="lib/i18n.css?v=1">
+    <script src="lib/i18n.simulator.js?v=1"></script>
+    <script src="lib/i18n.js?v=1"></script>
 </head>
 <body>
     <div id="container"></div>
@@ -122,48 +125,48 @@
     </div>
 
     <div id="controls">
-        <h2>CR3BP Симулятор</h2>
+        <h2 data-i18n="sim.cr3bp_simulator">CR3BP Симулятор</h2>
 
         <div class="control-group">
-            <label>Сценарий</label>
+            <label data-i18n="sim.scenario">Сценарий</label>
             <div class="preset-row" style="margin-top:0;">
                 <select id="presetSelector" onchange="applyPreset(this.value)" style="flex:1; height:32px; padding:0 8px; border-radius:4px; border:1px solid #30363d; background:#0d1117; color:#c9d1d9; font-size:14px; font-family:inherit; min-width:0;">
-                    <option value="">— Выберите сценарий —</option>
-                    <option value="L1">Точка Лагранжа L1</option>
-                    <option value="L2">Точка Лагранжа L2</option>
-                    <option value="L3">Точка Лагранжа L3</option>
-                    <option value="L4">Точка Лагранжа L4</option>
-                    <option value="L5">Точка Лагранжа L5</option>
-                    <option value="e_orbit">Околоземная орбита</option>
-                    <option value="m_orbit">Окололунная орбита</option>
-                    <option value="l1_halo">Гало-орбита у L1</option>
-                    <option value="l2_halo">Гало-орбита у L2</option>
-                    <option value="apollo13">Свободный возврат (облёт Луны)</option>
-                    <option value="earth_moon_thrust">Перелёт Земля→Луна с тягой</option>
-                    <option value="l1_escape">Побег от L1 с микротягой</option>
-                    <option value="hohmann">Прямой перелёт к Луне</option>
-                    <option value="orbit_to_moon">Перелёт с орбиты к Луне (TLI)</option>
-                    <option value="l1_chaos">Хаос у L1</option>
-                    <option disabled>── Сравнение ──</option>
-                    <option value="l1_chaos_compare">Хаос у L1 (сравнение)</option>
-                    <option value="verlet_vs_euler">Верле vs Эйлер (гало L1)</option>
+                    <option value="" data-i18n="sim.select_a_scenario">— Выберите сценарий —</option>
+                    <option value="L1" data-i18n="sim.lagrange_point_l1">Точка Лагранжа L1</option>
+                    <option value="L2" data-i18n="sim.lagrange_point_l2">Точка Лагранжа L2</option>
+                    <option value="L3" data-i18n="sim.lagrange_point_l3">Точка Лагранжа L3</option>
+                    <option value="L4" data-i18n="sim.lagrange_point_l4">Точка Лагранжа L4</option>
+                    <option value="L5" data-i18n="sim.lagrange_point_l5">Точка Лагранжа L5</option>
+                    <option value="e_orbit" data-i18n="sim.earth_orbit">Околоземная орбита</option>
+                    <option value="m_orbit" data-i18n="sim.lunar_orbit">Окололунная орбита</option>
+                    <option value="l1_halo" data-i18n="sim.halo_orbit_at_l1">Гало-орбита у L1</option>
+                    <option value="l2_halo" data-i18n="sim.halo_orbit_at_l2">Гало-орбита у L2</option>
+                    <option value="apollo13" data-i18n="sim.free_return_lunar_flyby">Свободный возврат (облёт Луны)</option>
+                    <option value="earth_moon_thrust" data-i18n="sim.earthmoon_transfer_with_thrust">Перелёт Земля→Луна с тягой</option>
+                    <option value="l1_escape" data-i18n="sim.escape_from_l1_with_micro_thrust">Побег от L1 с микротягой</option>
+                    <option value="hohmann" data-i18n="sim.direct_transfer_to_the_moon">Прямой перелёт к Луне</option>
+                    <option value="orbit_to_moon" data-i18n="sim.orbit_to_moon_transfer_tli">Перелёт с орбиты к Луне (TLI)</option>
+                    <option value="l1_chaos" data-i18n="sim.chaos_at_l1">Хаос у L1</option>
+                    <option disabled data-i18n="sim.comparison">── Сравнение ──</option>
+                    <option value="l1_chaos_compare" data-i18n="sim.chaos_at_l1_comparison">Хаос у L1 (сравнение)</option>
+                    <option value="verlet_vs_euler" data-i18n="sim.verlet_vs_euler_halo_l1">Верле vs Эйлер (гало L1)</option>
                 </select>
-                <span id="deletePresetBtn" class="preset-btn preset-btn-del disabled" onclick="deleteUserPreset(document.getElementById('presetSelector').value)" title="Удалить">✕</span>
+                <span id="deletePresetBtn" class="preset-btn preset-btn-del disabled" onclick="deleteUserPreset(document.getElementById('presetSelector').value)" title="Удалить" data-i18n-attr-title="sim.delete">✕</span>
             </div>
             <div class="preset-row">
-                <input type="text" id="presetNameInput" placeholder="Имя сценария">
-                <span class="preset-btn preset-btn-save" onclick="saveUserPreset(document.getElementById('presetNameInput').value)" title="Сохранить">✓</span>
+                <input type="text" id="presetNameInput" placeholder="Имя сценария" data-i18n-attr-placeholder="sim.scenario_name">
+                <span class="preset-btn preset-btn-save" onclick="saveUserPreset(document.getElementById('presetNameInput').value)" title="Сохранить" data-i18n-attr-title="sim.save">✓</span>
             </div>
             <div class="preset-row">
-                <span id="shareLinkBtn" class="preset-btn preset-btn-share" style="width:100%; text-align:center;" onclick="paramsToHash()">Поделиться ссылкой</span>
+                <span id="shareLinkBtn" class="preset-btn preset-btn-share" style="width:100%; text-align:center;" onclick="paramsToHash()" data-i18n="sim.share_link">Поделиться ссылкой</span>
             </div>
         </div>
 
         <details>
-            <summary id="sumPosition">Начальное положение (тыс. км)</summary>
+            <summary id="sumPosition" data-i18n="sim.initial_position_103_km">Начальное положение (тыс. км)</summary>
             <div class="expander-content">
                 <div class="control-group">
-                    <label>X₀ (Земля ≈ -4.7, Луна ≈ 383)</label>
+                    <label data-i18n="sim.x0_earth_4_7_moon_383">X₀ (Земля ≈ -4.7, Луна ≈ 383)</label>
                     <input type="number" id="x0" value="326" step="10" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
@@ -178,7 +181,7 @@
         </details>
 
         <details>
-            <summary id="sumVelocity">Начальная скорость (км/с)</summary>
+            <summary id="sumVelocity" data-i18n="sim.initial_velocity_km_s">Начальная скорость (км/с)</summary>
             <div class="expander-content">
                 <div class="control-group">
                     <label>Vx₀</label>
@@ -200,41 +203,41 @@
         </details>
 
         <details>
-            <summary id="sumEngine">Двигатель</summary>
+            <summary id="sumEngine" data-i18n="sim.engine">Двигатель</summary>
             <div class="expander-content">
                 <div class="control-group">
-                    <label>Fx (Н)</label>
+                    <label data-i18n="sim.fx_n">Fx (Н)</label>
                     <input type="number" id="Fx" value="0" step="100" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
-                    <label>Fy (Н)</label>
+                    <label data-i18n="sim.fy_n">Fy (Н)</label>
                     <input type="number" id="Fy" value="0" step="100" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
-                    <label>Fz (Н)</label>
+                    <label data-i18n="sim.fz_n">Fz (Н)</label>
                     <input type="number" id="Fz" value="0" step="100" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
-                    <label>Масса КА (кг)</label>
+                    <label data-i18n="sim.spacecraft_mass_kg">Масса КА (кг)</label>
                     <input type="number" id="mass" min="1" value="500" step="100" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
-                    <label>Старт двигателя (ч от начала)</label>
+                    <label data-i18n="sim.engine_start_h_from_t0">Старт двигателя (ч от начала)</label>
                     <input type="number" id="tOn" min="0" value="0" step="1" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
-                    <label>Работа двигателя (с)</label>
+                    <label data-i18n="sim.burn_duration_s">Работа двигателя (с)</label>
                     <input type="number" id="tDuration" min="0" value="0" step="100" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
-                    <label>Расход топлива (кг/с)</label>
+                    <label data-i18n="sim.fuel_flow_rate_kg_s">Расход топлива (кг/с)</label>
                     <input type="number" id="fuelRate" min="0.0001" value="0.002" step="0.001" onchange="runSimulation()">
                 </div>
             </div>
         </details>
 
         <details>
-            <summary id="sumAccel">Начальное ускорение (м/с²)</summary>
+            <summary id="sumAccel" data-i18n="sim.initial_acceleration_m_s2">Начальное ускорение (м/с²)</summary>
             <div class="expander-content">
                 <div class="control-group">
                     <label>a₀x</label>
@@ -252,10 +255,10 @@
         </details>
 
         <details>
-            <summary>Интегрирование</summary>
+            <summary data-i18n="sim.integration">Интегрирование</summary>
             <div class="expander-content">
                 <div class="control-group">
-                    <label>Метод</label>
+                    <label data-i18n="sim.method">Метод</label>
                     <div class="integrator-switch">
                         <label>
                             <input type="radio" name="integrator" value="verlet" checked onchange="runSimulation()"> Verlet
@@ -266,84 +269,79 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label>Время симуляции (часы)</label>
+                    <label data-i18n="sim.simulation_time_hours">Время симуляции (часы)</label>
                     <input type="number" id="tEnd" value="720" step="1" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
-                    <label id="dtLabel">Шаг dt (сек)</label>
+                    <label id="dtLabel" data-i18n="sim.step_dt_s">Шаг dt (сек)</label>
                     <input type="number" id="dt" value="30" min="1" step="1" onchange="runSimulation()">
                 </div>
                 <div class="control-group">
                     <label style="font-size:12px; cursor:pointer;">
-                        <input type="checkbox" id="adaptiveStep" onchange="toggleAdaptiveStep(); runSimulation()"> Адаптивный шаг
-                    </label>
+                        <input type="checkbox" id="adaptiveStep" onchange="toggleAdaptiveStep(); runSimulation()"> <span data-i18n="sim.adaptive_step">Адаптивный шаг</span></label>
                 </div>
                 <div class="control-group" id="dtMinGroup" style="display:none;">
-                    <label>Мин. шаг dt_min (сек)</label>
+                    <label data-i18n="sim.min_step_dt_min_s">Мин. шаг dt_min (сек)</label>
                     <input type="number" id="dtMin" value="1" min="0.1" step="0.5" onchange="runSimulation()">
                 </div>
             </div>
         </details>
 
         <details id="track2Section">
-            <summary id="sumTrack2">Сравнение (2-й трек)</summary>
+            <summary id="sumTrack2" data-i18n="sim.comparison_2nd_track">Сравнение (2-й трек)</summary>
             <div class="expander-content">
                 <div class="control-group">
                     <label style="font-size:12px; cursor:pointer;">
-                        <input type="checkbox" id="track2Toggle" onchange="toggleTrack2(this.checked)"> Включить 2-й трек
-                    </label>
+                        <input type="checkbox" id="track2Toggle" onchange="toggleTrack2(this.checked)"> <span data-i18n="sim.enable_2nd_track">Включить 2-й трек</span></label>
                 </div>
                 <div id="track2Options" style="display:none;">
                     <div class="control-group">
-                        <label>Режим</label>
+                        <label data-i18n="sim.mode">Режим</label>
                         <div class="integrator-switch">
                             <label>
-                                <input type="radio" name="track2Mode" value="delta_ic" checked onchange="setTrack2Mode(this.value)"> Δ нач. усл.
-                            </label>
+                                <input type="radio" name="track2Mode" value="delta_ic" checked onchange="setTrack2Mode(this.value)"> <span data-i18n="sim.initial_cond">Δ нач. усл.</span></label>
                             <label>
-                                <input type="radio" name="track2Mode" value="integrator" onchange="setTrack2Mode(this.value)"> Интегратор
-                            </label>
+                                <input type="radio" name="track2Mode" value="integrator" onchange="setTrack2Mode(this.value)"> <span data-i18n="sim.integrator">Интегратор</span></label>
                         </div>
                     </div>
                     <div id="track2DeltaFields">
                         <div class="control-group">
-                            <label>Δvx (км/с)</label>
+                            <label data-i18n="sim.vx_km_s">Δvx (км/с)</label>
                             <input type="number" id="t2_dvx" value="0.001" step="0.001" onchange="runSimulation()">
                         </div>
                         <div class="control-group">
-                            <label>Δvy (км/с)</label>
+                            <label data-i18n="sim.vy_km_s">Δvy (км/с)</label>
                             <input type="number" id="t2_dvy" value="0" step="0.001" onchange="runSimulation()">
                         </div>
                         <div class="control-group">
-                            <label>Δvz (км/с)</label>
+                            <label data-i18n="sim.vz_km_s">Δvz (км/с)</label>
                             <input type="number" id="t2_dvz" value="0" step="0.001" onchange="runSimulation()">
                         </div>
                         <div class="control-group">
-                            <label>Δx (тыс. км)</label>
+                            <label data-i18n="sim.x_103_km">Δx (тыс. км)</label>
                             <input type="number" id="t2_dx" value="0" step="0.1" onchange="runSimulation()">
                         </div>
                         <div class="control-group">
-                            <label>Δy (тыс. км)</label>
+                            <label data-i18n="sim.y_103_km">Δy (тыс. км)</label>
                             <input type="number" id="t2_dy" value="0" step="0.1" onchange="runSimulation()">
                         </div>
                         <div class="control-group">
-                            <label>Δz (тыс. км)</label>
+                            <label data-i18n="sim.z_103_km">Δz (тыс. км)</label>
                             <input type="number" id="t2_dz" value="0" step="0.1" onchange="runSimulation()">
                         </div>
                     </div>
-                    <div id="track2IntInfo" style="display:none; font-size:12px; color:#8b949e; margin-top:6px;">
-                        Трек 1: <span id="t2_int1" style="color:#88ccff;">Verlet</span> ↔
-                        Трек 2: <span id="t2_int2" style="color:#ff66cc;">Euler</span>
+                    <div id="track2IntInfo" style="display:none; font-size:12px; color:#8b949e; margin-top:6px;"><span data-i18n="sim.track_1_2">Трек 1:</span> <span id="t2_int1" style="color:#88ccff;">Verlet</span> ↔
+                        <span data-i18n="sim.track_2">Трек 2:</span> <span id="t2_int2" style="color:#ff66cc;">Euler</span>
                     </div>
                 </div>
             </div>
         </details>
 
         <details>
-            <summary>Визуализация</summary>
+            <summary data-i18n="sim.visualisation">Визуализация</summary>
             <div class="expander-content">
                 <div class="control-group">
-                    <label>Масштаб планет: <span id="scaleValue">1x</span> (реальный = 1x)</label>
+                    <label><span data-i18n="sim.body_scale">Масштаб планет:</span> <span id="scaleValue">1x</span> <span data-i18n="sim.real_1x">(реальный = 1x)</span></label>
                     <input type="range" id="planetScale" min="1" max="10" value="1" step="0.5" oninput="updatePlanetScale(this.value)">
                     <div style="display:flex; justify-content:space-between; font-size:10px; color:#484f58;">
                         <span>1x</span>
@@ -351,7 +349,7 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label>Скорость: <span id="speedValue">24</span> ч/сек</label>
+                    <label><span data-i18n="sim.speed">Скорость:</span> <span id="speedValue">24</span> <span data-i18n="sim.h_s">ч/сек</span></label>
                     <input type="range" id="playbackSpeed" min="0" max="100" value="51" step="1" oninput="updatePlaybackSpeed(this.value)">
                     <div style="display:flex; justify-content:space-between; font-size:10px; color:#484f58;">
                         <span>1</span>
@@ -362,32 +360,26 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label>Кадрирование камеры</label>
+                    <label data-i18n="sim.camera_framing">Кадрирование камеры</label>
                     <div class="integrator-switch">
                         <label>
-                            <input type="radio" name="cameraFrame" value="trajectory" checked onchange="updateCameraFrame()"> Траектория
-                        </label>
+                            <input type="radio" name="cameraFrame" value="trajectory" checked onchange="updateCameraFrame()"> <span data-i18n="sim.trajectory">Траектория</span></label>
                         <label>
-                            <input type="radio" name="cameraFrame" value="full" onchange="updateCameraFrame()"> Т + З + Л
-                        </label>
+                            <input type="radio" name="cameraFrame" value="full" onchange="updateCameraFrame()"> <span data-i18n="sim.t_e_m">Т + З + Л</span></label>
                     </div>
                 </div>
                 <div class="control-group">
-                    <label>Отображение</label>
+                    <label data-i18n="sim.display">Отображение</label>
                     <div style="display:flex; flex-direction:column; gap:5px; margin-top:5px;">
                         <label style="font-size:12px; cursor:pointer;">
-                            <input type="checkbox" id="showMarkers" onchange="toggleMarkers(this.checked)"> Маркеры траектории
-                        </label>
+                            <input type="checkbox" id="showMarkers" onchange="toggleMarkers(this.checked)"> <span data-i18n="sim.trajectory_markers">Маркеры траектории</span></label>
                         <label style="font-size:12px; cursor:pointer;">
-                            <input type="checkbox" id="showLagrangeCheck" checked onchange="toggleLagrange(this.checked)"> Точки Лагранжа L1-L5
-                        </label>
+                            <input type="checkbox" id="showLagrangeCheck" checked onchange="toggleLagrange(this.checked)"> <span data-i18n="sim.lagrange_points_l1_l5">Точки Лагранжа L1-L5</span></label>
                         <div style="display:flex; gap:15px;">
                             <label style="font-size:12px; cursor:pointer;">
-                                <input type="checkbox" id="gridXY" checked onchange="toggleGrid('XY', this.checked)"> Сетка XY
-                            </label>
+                                <input type="checkbox" id="gridXY" checked onchange="toggleGrid('XY', this.checked)"> <span data-i18n="sim.xy_grid">Сетка XY</span></label>
                             <label style="font-size:12px; cursor:pointer;">
-                                <input type="checkbox" id="gridXZ" checked onchange="toggleGrid('XZ', this.checked)"> Сетка XZ
-                            </label>
+                                <input type="checkbox" id="gridXZ" checked onchange="toggleGrid('XZ', this.checked)"> <span data-i18n="sim.xz_grid">Сетка XZ</span></label>
                         </div>
                     </div>
                 </div>
@@ -400,26 +392,25 @@
                 <button onclick="resetAnimation()">Reset</button>
             </div>
             <input type="range" id="timeline" min="0" max="100" value="0" oninput="seekAnimation(this.value)">
-            <div style="text-align:center; color:#484f58; font-size: 12px;">
-                Кадр: <span id="frameNum">0</span> / <span id="totalFrames">0</span>
+            <div style="text-align:center; color:#484f58; font-size: 12px;"><span data-i18n="sim.frame">Кадр:</span> <span id="frameNum">0</span> / <span id="totalFrames">0</span>
             </div>
         </div>
         <div style="border-top: 1px solid #30363d; margin-top: 12px; padding-top: 10px;">
             <details>
-                <summary>О работе</summary>
+                <summary data-i18n="sim.about">О работе</summary>
                 <div class="expander-content" style="font-size: 12px; color: #8b949e; line-height: 1.6;">
-                    <div style="font-weight: 600; color: #e6edf3; margin-bottom: 6px;">Численное моделирование траекторий КА в круговой ограниченной задаче трёх тел системы Земля–Луна</div>
-                    <div style="margin-bottom: 6px;">Обучающий веб-симулятор: наглядная демонстрация динамики полёта в системе Земля–Луна</div>
-                    <div style="margin-bottom: 6px;">Автор: <span style="color: #c9d1d9;">Александр Ключников</span></div>
-                    <div style="margin-bottom: 6px;">Курчатовская школа, ФМО</div>
-                    <div style="margin-bottom: 10px;">Олимпиада «Старт в науку» МФТИ — Защита научной работы</div>
+                    <div style="font-weight: 600; color: #e6edf3; margin-bottom: 6px;" data-i18n="sim.numerical_simulation_of_spacecraft">Численное моделирование траекторий КА в круговой ограниченной задаче трёх тел системы Земля–Луна</div>
+                    <div style="margin-bottom: 6px;" data-i18n="sim.an_educational_web_simulator_a_vis">Обучающий веб-симулятор: наглядная демонстрация динамики полёта в системе Земля–Луна</div>
+                    <div style="margin-bottom: 6px;"><span data-i18n="sim.author">Автор:</span> <span style="color: #c9d1d9;" data-i18n="sim.alexander_klyuchnikov">Александр Ключников</span></div>
+                    <div style="margin-bottom: 6px;" data-i18n="sim.kurchatov_school_physics_and_mathe">Курчатовская школа, ФМО</div>
+                    <div style="margin-bottom: 10px;" data-i18n="sim.mipt_start_in_science_olympiad_res">Олимпиада «Старт в науку» МФТИ — Защита научной работы</div>
                     <div style="border-top: 1px solid #30363d; padding-top: 8px; margin-top: 4px;">
-                        <div style="font-weight: 600; color: #e6edf3; margin-bottom: 4px;">Область применимости модели</div>
-                        <div style="margin-bottom: 4px;">Симулятор использует модель CR3BP (круговая ограниченная задача трёх тел) со следующими допущениями:</div>
-                        <div style="margin-left: 8px; margin-bottom: 3px;">• Орбита Луны считается круговой (эксцентриситет ≈ 0.055 не учитывается)</div>
-                        <div style="margin-left: 8px; margin-bottom: 3px;">• Масса космического аппарата пренебрежимо мала</div>
-                        <div style="margin-left: 8px; margin-bottom: 3px;">• Влияние Солнца и других тел не учитывается</div>
-                        <div style="margin-top: 6px;">Симулятор предназначен для <span style="color: #c9d1d9;">учебных целей</span>: качественное изучение динамики, точек Лагранжа, типов траекторий и поведения численных интеграторов. Для расчёта реальных миссий используются полные эфемеридные модели.</div>
+                        <div style="font-weight: 600; color: #e6edf3; margin-bottom: 4px;" data-i18n="sim.model_applicability">Область применимости модели</div>
+                        <div style="margin-bottom: 4px;" data-i18n="sim.the_simulator_uses_the_cr3bp_model">Симулятор использует модель CR3BP (круговая ограниченная задача трёх тел) со следующими допущениями:</div>
+                        <div style="margin-left: 8px; margin-bottom: 3px;" data-i18n="sim.the_moon_s_orbit_is_treated_as_cir">• Орбита Луны считается круговой (эксцентриситет ≈ 0.055 не учитывается)</div>
+                        <div style="margin-left: 8px; margin-bottom: 3px;" data-i18n="sim.the_spacecraft_s_mass_is_taken_to_">• Масса космического аппарата пренебрежимо мала</div>
+                        <div style="margin-left: 8px; margin-bottom: 3px;" data-i18n="sim.the_influence_of_the_sun_and_other">• Влияние Солнца и других тел не учитывается</div>
+                        <div style="margin-top: 6px;"><span data-i18n="sim.intended_for">Симулятор предназначен для</span> <span style="color: #c9d1d9;" data-i18n="sim.educational_use">учебных целей</span><span data-i18n="sim.intended_tail">: качественное изучение динамики, точек Лагранжа, типов траекторий и поведения численных интеграторов. Для расчёта реальных миссий используются полные эфемеридные модели.</span></div>
                     </div>
                 </div>
             </details>
@@ -428,31 +419,31 @@
     </div>
 
     <div id="info">
-        <div>Время: <span id="infoTime">-</span></div>
-        <div>Расстояние: <span id="infoDist">-</span></div>
-        <div>Скорость: <span id="infoVel">-</span></div>
+        <div><span data-i18n="sim.time">Время:</span> <span id="infoTime">-</span></div>
+        <div><span data-i18n="sim.distance">Расстояние:</span> <span id="infoDist">-</span></div>
+        <div><span data-i18n="sim.speed">Скорость:</span> <span id="infoVel">-</span></div>
         <div style="border-top: 1px solid #30363d; margin-top: 8px; padding-top: 8px;">
             <div>C<sub>J</sub>: <span id="infoJacobi">-</span></div>
-            <div>Дрейф: <span id="infoJacobiDrift">-</span></div>
-            <div>RMS дрейф: <span id="infoJacobiRMS">-</span></div>
-            <div>Макс дрейф: <span id="infoJacobiMax">-</span></div>
+            <div><span data-i18n="sim.drift_2">Дрейф:</span> <span id="infoJacobiDrift">-</span></div>
+            <div><span data-i18n="sim.rms_drift">RMS дрейф:</span> <span id="infoJacobiRMS">-</span></div>
+            <div><span data-i18n="sim.max_drift">Макс дрейф:</span> <span id="infoJacobiMax">-</span></div>
         </div>
         <div style="border-top: 1px solid #30363d; margin-top: 8px; padding-top: 8px;">
             <div>ΔV: <span id="infoDeltaV">-</span></div>
-            <div>Расход топлива: <span id="infoFuel">-</span></div>
+            <div><span data-i18n="sim.fuel_used">Расход топлива:</span> <span id="infoFuel">-</span></div>
         </div>
         <div id="track2Info" style="display:none; border-top: 1px solid #30363d; margin-top: 8px; padding-top: 8px;">
-            <div style="color:#ff66cc; font-weight:600; font-size:11px; margin-bottom:4px;">2-й трек</div>
-            <div>Расхождение: <span id="infoSeparation">-</span></div>
+            <div style="color:#ff66cc; font-weight:600; font-size:11px; margin-bottom:4px;" data-i18n="sim.2nd_track">2-й трек</div>
+            <div><span data-i18n="sim.divergence">Расхождение:</span> <span id="infoSeparation">-</span></div>
             <div>Δv₁₋₂: <span id="infoVelDiff">-</span></div>
-            <div>Дрейф₂: <span id="infoDrift2">-</span></div>
-            <div>Статус₂: <span id="infoStatus2">-</span></div>
+            <div><span data-i18n="sim.drift2">Дрейф₂:</span> <span id="infoDrift2">-</span></div>
+            <div><span data-i18n="sim.status2">Статус₂:</span> <span id="infoStatus2">-</span></div>
         </div>
-        <div>Метод: <span id="infoIntegrator">Verlet</span></div>
-        <div>Шагов: <span id="infoSteps">-</span></div>
-        <div>Ср. шаг: <span id="infoAvgDt">-</span> сек</div>
-        <div>Тек. шаг: <span id="infoCurDt">-</span> сек</div>
-        <div>Статус: <span id="infoStatus">Ожидание</span></div>
+        <div><span data-i18n="sim.method_2">Метод:</span> <span id="infoIntegrator">Verlet</span></div>
+        <div><span data-i18n="sim.steps">Шагов:</span> <span id="infoSteps">-</span></div>
+        <div><span data-i18n="sim.avg_step">Ср. шаг:</span> <span id="infoAvgDt">-</span> <span data-i18n="sim.s_2">сек</span></div>
+        <div><span data-i18n="sim.cur_step">Тек. шаг:</span> <span id="infoCurDt">-</span> <span data-i18n="sim.s_2">сек</span></div>
+        <div><span data-i18n="sim.status">Статус:</span> <span id="infoStatus" data-i18n="sim.idle">Ожидание</span></div>
     </div>
 
     <script src="lib/three.min.js"></script>
@@ -896,7 +887,7 @@
             const vx0      = parseFloat(document.getElementById('vx0').value);
             const vy0      = parseFloat(document.getElementById('vy0').value);
             const vz0      = parseFloat(document.getElementById('vz0').value);
-            document.getElementById('v0mag').value = Math.sqrt(vx0*vx0 + vy0*vy0 + vz0*vz0).toFixed(3) + ' км/с';
+            document.getElementById('v0mag').value = Math.sqrt(vx0*vx0 + vy0*vy0 + vz0*vz0).toFixed(3) + i18nT('sim.u_km_s');
             const tEnd     = parseFloat(document.getElementById('tEnd').value);
             const Fx       = parseFloat(document.getElementById('Fx').value);
             const Fy       = parseFloat(document.getElementById('Fy').value);
@@ -969,7 +960,7 @@
             document.getElementById('track2Info').style.display = track2Enabled ? 'block' : 'none';
             if (track2Enabled && trajectoryData2) {
                 document.getElementById('infoStatus2').textContent = trajectoryData2.crush
-                    ? (trajectoryData2.crush === 1 ? 'Столкновение с Землёй!' : 'Столкновение с Луной!')
+                    ? (trajectoryData2.crush === 1 ? i18nT('sim.crush_earth_x') : i18nT('sim.crush_moon_x'))
                     : 'OK';
             }
 
@@ -981,10 +972,10 @@
             document.getElementById('timeline').max = trajectoryData.nPoints - 1;
             document.getElementById('totalFrames').textContent = trajectoryData.nPoints;
             document.getElementById('infoStatus').textContent = trajectoryData.crush
-                ? (trajectoryData.crush === 1 ? 'Столкновение с Землёй!' : 'Столкновение с Луной!')
+                ? (trajectoryData.crush === 1 ? i18nT('sim.crush_earth_x') : i18nT('sim.crush_moon_x'))
                 : 'OK';
             document.getElementById('infoIntegrator').textContent =
-                trajectoryData.integrator === 'verlet' ? 'Velocity Verlet (итер.)' : 'Euler';
+                trajectoryData.integrator === 'verlet' ? i18nT('sim.verlet_iter') : 'Euler';
 
             document.getElementById('infoSteps').textContent = trajectoryData.nPoints.toLocaleString();
             document.getElementById('infoAvgDt').textContent = trajectoryData.avgDt.toFixed(2);
@@ -1048,12 +1039,12 @@
 
             document.getElementById('frameNum').textContent  = idx;
             document.getElementById('timeline').value        = idx;
-            document.getElementById('infoTime').textContent  = (t / 3600).toFixed(2) + ' ч';
-            document.getElementById('infoDist').textContent  = dist.toFixed(1) + ' тыс.км';
+            document.getElementById('infoTime').textContent  = (t / 3600).toFixed(2) + i18nT('sim.u_h');
+            document.getElementById('infoDist').textContent  = dist.toFixed(1) + i18nT('sim.u_kkm2');
             const velKms = vel / 1000;
             document.getElementById('infoVel').textContent = velKms < 1
-                ? vel.toFixed(1) + ' м/с'
-                : velKms.toFixed(3) + ' км/с';
+                ? vel.toFixed(1) + i18nT('sim.u_m_s')
+                : velKms.toFixed(3) + i18nT('sim.u_km_s');
 
             if (idx > 0) {
                 const curDt = trajectoryData.time[idx] - trajectoryData.time[idx - 1];
@@ -1066,13 +1057,13 @@
                 const dv = trajectoryData.deltaV[idx];
                 const m_sc = trajectoryData.mass;
                 document.getElementById('infoDeltaV').textContent = dv < 0.01 && dv > 0
-                    ? (dv * 1000).toFixed(2) + ' мм/с'
-                    : dv.toFixed(2) + ' м/с';
+                    ? (dv * 1000).toFixed(2) + i18nT('sim.u_mm_s')
+                    : dv.toFixed(2) + i18nT('sim.u_m_s');
                 if (dv > 0) {
                     const fuelMass = trajectoryData.F_mag > 0 ? trajectoryData.fuelRate * dv * m_sc / trajectoryData.F_mag : 0;
                     document.getElementById('infoFuel').textContent = fuelMass < 0.01
-                        ? (fuelMass * 1000).toFixed(2) + ' г (' + (fuelMass / m_sc * 100).toFixed(2) + '%)'
-                        : fuelMass.toFixed(2) + ' кг (' + (fuelMass / m_sc * 100).toFixed(1) + '%)';
+                        ? (fuelMass * 1000).toFixed(2) + i18nT('sim.u_g_paren') + (fuelMass / m_sc * 100).toFixed(2) + '%)'
+                        : fuelMass.toFixed(2) + i18nT('sim.u_kg_paren') + (fuelMass / m_sc * 100).toFixed(1) + '%)';
                 } else {
                     document.getElementById('infoFuel').textContent = '0';
                 }
@@ -1143,7 +1134,7 @@
                     (trajectoryData.z[idx] - trajectoryData2.z[idx2]) ** 2
                 );
                 document.getElementById('infoSeparation').textContent =
-                    sep < 1 ? (sep * 1000).toFixed(1) + ' км' : sep.toFixed(2) + ' тыс. км';
+                    sep < 1 ? (sep * 1000).toFixed(1) + i18nT('sim.u_km') : sep.toFixed(2) + i18nT('sim.u_kkm');
 
                 const dv2 = Math.sqrt(
                     (trajectoryData.vx[idx] - trajectoryData2.vx[idx2]) ** 2 +
@@ -1151,7 +1142,7 @@
                     (trajectoryData.vz[idx] - trajectoryData2.vz[idx2]) ** 2
                 );
                 document.getElementById('infoVelDiff').textContent =
-                    dv2 < 1000 ? dv2.toFixed(1) + ' м/с' : (dv2 / 1000).toFixed(3) + ' км/с';
+                    dv2 < 1000 ? dv2.toFixed(1) + i18nT('sim.u_m_s') : (dv2 / 1000).toFixed(3) + i18nT('sim.u_km_s');
 
                 const J2  = trajectoryData2.jacobi[idx2];
                 const J20 = trajectoryData2.jacobi[0];
@@ -1452,8 +1443,8 @@
             const checked = document.getElementById('adaptiveStep').checked;
             document.getElementById('dtMinGroup').style.display = checked ? 'block' : 'none';
             document.getElementById('dtLabel').textContent = checked
-                ? 'Макс. шаг dt_max (сек)'
-                : 'Шаг интегрирования dt (сек)';
+                ? i18nT('sim.dt_max_label')
+                : i18nT('sim.dt_fixed_label');
         }
 
         function toggleGrid(plane, visible) {
@@ -1468,7 +1459,7 @@
 
         const PRESETS = {
             'L1': {
-                name: 'Точка Лагранжа L1',
+                name: i18nT('sim.lagrange_point_l1'),
                 x0: 323.6959407655473, y0: 0, z0: 0,
                 vx0: 0, vy0: 0, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1477,7 +1468,7 @@
                 tEnd: 2400
             },
             'L2': {
-                name: 'Точка Лагранжа L2',
+                name: i18nT('sim.lagrange_point_l2'),
                 x0: 446.5306841108591, y0: 0, z0: 0,
                 vx0: 0, vy0: 0, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1486,7 +1477,7 @@
                 tEnd: 2400
             },
             'L3': {
-                name: 'Точка Лагранжа L3',
+                name: i18nT('sim.lagrange_point_l3'),
                 x0: -386.6513186627400, y0: 0, z0: 0,
                 vx0: 0, vy0: 0, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1495,7 +1486,7 @@
                 tEnd: 2400
             },
             'L4': {
-                name: 'Точка Лагранжа L4',
+                name: i18nT('sim.lagrange_point_l4'),
                 x0: 188.08051852, y0: 332.924827609, z0: 0,
                 vx0: 0, vy0: 0, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1504,7 +1495,7 @@
                 tEnd: 2400
             },
             'L5': {
-                name: 'Точка Лагранжа L5',
+                name: i18nT('sim.lagrange_point_l5'),
                 x0: 188.08051852, y0: -332.924827609, z0: 0,
                 vx0: 0, vy0: 0, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1513,7 +1504,7 @@
                 tEnd: 2400
             },
             'e_orbit': {
-                name: 'Околоземная орбита',
+                name: i18nT('sim.earth_orbit'),
                 x0: 45.33, y0: 0, z0: 0,
                 vx0: 0, vy0: 2.8233713181, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1522,7 +1513,7 @@
                 tEnd: 2400
             },
             'm_orbit': {
-                name: 'Окололунная орбита',
+                name: i18nT('sim.lunar_orbit'),
                 x0: 332.8, y0: 0, z0: 0,
                 vx0: 0, vy0: 0.3130511396, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1531,7 +1522,7 @@
                 tEnd: 2400
             },
             'l1_halo': {
-                name: 'Гало-орбита у L1',
+                name: i18nT('sim.halo_orbit_at_l1'),
                 x0: 318.1876117274, y0: 0, z0: 15.2283001434,
                 vx0: 0, vy0: 0.1528358467, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1540,7 +1531,7 @@
                 tEnd: 293
             },
             'l2_halo': {
-                name: 'Гало-орбита у L2',
+                name: i18nT('sim.halo_orbit_at_l2'),
                 x0: 426.9628397382, y0: 0, z0: 17.6013535641,
                 vx0: 0, vy0: 0.2274251675, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1549,7 +1540,7 @@
                 tEnd: 347
             },
             'apollo13': {
-                name: 'Свободный возврат (облёт Луны)',
+                name: i18nT('sim.free_return_lunar_flyby'),
                 x0: -9.3308488320, y0: -4.9115098661, z0: 0,
                 vx0: 7.8190279575, vy0: -7.4199804778, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1558,7 +1549,7 @@
                 tEnd: 168
             },
             'earth_moon_thrust': {
-                name: 'Перелёт Земля→Луна с тягой',
+                name: i18nT('sim.earthmoon_transfer_with_thrust'),
                 x0: -9.3305877540, y0: -4.9117576067, z0: 0,
                 vx0: 7.7654698808, vy0: -7.3683713099, vz0: 0,
                 Fx: 5, Fy: 0, Fz: 0,
@@ -1567,7 +1558,7 @@
                 tEnd: 72
             },
             'l1_escape': {
-                name: 'Побег от L1 с микротягой',
+                name: i18nT('sim.escape_from_l1_with_micro_thrust'),
                 x0: 323.6959407655473, y0: 0, z0: 0,
                 vx0: 0, vy0: 0, vz0: 0,
                 Fx: 0.01, Fy: 0, Fz: 0,
@@ -1576,7 +1567,7 @@
                 tEnd: 500
             },
             'l1_chaos': {
-                name: 'Хаос у L1',
+                name: i18nT('sim.chaos_at_l1'),
                 x0: 323.6959407655473, y0: 0, z0: 0,
                 vx0: 0.05, vy0: 0.05, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1585,7 +1576,7 @@
                 tEnd: 2400
             },
             'l1_chaos_compare': {
-                name: 'Хаос у L1 (сравнение)',
+                name: i18nT('sim.chaos_at_l1_comparison'),
                 x0: 323.6959407655473, y0: 0, z0: 0,
                 vx0: -0.005, vy0: 0, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1597,7 +1588,7 @@
                 t2_dx: '0', t2_dy: '0', t2_dz: '0'
             },
             'verlet_vs_euler': {
-                name: 'Верле vs Эйлер (гало L1)',
+                name: i18nT('sim.verlet_vs_euler_halo_l1'),
                 x0: 318.1876117274, y0: 0, z0: 15.2283001434,
                 vx0: 0, vy0: 0.1528358467, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1607,7 +1598,7 @@
                 t2_enabled: true, t2_mode: 'integrator'
             },
             'hohmann': {
-                name: 'Прямой перелёт к Луне',
+                name: i18nT('sim.direct_transfer_to_the_moon'),
                 x0: -9.4633858070, y0: -4.7822477461, z0: 0,
                 vx0: 7.6255353576, vy0: -7.6432955579, vz0: 0,
                 Fx: 0, Fy: 0, Fz: 0,
@@ -1616,7 +1607,7 @@
                 tEnd: 58
             },
             'orbit_to_moon': {
-                name: 'Перелёт с орбиты к Луне (TLI)',
+                name: i18nT('sim.orbit_to_moon_transfer_tli'),
                 x0: -4.67, y0: -50.0, z0: 0,
                 vx0: 2.8233713181, vy0: 0, vz0: 0,
                 Fx: 15300, Fy: 2600, Fz: 0,
@@ -1712,7 +1703,7 @@
             if (names.length) {
                 const sep = document.createElement('option');
                 sep.disabled = true;
-                sep.textContent = '── Мои сценарии ──';
+                sep.textContent = i18nT('sim.my_scenarios');
                 sep.dataset.user = '1';
                 sel.appendChild(sep);
                 names.forEach(n => {
@@ -1733,7 +1724,7 @@
             navigator.clipboard.writeText(url).then(() => {
                 const btn = document.getElementById('shareLinkBtn');
                 const orig = btn.textContent;
-                btn.textContent = 'Скопировано!';
+                btn.textContent = i18nT('sim.copied');
                 setTimeout(() => { btn.textContent = orig; }, 1500);
             });
         }
@@ -1877,6 +1868,14 @@
             document.getElementById('presetSelector').value = 'l1_chaos_compare';
             applyPreset('l1_chaos_compare');
         }
-    </script>
+    
+        /* Rebuild the strings that JavaScript assembles when language changes. */
+        document.addEventListener('i18n:applied', function () {
+            try { toggleAdaptiveStep(); } catch (e) {}
+            try { refreshUserPresetsList(); } catch (e) {}
+            try { updateTrackLabel(); } catch (e) {}
+            try { if (trajectoryData) updateFrame(Math.floor(animationFrame)); } catch (e) {}
+        });
+</script>
 </body>
 </html>
