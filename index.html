@@ -265,9 +265,9 @@
          sees the page, and the timeout keeps it visible if i18n fails to load. -->
     <style>html.i18n-pending{background:#111827}html.i18n-pending body{visibility:hidden}</style>
     <script>(function(d){d.documentElement.className+=' i18n-pending';setTimeout(function(){d.documentElement.classList.remove('i18n-pending');},2000);})(document);</script>
-    <link rel="stylesheet" href="lib/i18n.css?v=3">
-    <script src="lib/i18n.index.js?v=3"></script>
-    <script src="lib/i18n.js?v=3"></script>
+    <link rel="stylesheet" href="lib/i18n.css?v=4">
+    <script src="lib/i18n.index.js?v=4"></script>
+    <script src="lib/i18n.js?v=4"></script>
 </head>
 <body>
     <div class="hero">
@@ -303,13 +303,13 @@
     <p class="cards-heading" data-i18n="html0.body1.p5">Documents</p>
 
     <div class="cards">
-        <a href="public/cr3bp_theory.pdf" class="doc-card">
+        <a href="public/cr3bp_theory.pdf" class="doc-card" data-i18n-attr-href="doc.abstract_href">
             <h2 data-i18n="html0.body1.div6.a0.h20">Abstract</h2>
             <p data-i18n="html0.body1.div6.a0.p1">Circular Restricted Three-Body Problem &mdash; theoretical background and model description.</p>
             <div class="badge-wrap"><span class="badge badge-pdf">PDF</span></div>
         </a>
 
-        <a href="public/plan_2503.pdf" class="doc-card">
+        <a href="public/plan_2503.pdf" class="doc-card" data-i18n-attr-href="doc.outline_href">
             <h2 data-i18n="html0.body1.div6.a1.h20">Talk Outline</h2>
             <p data-i18n="html0.body1.div6.a1.p1">Presentation structure</p>
             <div class="badge-wrap"><span class="badge badge-pdf">PDF</span></div>
@@ -318,7 +318,7 @@
         <div class="doc-card">
             <h2 data-i18n="html0.body1.div6.div2.h20">Presentation</h2>
             <p data-i18n="html0.body1.div6.div2.p1">Defense slides: CR3BP model, integrator comparison, experiment results. Version 25.03.2026.</p>
-            <div class="badge-wrap"><a href="public/presentation_2503.pdf" class="badge badge-pdf" style="text-decoration:none;">PDF</a> <a href="public/presentation_2503.pptx" class="badge badge-pptx" style="text-decoration:none;">PPTX</a></div>
+            <div class="badge-wrap"><a href="public/presentation_2503.pdf" class="badge badge-pdf" style="text-decoration:none;" data-i18n="doc.deck_pdf_badge">PDF</a> <a href="public/presentation_2503.pptx" class="badge badge-pptx" style="text-decoration:none;" data-i18n-attr-href="doc.deck_href">PPTX</a></div>
         </div>
     </div>
 
