@@ -9,6 +9,8 @@ across several runs by stray formatting.
 """
 import os
 import re
+import shutil
+import subprocess
 import sys
 
 from pptx import Presentation
@@ -73,5 +75,36 @@ def translate(path_in, path_out):
     return 0
 
 
+SOFFICE_CANDIDATES = [
+    "/Applications/LibreOffice.app/Contents/MacOS/soffice",
+    "soffice",
+    "libreoffice",
+]
+
+
+def export_pdf(pptx_path):
+    """Render the deck to PDF with LibreOffice, if it is available.
+
+    PowerPoint/Keynote can do this too, but only through GUI automation, which
+    needs macOS Automation and Accessibility grants. LibreOffice converts
+    headlessly with no such permissions.
+    """
+    exe = next((c for c in SOFFICE_CANDIDATES
+                if os.path.exists(c) or shutil.which(c)), None)
+    if exe is None:
+        print("LibreOffice not found - skipping PDF export.\n"
+              "  brew install --cask libreoffice   (or export from PowerPoint)")
+        return False
+    outdir = os.path.dirname(pptx_path)
+    subprocess.run([exe, "--headless", "--norestore", "--convert-to", "pdf",
+                    "--outdir", outdir, pptx_path],
+                   check=True, capture_output=True)
+    pdf = os.path.splitext(pptx_path)[0] + ".pdf"
+    print(f"written: {pdf}")
+    return True
+
+
 if __name__ == "__main__":
-    sys.exit(translate(SRC, OUT))
+    status = translate(SRC, OUT)
+    export_pdf(OUT)
+    sys.exit(status)
