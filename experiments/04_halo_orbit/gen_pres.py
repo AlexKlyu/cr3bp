@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../presets/lagrange'))
 
 import engine
+from labels import L, suffix
 from lagrange import compute_halo_ic, correct_halo_ic, bisect
 
 OUT = os.path.dirname(os.path.abspath(__file__))
@@ -32,11 +33,11 @@ ax.plot(pos[:, 0], pos[:, 1], pos[:, 2], 'b-', linewidth=0.8)
 ax.scatter([pos[0, 0]], [pos[0, 1]], [pos[0, 2]], c='green', s=50)
 ax.scatter([L1_m / 1e6], [0], [0], c='red', s=30, marker='^')
 
-ax.set_xlabel('x (тыс. км)')
-ax.set_ylabel('y (тыс. км)')
-ax.set_zlabel('z (тыс. км)')
+ax.set_xlabel(L('x (тыс. км)'))
+ax.set_ylabel(L('y (тыс. км)'))
+ax.set_zlabel(L('z (тыс. км)'))
 
-png_path = os.path.join(OUT, 'halo_pres.png')
+png_path = os.path.join(OUT, f'halo_pres{suffix()}.png')
 fig.savefig(png_path, dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
 plt.close(fig)
 print(f"Saved: {png_path}")

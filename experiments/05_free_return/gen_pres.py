@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import engine
+from labels import L, suffix
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 
@@ -35,26 +36,26 @@ pos_tkm = pos[:i_return + 1] / 1e6
 
 fig, ax = plt.subplots(figsize=(10, 8))
 
-ax.plot(pos_tkm[:, 0], pos_tkm[:, 1], 'b-', linewidth=0.8, label='Траектория')
+ax.plot(pos_tkm[:, 0], pos_tkm[:, 1], 'b-', linewidth=0.8, label=L('Траектория'))
 
-ax.plot(pos_tkm[0, 0], pos_tkm[0, 1], 'go', markersize=8, label='Старт', zorder=10)
+ax.plot(pos_tkm[0, 0], pos_tkm[0, 1], 'go', markersize=8, label=L('Старт'), zorder=10)
 ax.plot(pos_tkm[i_flyby, 0], pos_tkm[i_flyby, 1], 'r*', markersize=12,
-        label=f'Пролёт Луны ({min_moon_km:.0f} км)', zorder=10)
+        label=f"{L('Пролёт Луны')} ({min_moon_km:.0f} {L('км')})", zorder=10)
 ax.plot(pos_tkm[-1, 0], pos_tkm[-1, 1], 'ms', markersize=8,
-        label=f'Возврат к Земле ({min_earth_km:.0f} км)', zorder=10)
+        label=f"{L('Возврат к Земле')} ({min_earth_km:.0f} {L('км')})", zorder=10)
 
 earth_x = -engine.d_E / 1e6
 ax.plot(earth_x, 0, 'o', color='#2196F3', markersize=10, zorder=5)
-ax.annotate('Земля', (earth_x, 0), fontsize=9, ha='left', va='bottom',
+ax.annotate(L('Земля'), (earth_x, 0), fontsize=9, ha='left', va='bottom',
             xytext=(12, 6), textcoords='offset points', color='#2196F3')
 
 moon_x = engine.d_M / 1e6
 ax.plot(moon_x, 0, 'o', color='gray', markersize=6, zorder=5)
-ax.annotate('Луна', (moon_x, 0), fontsize=9, ha='right', va='bottom',
+ax.annotate(L('Луна'), (moon_x, 0), fontsize=9, ha='right', va='bottom',
             xytext=(-12, 6), textcoords='offset points', color='gray')
 
-ax.set_xlabel('x (тыс. км)')
-ax.set_ylabel('y (тыс. км)')
+ax.set_xlabel(L('x (тыс. км)'))
+ax.set_ylabel(L('y (тыс. км)'))
 ax.legend(loc='lower left')
 ax.set_aspect('equal')
 ax.grid(True, alpha=0.3)
@@ -62,7 +63,7 @@ ax.grid(True, alpha=0.3)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 
-fig.savefig(os.path.join(OUT, 'free_return_pres.png'), dpi=300, bbox_inches='tight',
+fig.savefig(os.path.join(OUT, f'free_return_pres{suffix()}.png'), dpi=300, bbox_inches='tight',
             facecolor='white', edgecolor='none')
 plt.close(fig)
 print(f"Saved: {OUT}/free_return_pres.png")

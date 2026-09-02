@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import engine
+from labels import L, suffix
 
 OUT = os.path.dirname(os.path.abspath(__file__))
 
@@ -41,22 +42,22 @@ pos_n = r_no['pos'] / 1e6
 
 fig, ax = plt.subplots(figsize=(10, 8))
 
-ax.plot(pos_n[:, 0], pos_n[:, 1], 'b--', linewidth=0.6, alpha=0.7, label='Без тяги')
-ax.plot(pos_t[:, 0], pos_t[:, 1], 'r-', linewidth=0.8, label='С тягой')
+ax.plot(pos_n[:, 0], pos_n[:, 1], 'b--', linewidth=0.6, alpha=0.7, label=L('Без тяги'))
+ax.plot(pos_t[:, 0], pos_t[:, 1], 'r-', linewidth=0.8, label=L('С тягой'))
 ax.plot(pos_t[0, 0], pos_t[0, 1], 'go', markersize=6)
 
 earth_x = -engine.d_E / 1e6
 ax.plot(earth_x, 0, 'o', color='#2196F3', markersize=10, zorder=5)
-ax.annotate('Земля', (earth_x, 0), fontsize=9, ha='left', va='bottom',
+ax.annotate(L('Земля'), (earth_x, 0), fontsize=9, ha='left', va='bottom',
             xytext=(12, 6), textcoords='offset points', color='#2196F3')
 
 moon_x = engine.d_M / 1e6
 ax.plot(moon_x, 0, 'o', color='gray', markersize=6, zorder=5)
-ax.annotate('Луна', (moon_x, 0), fontsize=9, ha='right', va='bottom',
+ax.annotate(L('Луна'), (moon_x, 0), fontsize=9, ha='right', va='bottom',
             xytext=(-12, 6), textcoords='offset points', color='gray')
 
-ax.set_xlabel('x (тыс. км)')
-ax.set_ylabel('y (тыс. км)')
+ax.set_xlabel(L('x (тыс. км)'))
+ax.set_ylabel(L('y (тыс. км)'))
 ax.legend()
 ax.set_aspect(3.4)
 ax.grid(True, alpha=0.3)
@@ -64,7 +65,7 @@ ax.grid(True, alpha=0.3)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
 
-png_path = os.path.join(OUT, 'thrust_pres.png')
+png_path = os.path.join(OUT, f'thrust_pres{suffix()}.png')
 fig.savefig(png_path, dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
 plt.close(fig)
 print(f"Saved: {png_path}")
