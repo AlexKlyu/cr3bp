@@ -51,8 +51,6 @@
   #cat-degrees:checked ~ .app .card:not(.degrees){display:none}
   #cat-paying:checked ~ .app .card:not(.paying){display:none}
   #cat-exams:checked ~ .app .card:not(.exams){display:none}
-  #cat-phrasal:checked ~ .app .card:not(.phrasal){display:none}
-  #cat-idioms:checked ~ .app .card:not(.idioms){display:none}
   #cat-all:checked ~ .app label[for=cat-all],
   #cat-think:checked ~ .app label[for=cat-think],
   #cat-study:checked ~ .app label[for=cat-study],
@@ -60,9 +58,7 @@
   #cat-people:checked ~ .app label[for=cat-people],
   #cat-degrees:checked ~ .app label[for=cat-degrees],
   #cat-paying:checked ~ .app label[for=cat-paying],
-  #cat-exams:checked ~ .app label[for=cat-exams],
-  #cat-phrasal:checked ~ .app label[for=cat-phrasal],
-  #cat-idioms:checked ~ .app label[for=cat-idioms]{background:var(--accent); color:#1a1200; border-color:var(--accent); font-weight:600}
+  #cat-exams:checked ~ .app label[for=cat-exams]{background:var(--accent); color:#1a1200; border-color:var(--accent); font-weight:600}
   @media (prefers-reduced-motion:reduce){.inner{transition:none}}
 </style>
 </head>
@@ -77,8 +73,6 @@
   <input class="ctrl" type="radio" name="cat" id="cat-degrees">
   <input class="ctrl" type="radio" name="cat" id="cat-paying">
   <input class="ctrl" type="radio" name="cat" id="cat-exams">
-  <input class="ctrl" type="radio" name="cat" id="cat-phrasal">
-  <input class="ctrl" type="radio" name="cat" id="cat-idioms">
   <div class="app">
     <header>
       <div class="brand">IELTS / FCE Vocab <i>·</i> EN / RU</div>
@@ -89,16 +83,14 @@
     </header>
     <div class="cats">
       <button class="chip shuffle-btn" id="shuffleBtn" type="button">🔀 Shuffle</button>
-      <label class="chip" for="cat-all">All 226</label>
+      <label class="chip" for="cat-all">All 117</label>
       <label class="chip" for="cat-think">Thinking 40</label>
-      <label class="chip" for="cat-study">Study & teaching 39</label>
-      <label class="chip" for="cat-schools">School types 28</label>
-      <label class="chip" for="cat-people">People & roles 36</label>
-      <label class="chip" for="cat-degrees">Degrees & quals 19</label>
-      <label class="chip" for="cat-paying">Paying 8</label>
-      <label class="chip" for="cat-exams">Exams & actions 31</label>
-      <label class="chip" for="cat-phrasal">Phrasal verbs 20</label>
-      <label class="chip" for="cat-idioms">Idioms 5</label>
+      <label class="chip" for="cat-study">Study & teaching 32</label>
+      <label class="chip" for="cat-schools">School types 11</label>
+      <label class="chip" for="cat-people">People & roles 14</label>
+      <label class="chip" for="cat-degrees">Degrees & quals 6</label>
+      <label class="chip" for="cat-paying">Paying 3</label>
+      <label class="chip" for="cat-exams">Exams & actions 11</label>
     </div>
     <div class="deck" id="deck">
       <label class="card think">
@@ -862,42 +854,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">Study & teaching</div>
-            <div class="term t-en">module</div>
-            <div class="term t-ru">модуль (учебный)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-ru">модуль (учебный)</div>
-            <div class="term t-en">module</div>
-            <div class="example">a compulsory module in year one</div>
-          </div>
-        </div>
-      </label>
-      <label class="card study">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-en">unit</div>
-            <div class="term t-ru">раздел, модуль (курса)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-ru">раздел, модуль (курса)</div>
-            <div class="term t-en">unit</div>
-            <div class="example">We finished unit three today.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card study">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Study & teaching</div>
             <div class="term t-en">subject</div>
             <div class="term t-ru">предмет</div>
             <div class="pos">n</div>
@@ -952,42 +908,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">Study & teaching</div>
-            <div class="term t-en">major</div>
-            <div class="term t-ru">профилирующая дисциплина, специальность</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-ru">профилирующая дисциплина, специальность</div>
-            <div class="term t-en">major</div>
-            <div class="example">Her major is biology.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card study">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-en">minor</div>
-            <div class="term t-ru">дополнительная специальность</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-ru">дополнительная специальность</div>
-            <div class="term t-en">minor</div>
-            <div class="example">He took a minor in history.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card study">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Study & teaching</div>
             <div class="term t-en">course</div>
             <div class="term t-ru">курс</div>
             <div class="pos">n</div>
@@ -998,24 +918,6 @@
             <div class="term t-ru">курс</div>
             <div class="term t-en">course</div>
             <div class="example">a three-year course in engineering</div>
-          </div>
-        </div>
-      </label>
-      <label class="card study">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-en">programme</div>
-            <div class="term t-ru">программа обучения</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-ru">программа обучения</div>
-            <div class="term t-en">programme</div>
-            <div class="example">a two-year Master's programme</div>
           </div>
         </div>
       </label>
@@ -1114,24 +1016,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">Study & teaching</div>
-            <div class="term t-en">laboratory work (lab work)</div>
-            <div class="term t-ru">лабораторная работа</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-ru">лабораторная работа</div>
-            <div class="term t-en">laboratory work (lab work)</div>
-            <div class="example">Chemistry involves a lot of lab work.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card study">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Study & teaching</div>
             <div class="term t-en">distance learning</div>
             <div class="term t-ru">дистанционное обучение</div>
             <div class="pos">n phr</div>
@@ -1142,24 +1026,6 @@
             <div class="term t-ru">дистанционное обучение</div>
             <div class="term t-en">distance learning</div>
             <div class="example">She earned her degree through distance learning.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card study">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-en">e-learning</div>
-            <div class="term t-ru">электронное (онлайн) обучение</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Study & teaching</div>
-            <div class="term t-ru">электронное (онлайн) обучение</div>
-            <div class="term t-en">e-learning</div>
-            <div class="example">The company uses e-learning for training.</div>
           </div>
         </div>
       </label>
@@ -1528,24 +1394,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">School types</div>
-            <div class="term t-en">nursery school</div>
-            <div class="term t-ru">ясли, детский сад (дошкольное)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">ясли, детский сад (дошкольное)</div>
-            <div class="term t-en">nursery school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
             <div class="term t-en">kindergarten</div>
             <div class="term t-ru">детский сад</div>
             <div class="pos">n</div>
@@ -1564,24 +1412,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">School types</div>
-            <div class="term t-en">primary school</div>
-            <div class="term t-ru">начальная школа</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">начальная школа</div>
-            <div class="term t-en">primary school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
             <div class="term t-en">elementary school</div>
             <div class="term t-ru">начальная школа (амер.)</div>
             <div class="pos">n phr</div>
@@ -1609,24 +1439,6 @@
             <div class="kind">School types</div>
             <div class="term t-ru">начальная школа (амер., разг.)</div>
             <div class="term t-en">grade school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">secondary school</div>
-            <div class="term t-ru">средняя школа</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">средняя школа</div>
-            <div class="term t-en">secondary school</div>
             
           </div>
         </div>
@@ -1690,132 +1502,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">School types</div>
-            <div class="term t-en">comprehensive school</div>
-            <div class="term t-ru">общеобразовательная школа (Великобр.)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">общеобразовательная школа (Великобр.)</div>
-            <div class="term t-en">comprehensive school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">grammar school</div>
-            <div class="term t-ru">гимназия (отборная школа, Великобр.)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">гимназия (отборная школа, Великобр.)</div>
-            <div class="term t-en">grammar school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">secondary modern school</div>
-            <div class="term t-ru">общеобраз. школа без отбора (Великобр.)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">общеобраз. школа без отбора (Великобр.)</div>
-            <div class="term t-en">secondary modern school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">specialist school</div>
-            <div class="term t-ru">специализированная школа</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">специализированная школа</div>
-            <div class="term t-en">specialist school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">boarding school</div>
-            <div class="term t-ru">школа-интернат, пансион</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">школа-интернат, пансион</div>
-            <div class="term t-en">boarding school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">state school</div>
-            <div class="term t-ru">государственная школа</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">государственная школа</div>
-            <div class="term t-en">state school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">independent school</div>
-            <div class="term t-ru">частная (независимая) школа</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">частная (независимая) школа</div>
-            <div class="term t-en">independent school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
             <div class="term t-en">private school</div>
             <div class="term t-ru">частная школа</div>
             <div class="pos">n phr</div>
@@ -1843,168 +1529,6 @@
             <div class="kind">School types</div>
             <div class="term t-ru">гос. школа (США); частная школа (Великобр.)</div>
             <div class="term t-en">public school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">single-sex school</div>
-            <div class="term t-ru">школа раздельного обучения</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">школа раздельного обучения</div>
-            <div class="term t-en">single-sex school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">mixed school</div>
-            <div class="term t-ru">школа совместного обучения</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">школа совместного обучения</div>
-            <div class="term t-en">mixed school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">evening school</div>
-            <div class="term t-ru">вечерняя школа</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">вечерняя школа</div>
-            <div class="term t-en">evening school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">summer school</div>
-            <div class="term t-ru">летняя школа</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">летняя школа</div>
-            <div class="term t-en">summer school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">vocational school</div>
-            <div class="term t-ru">профессиональное училище</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">профессиональное училище</div>
-            <div class="term t-en">vocational school</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">further education college</div>
-            <div class="term t-ru">колледж доп. образования (Великобр.)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">колледж доп. образования (Великобр.)</div>
-            <div class="term t-en">further education college</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">university</div>
-            <div class="term t-ru">университет</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">университет</div>
-            <div class="term t-en">university</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">institute</div>
-            <div class="term t-ru">институт</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">институт</div>
-            <div class="term t-en">institute</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card schools">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">School types</div>
-            <div class="term t-en">academy</div>
-            <div class="term t-ru">академия</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">School types</div>
-            <div class="term t-ru">академия</div>
-            <div class="term t-en">academy</div>
             
           </div>
         </div>
@@ -2024,240 +1548,6 @@
             <div class="term t-ru">проспект/брошюра учебного заведения</div>
             <div class="term t-en">prospectus</div>
             <div class="example">I read the university prospectus.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">pupil</div>
-            <div class="term t-ru">ученик (школьник)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">ученик (школьник)</div>
-            <div class="term t-en">pupil</div>
-            <div class="example">There are 30 pupils in the class.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">student</div>
-            <div class="term t-ru">студент; учащийся</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">студент; учащийся</div>
-            <div class="term t-en">student</div>
-            <div class="example">a first-year student</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">full-time student</div>
-            <div class="term t-ru">студент очного отделения</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">студент очного отделения</div>
-            <div class="term t-en">full-time student</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">part-time student</div>
-            <div class="term t-ru">студент заочного/вечернего отделения</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">студент заочного/вечернего отделения</div>
-            <div class="term t-en">part-time student</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">applicant</div>
-            <div class="term t-ru">абитуриент, соискатель</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">абитуриент, соискатель</div>
-            <div class="term t-en">applicant</div>
-            <div class="example">There were 400 applicants for 20 places.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">prospective student</div>
-            <div class="term t-ru">будущий (потенциальный) студент</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">будущий (потенциальный) студент</div>
-            <div class="term t-en">prospective student</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">mature student</div>
-            <div class="term t-ru">взрослый студент (старше обычного)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">взрослый студент (старше обычного)</div>
-            <div class="term t-en">mature student</div>
-            <div class="example">She returned to study as a mature student.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">night-school student</div>
-            <div class="term t-ru">учащийся вечерней школы</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">учащийся вечерней школы</div>
-            <div class="term t-en">night-school student</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">transfer student</div>
-            <div class="term t-ru">студент-переводник</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">студент-переводник</div>
-            <div class="term t-en">transfer student</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">freshman</div>
-            <div class="term t-ru">первокурсник (амер.)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">первокурсник (амер.)</div>
-            <div class="term t-en">freshman</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">sophomore</div>
-            <div class="term t-ru">второкурсник (амер.)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">второкурсник (амер.)</div>
-            <div class="term t-en">sophomore</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">junior</div>
-            <div class="term t-ru">студент 3-го курса (амер.)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">студент 3-го курса (амер.)</div>
-            <div class="term t-en">junior</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">senior</div>
-            <div class="term t-ru">студент выпускного курса (амер.)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">студент выпускного курса (амер.)</div>
-            <div class="term t-en">senior</div>
-            
           </div>
         </div>
       </label>
@@ -2302,60 +1592,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">People & roles</div>
-            <div class="term t-en">postgraduate</div>
-            <div class="term t-ru">аспирант; магистрант</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">аспирант; магистрант</div>
-            <div class="term t-en">postgraduate</div>
-            <div class="example">a postgraduate in linguistics</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">teacher</div>
-            <div class="term t-ru">учитель, преподаватель</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">учитель, преподаватель</div>
-            <div class="term t-en">teacher</div>
-            <div class="example">a maths teacher</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">headteacher / principal</div>
-            <div class="term t-ru">директор школы</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">директор школы</div>
-            <div class="term t-en">headteacher / principal</div>
-            <div class="example">The headteacher addressed the parents.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
             <div class="term t-en">tutor</div>
             <div class="term t-ru">репетитор, наставник</div>
             <div class="pos">n</div>
@@ -2392,42 +1628,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">People & roles</div>
-            <div class="term t-en">assistant professor</div>
-            <div class="term t-ru">ассистент профессора (мл. преподаватель)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">ассистент профессора (мл. преподаватель)</div>
-            <div class="term t-en">assistant professor</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">associate professor</div>
-            <div class="term t-ru">доцент</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">доцент</div>
-            <div class="term t-en">associate professor</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
             <div class="term t-en">lecturer</div>
             <div class="term t-ru">преподаватель, лектор</div>
             <div class="pos">n</div>
@@ -2456,96 +1656,6 @@
             <div class="term t-ru">учёный, преподаватель; академический</div>
             <div class="term t-en">academic</div>
             <div class="example">a respected academic</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">researcher</div>
-            <div class="term t-ru">исследователь, научный сотрудник</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">исследователь, научный сотрудник</div>
-            <div class="term t-en">researcher</div>
-            <div class="example">a team of researchers</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">admissions officer</div>
-            <div class="term t-ru">сотрудник приёмной комиссии</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">сотрудник приёмной комиссии</div>
-            <div class="term t-en">admissions officer</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">dean</div>
-            <div class="term t-ru">декан</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">декан</div>
-            <div class="term t-en">dean</div>
-            <div class="example">the Dean of the Faculty of Law</div>
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">teaching assistant</div>
-            <div class="term t-ru">ассистент преподавателя</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">ассистент преподавателя</div>
-            <div class="term t-en">teaching assistant</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card people">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">People & roles</div>
-            <div class="term t-en">department chairman</div>
-            <div class="term t-ru">заведующий кафедрой</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">People & roles</div>
-            <div class="term t-ru">заведующий кафедрой</div>
-            <div class="term t-en">department chairman</div>
-            
           </div>
         </div>
       </label>
@@ -2698,150 +1808,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">Degrees & quals</div>
-            <div class="term t-en">bachelor's degree</div>
-            <div class="term t-ru">степень бакалавра</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">степень бакалавра</div>
-            <div class="term t-en">bachelor's degree</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">BA</div>
-            <div class="term t-ru">бакалавр гуманитарных наук (BA)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">бакалавр гуманитарных наук (BA)</div>
-            <div class="term t-en">BA</div>
-            <div class="example">a BA in history</div>
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">BSc</div>
-            <div class="term t-ru">бакалавр естественных наук (BSc)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">бакалавр естественных наук (BSc)</div>
-            <div class="term t-en">BSc</div>
-            <div class="example">a BSc in physics</div>
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">master's degree</div>
-            <div class="term t-ru">степень магистра</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">степень магистра</div>
-            <div class="term t-en">master's degree</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">MA</div>
-            <div class="term t-ru">магистр гуманитарных наук (MA)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">магистр гуманитарных наук (MA)</div>
-            <div class="term t-en">MA</div>
-            <div class="example">an MA in linguistics</div>
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">MSc</div>
-            <div class="term t-ru">магистр естественных наук (MSc)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">магистр естественных наук (MSc)</div>
-            <div class="term t-en">MSc</div>
-            <div class="example">an MSc in chemistry</div>
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">MPhil</div>
-            <div class="term t-ru">магистр философии (исследоват. степень)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">магистр философии (исследоват. степень)</div>
-            <div class="term t-en">MPhil</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">PhD</div>
-            <div class="term t-ru">доктор наук (PhD)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">доктор наук (PhD)</div>
-            <div class="term t-en">PhD</div>
-            <div class="example">a PhD in economics</div>
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
             <div class="term t-en">doctorate</div>
             <div class="term t-ru">докторская степень</div>
             <div class="pos">n</div>
@@ -2852,42 +1818,6 @@
             <div class="term t-ru">докторская степень</div>
             <div class="term t-en">doctorate</div>
             <div class="example">He is working towards a doctorate.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">MBA</div>
-            <div class="term t-ru">магистр делового администрирования (MBA)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">магистр делового администрирования (MBA)</div>
-            <div class="term t-en">MBA</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">PGCE</div>
-            <div class="term t-ru">сертификат о пед. образовании (Великобр.)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">сертификат о пед. образовании (Великобр.)</div>
-            <div class="term t-en">PGCE</div>
-            
           </div>
         </div>
       </label>
@@ -2963,60 +1893,6 @@
           </div>
         </div>
       </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">further education</div>
-            <div class="term t-ru">доп. образование (после школы, не вузовское)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">доп. образование (после школы, не вузовское)</div>
-            <div class="term t-en">further education</div>
-            <div class="example">a further education college</div>
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">tertiary education</div>
-            <div class="term t-ru">высшее/послешкольное образование</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">высшее/послешкольное образование</div>
-            <div class="term t-en">tertiary education</div>
-            <div class="example">few had any tertiary education</div>
-          </div>
-        </div>
-      </label>
-      <label class="card degrees">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-en">adult education</div>
-            <div class="term t-ru">образование для взрослых</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Degrees & quals</div>
-            <div class="term t-ru">образование для взрослых</div>
-            <div class="term t-en">adult education</div>
-            <div class="example">evening adult education classes</div>
-          </div>
-        </div>
-      </label>
       <label class="card paying">
         <input type="checkbox" class="flip" aria-label="flip card">
         <div class="inner">
@@ -3032,42 +1908,6 @@
             <div class="term t-ru">обучение; плата за обучение</div>
             <div class="term t-en">tuition</div>
             <div class="example">Tuition is expensive at private schools.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card paying">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Paying</div>
-            <div class="term t-en">tuition fees</div>
-            <div class="term t-ru">плата за обучение</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Paying</div>
-            <div class="term t-ru">плата за обучение</div>
-            <div class="term t-en">tuition fees</div>
-            <div class="example">Tuition fees have risen sharply.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card paying">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Paying</div>
-            <div class="term t-en">top-up fees</div>
-            <div class="term t-ru">доплата за обучение (сверх базовой)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Paying</div>
-            <div class="term t-ru">доплата за обучение (сверх базовой)</div>
-            <div class="term t-en">top-up fees</div>
-            
           </div>
         </div>
       </label>
@@ -3094,24 +1934,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">Paying</div>
-            <div class="term t-en">student loan</div>
-            <div class="term t-ru">студенческий кредит</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Paying</div>
-            <div class="term t-ru">студенческий кредит</div>
-            <div class="term t-en">student loan</div>
-            <div class="example">She's still paying off her student loan.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card paying">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Paying</div>
             <div class="term t-en">grant</div>
             <div class="term t-ru">грант, стипендия (пособие)</div>
             <div class="pos">n</div>
@@ -3122,42 +1944,6 @@
             <div class="term t-ru">грант, стипендия (пособие)</div>
             <div class="term t-en">grant</div>
             <div class="example">He received a research grant.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card paying">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Paying</div>
-            <div class="term t-en">financial aid</div>
-            <div class="term t-ru">финансовая помощь (студентам)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Paying</div>
-            <div class="term t-ru">финансовая помощь (студентам)</div>
-            <div class="term t-en">financial aid</div>
-            
-          </div>
-        </div>
-      </label>
-      <label class="card paying">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Paying</div>
-            <div class="term t-en">scholarship</div>
-            <div class="term t-ru">стипендия (за успехи)</div>
-            <div class="pos">n</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Paying</div>
-            <div class="term t-ru">стипендия (за успехи)</div>
-            <div class="term t-en">scholarship</div>
-            <div class="example">He won a scholarship to Oxford.</div>
           </div>
         </div>
       </label>
@@ -3256,114 +2042,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">Exams & actions</div>
-            <div class="term t-en">to revise for an exam</div>
-            <div class="term t-ru">готовиться к экзамену (повторять)</div>
-            <div class="pos">v phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">готовиться к экзамену (повторять)</div>
-            <div class="term t-en">to revise for an exam</div>
-            <div class="example">I'm revising for my exams.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to pass with flying colours</div>
-            <div class="term t-ru">сдать блестяще</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">сдать блестяще</div>
-            <div class="term t-en">to pass with flying colours</div>
-            <div class="example">He passed the exam with flying colours.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to come top of your class</div>
-            <div class="term t-ru">стать лучшим в классе</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">стать лучшим в классе</div>
-            <div class="term t-en">to come top of your class</div>
-            <div class="example">She came top of her class in maths.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to conduct / hold an examination</div>
-            <div class="term t-ru">проводить экзамен</div>
-            <div class="pos">v phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">проводить экзамен</div>
-            <div class="term t-en">to conduct / hold an examination</div>
-            <div class="example">The board conducts the exam each June.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to do well / badly in an exam</div>
-            <div class="term t-ru">хорошо/плохо сдать экзамен</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">хорошо/плохо сдать экзамен</div>
-            <div class="term t-en">to do well / badly in an exam</div>
-            <div class="example">I did well in the written paper.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to cheat in an exam</div>
-            <div class="term t-ru">списывать на экзамене</div>
-            <div class="pos">v phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">списывать на экзамене</div>
-            <div class="term t-en">to cheat in an exam</div>
-            <div class="example">He was expelled for cheating in an exam.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
             <div class="term t-en">to plagiarise</div>
             <div class="term t-ru">заниматься плагиатом, списывать</div>
             <div class="pos">v</div>
@@ -3418,240 +2096,6 @@
         <div class="inner">
           <div class="face front">
             <div class="kind">Exams & actions</div>
-            <div class="term t-en">to play truant</div>
-            <div class="term t-ru">прогуливать (школу)</div>
-            <div class="pos">v phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">прогуливать (школу)</div>
-            <div class="term t-en">to play truant</div>
-            <div class="example">They played truant all week.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to be expelled from school</div>
-            <div class="term t-ru">быть исключённым из школы</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">быть исключённым из школы</div>
-            <div class="term t-en">to be expelled from school</div>
-            <div class="example">She was expelled for fighting.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to meet the deadline</div>
-            <div class="term t-ru">уложиться в срок</div>
-            <div class="pos">v phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">уложиться в срок</div>
-            <div class="term t-en">to meet the deadline</div>
-            <div class="example">We met the deadline with hours to spare.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to take a year out (gap year)</div>
-            <div class="term t-ru">взять академ. год (перерыв)</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">взять академ. год (перерыв)</div>
-            <div class="term t-en">to take a year out (gap year)</div>
-            <div class="example">He took a year out before university.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to work your way through university</div>
-            <div class="term t-ru">учиться, подрабатывая</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">учиться, подрабатывая</div>
-            <div class="term t-en">to work your way through university</div>
-            <div class="example">She worked her way through university.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to be awarded a degree</div>
-            <div class="term t-ru">получить диплом/степень</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">получить диплом/степень</div>
-            <div class="term t-en">to be awarded a degree</div>
-            <div class="example">He was awarded a degree in law.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to graduate with honours</div>
-            <div class="term t-ru">окончить с отличием</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">окончить с отличием</div>
-            <div class="term t-en">to graduate with honours</div>
-            <div class="example">She graduated with honours.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to graduate from university</div>
-            <div class="term t-ru">окончить университет</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">окончить университет</div>
-            <div class="term t-en">to graduate from university</div>
-            <div class="example">He graduated from university in June.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to enter a university</div>
-            <div class="term t-ru">поступить в университет</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">поступить в университет</div>
-            <div class="term t-en">to enter a university</div>
-            <div class="example">She entered a top university.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to win a scholarship</div>
-            <div class="term t-ru">получить (выиграть) стипендию</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">получить (выиграть) стипендию</div>
-            <div class="term t-en">to win a scholarship</div>
-            <div class="example">He won a scholarship to study abroad.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to do a course in ...</div>
-            <div class="term t-ru">пройти курс по ...</div>
-            <div class="pos">phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">пройти курс по ...</div>
-            <div class="term t-en">to do a course in ...</div>
-            <div class="example">I'm doing a course in web design.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">to take notes</div>
-            <div class="term t-ru">конспектировать, делать записи</div>
-            <div class="pos">v phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">конспектировать, делать записи</div>
-            <div class="term t-en">to take notes</div>
-            <div class="example">Take notes during the lecture.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">a borderline candidate</div>
-            <div class="term t-ru">пограничный кандидат (на грани прохождения)</div>
-            <div class="pos">n phr</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">пограничный кандидат (на грани прохождения)</div>
-            <div class="term t-en">a borderline candidate</div>
-            <div class="example">As a borderline candidate, he needed a strong interview.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
             <div class="term t-en">grade</div>
             <div class="term t-ru">оценка; класс (год обучения)</div>
             <div class="pos">n</div>
@@ -3662,42 +2106,6 @@
             <div class="term t-ru">оценка; класс (год обучения)</div>
             <div class="term t-en">grade</div>
             <div class="example">She got the top grade in maths.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">pass</div>
-            <div class="term t-ru">сдать (экзамен)</div>
-            <div class="pos">v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">сдать (экзамен)</div>
-            <div class="term t-en">pass</div>
-            <div class="example">She passed with high marks.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card exams">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-en">fail</div>
-            <div class="term t-ru">не сдать, провалить</div>
-            <div class="pos">v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Exams & actions</div>
-            <div class="term t-ru">не сдать, провалить</div>
-            <div class="term t-en">fail</div>
-            <div class="example">Don't panic if you fail one test.</div>
           </div>
         </div>
       </label>
@@ -3719,453 +2127,75 @@
           </div>
         </div>
       </label>
-      <label class="card phrasal">
+      <label class="card people">
         <input type="checkbox" class="flip" aria-label="flip card">
         <div class="inner">
           <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to keep up with</div>
-            <div class="term t-ru">успевать за, не отставать</div>
-            <div class="pos">phr v</div>
+            <div class="kind">People & roles</div>
+            <div class="term t-en">mature student</div>
+            <div class="term t-ru">взрослый студент (старше обычного)</div>
+            <div class="pos">n phr</div>
             <div class="cue">tap to reveal</div>
           </div>
           <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">успевать за, не отставать</div>
-            <div class="term t-en">to keep up with</div>
-            <div class="example">She struggles to keep up with the class.</div>
+            <div class="kind">People & roles</div>
+            <div class="term t-ru">взрослый студент (старше обычного)</div>
+            <div class="term t-en">mature student</div>
+            <div class="example">She returned to study as a mature student.</div>
           </div>
         </div>
       </label>
-      <label class="card phrasal">
+      <label class="card exams">
         <input type="checkbox" class="flip" aria-label="flip card">
         <div class="inner">
           <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to catch up with</div>
-            <div class="term t-ru">догонять, наверстывать</div>
-            <div class="pos">phr v</div>
+            <div class="kind">Exams & actions</div>
+            <div class="term t-en">grades</div>
+            <div class="term t-ru">оценки, успеваемость</div>
+            <div class="pos">n</div>
             <div class="cue">tap to reveal</div>
           </div>
           <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">догонять, наверстывать</div>
-            <div class="term t-en">to catch up with</div>
-            <div class="example">I need to catch up with the reading.</div>
+            <div class="kind">Exams & actions</div>
+            <div class="term t-ru">оценки, успеваемость</div>
+            <div class="term t-en">grades</div>
+            <div class="example">His grades improved this term.</div>
           </div>
         </div>
       </label>
-      <label class="card phrasal">
+      <label class="card schools">
         <input type="checkbox" class="flip" aria-label="flip card">
         <div class="inner">
           <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to lag / fall behind</div>
-            <div class="term t-ru">отставать</div>
-            <div class="pos">phr v</div>
+            <div class="kind">School types</div>
+            <div class="term t-en">elementary (education)</div>
+            <div class="term t-ru">начальное (образование)</div>
+            <div class="pos">n phr</div>
             <div class="cue">tap to reveal</div>
           </div>
           <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">отставать</div>
-            <div class="term t-en">to lag / fall behind</div>
-            <div class="example">Weaker students soon fall behind.</div>
+            <div class="kind">School types</div>
+            <div class="term t-ru">начальное (образование)</div>
+            <div class="term t-en">elementary (education)</div>
+            <div class="example">elementary education is compulsory</div>
           </div>
         </div>
       </label>
-      <label class="card phrasal">
+      <label class="card schools">
         <input type="checkbox" class="flip" aria-label="flip card">
         <div class="inner">
           <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to hand in</div>
-            <div class="term t-ru">сдавать (работу)</div>
-            <div class="pos">phr v</div>
+            <div class="kind">School types</div>
+            <div class="term t-en">secondary (education)</div>
+            <div class="term t-ru">среднее (образование)</div>
+            <div class="pos">n phr</div>
             <div class="cue">tap to reveal</div>
           </div>
           <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">сдавать (работу)</div>
-            <div class="term t-en">to hand in</div>
-            <div class="example">Hand in your essays by Friday.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to hand out</div>
-            <div class="term t-ru">раздавать</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">раздавать</div>
-            <div class="term t-en">to hand out</div>
-            <div class="example">The teacher handed out the tests.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to drop out (of university)</div>
-            <div class="term t-ru">бросить (учёбу)</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">бросить (учёбу)</div>
-            <div class="term t-en">to drop out (of university)</div>
-            <div class="example">He dropped out of university after a year.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to read up for (an exam)</div>
-            <div class="term t-ru">готовиться (читать) к экзамену</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">готовиться (читать) к экзамену</div>
-            <div class="term t-en">to read up for (an exam)</div>
-            <div class="example">I read up for the exam all weekend.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to read up on (a subject)</div>
-            <div class="term t-ru">почитать, изучить (тему)</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">почитать, изучить (тему)</div>
-            <div class="term t-en">to read up on (a subject)</div>
-            <div class="example">Read up on the topic before the seminar.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to brush up (on)</div>
-            <div class="term t-ru">освежить знания, подтянуть</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">освежить знания, подтянуть</div>
-            <div class="term t-en">to brush up (on)</div>
-            <div class="example">I need to brush up on my French.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to sail / breeze through (an exam)</div>
-            <div class="term t-ru">легко пройти, сдать без труда</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">легко пройти, сдать без труда</div>
-            <div class="term t-en">to sail / breeze through (an exam)</div>
-            <div class="example">She breezed through the exam.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to mess up (an exam)</div>
-            <div class="term t-ru">завалить, испортить</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">завалить, испортить</div>
-            <div class="term t-en">to mess up (an exam)</div>
-            <div class="example">I completely messed up the exam.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to mug up</div>
-            <div class="term t-ru">зубрить (брит.)</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">зубрить (брит.)</div>
-            <div class="term t-en">to mug up</div>
-            <div class="example">He mugged up the dates the night before.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to scrape through</div>
-            <div class="term t-ru">еле сдать, пройти с натяжкой</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">еле сдать, пройти с натяжкой</div>
-            <div class="term t-en">to scrape through</div>
-            <div class="example">He just scraped through the test.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to swot up</div>
-            <div class="term t-ru">усиленно зубрить (брит.)</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">усиленно зубрить (брит.)</div>
-            <div class="term t-en">to swot up</div>
-            <div class="example">I swotted up on grammar before the exam.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to knuckle down</div>
-            <div class="term t-ru">засесть за работу, взяться всерьёз</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">засесть за работу, взяться всерьёз</div>
-            <div class="term t-en">to knuckle down</div>
-            <div class="example">It's time to knuckle down and study.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to mark down</div>
-            <div class="term t-ru">снижать оценку</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">снижать оценку</div>
-            <div class="term t-en">to mark down</div>
-            <div class="example">You'll be marked down for spelling.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to pick up</div>
-            <div class="term t-ru">усваивать, схватывать (навык)</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">усваивать, схватывать (навык)</div>
-            <div class="term t-en">to pick up</div>
-            <div class="example">Kids pick up languages fast.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to rub out</div>
-            <div class="term t-ru">стирать (ластиком)</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">стирать (ластиком)</div>
-            <div class="term t-en">to rub out</div>
-            <div class="example">Rub out the mistake and rewrite it.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to cross out</div>
-            <div class="term t-ru">вычёркивать</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">вычёркивать</div>
-            <div class="term t-en">to cross out</div>
-            <div class="example">Cross out any wrong answers.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card phrasal">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-en">to break up</div>
-            <div class="term t-ru">уходить на каникулы (конец четверти)</div>
-            <div class="pos">phr v</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Phrasal verbs</div>
-            <div class="term t-ru">уходить на каникулы (конец четверти)</div>
-            <div class="term t-en">to break up</div>
-            <div class="example">School breaks up for summer next week.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card idioms">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Idioms</div>
-            <div class="term t-en">to be out of one's depth</div>
-            <div class="term t-ru">не по силам; быть не в своей тарелке</div>
-            <div class="pos">idiom</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Idioms</div>
-            <div class="term t-ru">не по силам; быть не в своей тарелке</div>
-            <div class="term t-en">to be out of one's depth</div>
-            <div class="example">I was out of my depth in the advanced class.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card idioms">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Idioms</div>
-            <div class="term t-en">to have a good head for (figures)</div>
-            <div class="term t-ru">иметь способности к (цифрам)</div>
-            <div class="pos">idiom</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Idioms</div>
-            <div class="term t-ru">иметь способности к (цифрам)</div>
-            <div class="term t-en">to have a good head for (figures)</div>
-            <div class="example">She has a good head for figures.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card idioms">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Idioms</div>
-            <div class="term t-en">to be quick / slow on the uptake</div>
-            <div class="term t-ru">быстро/медленно соображать</div>
-            <div class="pos">idiom</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Idioms</div>
-            <div class="term t-ru">быстро/медленно соображать</div>
-            <div class="term t-en">to be quick / slow on the uptake</div>
-            <div class="example">He's very quick on the uptake.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card idioms">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Idioms</div>
-            <div class="term t-en">to make the grade</div>
-            <div class="term t-ru">соответствовать требованиям, дотянуть</div>
-            <div class="pos">idiom</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Idioms</div>
-            <div class="term t-ru">соответствовать требованиям, дотянуть</div>
-            <div class="term t-en">to make the grade</div>
-            <div class="example">Only a few applicants make the grade.</div>
-          </div>
-        </div>
-      </label>
-      <label class="card idioms">
-        <input type="checkbox" class="flip" aria-label="flip card">
-        <div class="inner">
-          <div class="face front">
-            <div class="kind">Idioms</div>
-            <div class="term t-en">to be head and shoulders above the rest</div>
-            <div class="term t-ru">быть на голову выше остальных</div>
-            <div class="pos">idiom</div>
-            <div class="cue">tap to reveal</div>
-          </div>
-          <div class="face back">
-            <div class="kind">Idioms</div>
-            <div class="term t-ru">быть на голову выше остальных</div>
-            <div class="term t-en">to be head and shoulders above the rest</div>
-            <div class="example">She's head and shoulders above the rest.</div>
+            <div class="kind">School types</div>
+            <div class="term t-ru">среднее (образование)</div>
+            <div class="term t-en">secondary (education)</div>
+            <div class="example">secondary education is free here</div>
           </div>
         </div>
       </label>
