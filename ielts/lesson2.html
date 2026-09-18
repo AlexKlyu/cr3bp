@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 2 · English · Russian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&amp;display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#10262E;--ink2:#0A1A20;--paper:#FBF9F4;--accent:#E3A21C;--accent-deep:#B57F0A;--muted:#8AA6AD;--muted-dim:#5E7C84;--text:#152C33;--line:rgba(255,255,255,.12)}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{background:radial-gradient(120% 80% at 50% -10%,#163741 0%,var(--ink) 45%,var(--ink2) 100%);color:#E8F0F1;font-family:"Inter",system-ui,sans-serif;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+  .ctrl,.flip{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+  .app{flex:1;display:flex;flex-direction:column;min-height:0;padding:18px 16px calc(14px + env(safe-area-inset-bottom))}
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .brand{font-family:"Source Serif 4",serif;font-size:20px;font-weight:600}
+  .brand i{color:var(--accent);font-style:normal}
+  .dir-toggle{display:flex;gap:6px}
+  .chip{font-family:inherit;font-size:12.5px;color:var(--muted);background:transparent;border:1px solid var(--line);padding:6px 11px;border-radius:999px;cursor:pointer;user-select:none;white-space:nowrap;transition:color .15s,border-color .15s,background .15s}
+  .shuffle-btn{border-color:var(--accent);color:var(--accent);font-weight:600}
+  .shuffle-btn:active{background:var(--accent);color:#1a1200}
+  .chip:active{transform:translateY(1px)}
+  .cats{display:flex;gap:7px;margin-top:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+  .cats::-webkit-scrollbar{display:none}
+  .deck{flex:1;min-height:0;margin-top:14px;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;padding:6px 2px;perspective:1600px;cursor:pointer}
+  .inner{position:relative;width:100%;height:100%;max-height:520px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.15,.1,1);border-radius:20px}
+  .flip:checked + .inner{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:20px;padding:34px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 20px 50px -18px rgba(0,0,0,.55)}
+  .front{background:var(--paper);color:var(--text);border:1px solid rgba(0,0,0,.06)}
+  .back{background:linear-gradient(160deg,#193c46,#122b32);color:#EAF2F3;border:1px solid var(--line);transform:rotateY(180deg)}
+  .kind{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;font-weight:600;color:var(--accent-deep);margin-bottom:14px}
+  .back .kind{color:var(--accent)}
+  .term{font-family:"Source Serif 4",serif;font-weight:600;line-height:1.15;font-size:clamp(22px,5.6vw,36px)}
+  .pos{margin-top:12px;font-size:13px;color:var(--muted-dim);font-style:italic}
+  .cue{position:absolute;bottom:16px;font-size:11px;color:var(--muted-dim);letter-spacing:.5px}
+  .example{margin-top:18px;max-width:420px;font-size:15px;line-height:1.55;color:var(--muted);font-style:italic}
+  .front .t-ru{display:none} .back .t-en{display:none}
+  #dir-ru:checked ~ .app .front .t-en{display:none}
+  #dir-ru:checked ~ .app .front .t-ru{display:block}
+  #dir-ru:checked ~ .app .back .t-ru{display:none}
+  #dir-ru:checked ~ .app .back .t-en{display:block}
+  #dir-en:checked ~ .app label[for=dir-en],#dir-ru:checked ~ .app label[for=dir-ru]{background:var(--accent);color:#1a1200;border-color:var(--accent);font-weight:600}
+  #cat-phrases:checked ~ .app .card:not(.phrases){display:none}
+  #cat-linking:checked ~ .app .card:not(.linking){display:none}
+  #cat-all:checked ~ .app label[for=cat-all],
+  #cat-phrases:checked ~ .app label[for=cat-phrases],
+  #cat-linking:checked ~ .app label[for=cat-linking]{background:var(--accent); color:#1a1200; border-color:var(--accent); font-weight:600}
+  @media (prefers-reduced-motion:reduce){.inner{transition:none}}
+</style>
+</head>
+<body>
+  <input class="ctrl" type="radio" name="dir" id="dir-en" checked>
+  <input class="ctrl" type="radio" name="dir" id="dir-ru">
+  <input class="ctrl" type="radio" name="cat" id="cat-all" checked>
+  <input class="ctrl" type="radio" name="cat" id="cat-phrases">
+  <input class="ctrl" type="radio" name="cat" id="cat-linking">
+  <div class="app">
+    <header>
+      <div class="brand">Lesson 2 <i>·</i> EN / RU</div>
+      <div class="dir-toggle">
+        <label class="chip" for="dir-en">EN → RU</label>
+        <label class="chip" for="dir-ru">RU → EN</label>
+      </div>
+    </header>
+    <div class="cats">
+      <button class="chip shuffle-btn" id="shuffleBtn" type="button">🔀 Shuffle</button>
+      <label class="chip" for="cat-all">All 11</label>
+      <label class="chip" for="cat-phrases">Useful phrases 5</label>
+      <label class="chip" for="cat-linking">Linking words 6</label>
+    </div>
+    <div class="deck" id="deck">
+      <label class="card phrases">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-en">devote to</div>
+            <div class="term t-ru">посвящать время</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-ru">посвящать время</div>
+            <div class="term t-en">devote to</div>
+          </div>
+        </div>
+      </label>
+      <label class="card phrases">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-en">enlarge my scope of</div>
+            <div class="term t-ru">расширить свой кругозор в области</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-ru">расширить свой кругозор в области</div>
+            <div class="term t-en">enlarge my scope of</div>
+          </div>
+        </div>
+      </label>
+      <label class="card phrases">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-en">enable</div>
+            <div class="term t-ru">позволять</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-ru">позволять</div>
+            <div class="term t-en">enable</div>
+          </div>
+        </div>
+      </label>
+      <label class="card phrases">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-en">essential</div>
+            <div class="term t-ru">важный</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-ru">важный</div>
+            <div class="term t-en">essential</div>
+          </div>
+        </div>
+      </label>
+      <label class="card phrases">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-en">experienced</div>
+            <div class="term t-ru">пережить изменения</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-ru">пережить изменения</div>
+            <div class="term t-en">experienced</div>
+          </div>
+        </div>
+      </label>
+      <label class="card linking">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Linking words</div>
+            <div class="term t-en">as far as I&#x27;m concerned</div>
+            <div class="term t-ru">насколько я знаю</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Linking words</div>
+            <div class="term t-ru">насколько я знаю</div>
+            <div class="term t-en">as far as I&#x27;m concerned</div>
+          </div>
+        </div>
+      </label>
+      <label class="card linking">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Linking words</div>
+            <div class="term t-en">respectively</div>
+            <div class="term t-ru">соответственно</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Linking words</div>
+            <div class="term t-ru">соответственно</div>
+            <div class="term t-en">respectively</div>
+          </div>
+        </div>
+      </label>
+      <label class="card linking">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Linking words</div>
+            <div class="term t-en">overall</div>
+            <div class="term t-ru">в общем</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Linking words</div>
+            <div class="term t-ru">в общем</div>
+            <div class="term t-en">overall</div>
+          </div>
+        </div>
+      </label>
+      <label class="card linking">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Linking words</div>
+            <div class="term t-en">although</div>
+            <div class="term t-ru">хотя</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Linking words</div>
+            <div class="term t-ru">хотя</div>
+            <div class="term t-en">although</div>
+          </div>
+        </div>
+      </label>
+      <label class="card linking">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Linking words</div>
+            <div class="term t-en">as for the other</div>
+            <div class="term t-ru">что насчёт остального</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Linking words</div>
+            <div class="term t-ru">что насчёт остального</div>
+            <div class="term t-en">as for the other</div>
+          </div>
+        </div>
+      </label>
+      <label class="card linking">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Linking words</div>
+            <div class="term t-en">whereas</div>
+            <div class="term t-ru">в то время как</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Linking words</div>
+            <div class="term t-ru">в то время как</div>
+            <div class="term t-en">whereas</div>
+          </div>
+        </div>
+      </label>
+    </div>
+    <div class="foot" style="margin-top:12px;text-align:center;font-size:12px;color:var(--muted-dim)">swipe to browse &nbsp;·&nbsp; tap card to flip</div>
+  </div>
+  <script>
+  (function(){
+    function ready(fn){if(document.readyState!=='loading')fn();else document.addEventListener('DOMContentLoaded',fn);}
+    ready(function(){try{
+      var deck=document.getElementById('deck'),foot=document.querySelector('.foot');
+      if(!deck)return;
+      function count(){var vis=[].slice.call(deck.children).filter(function(c){return c.offsetParent!==null;});var i=Math.round(deck.scrollLeft/deck.clientWidth);if(foot)foot.textContent=(Math.min(i+1,vis.length))+' / '+vis.length+'  ·  tap to flip';}
+      function shuffle(){var k=[].slice.call(deck.children);for(var i=k.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=k[i];k[i]=k[j];k[j]=t;}k.forEach(function(c){deck.appendChild(c);});deck.querySelectorAll('.flip').forEach(function(f){f.checked=false;});deck.scrollLeft=0;count();}
+      deck.addEventListener('scroll',function(){window.requestAnimationFrame(count);},{passive:true});
+      document.querySelectorAll('input[name=cat]').forEach(function(r){r.addEventListener('change',function(){deck.scrollLeft=0;setTimeout(count,30);});});
+      var btn=document.getElementById('shuffleBtn');
+      if(btn)btn.addEventListener('click',shuffle);
+      window.addEventListener('pageshow',function(){shuffle();});
+      shuffle();
+    }catch(e){}});
+  })();
+  </script>
+</body>
+</html>

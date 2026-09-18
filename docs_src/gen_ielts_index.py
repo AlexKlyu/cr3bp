@@ -13,10 +13,29 @@ IELTS = os.path.join(os.path.dirname(HERE), "ielts")
 OUT = os.path.join(IELTS, "index.html")
 
 
+# Display order and card titles on the landing page: file -> (eyebrow, title).
+# Decks not listed here are appended afterwards under their own header name.
+DECK_INFO = {
+    "lesson1.html": ("Vocabulary", "Lesson 1"),
+    "lesson2.html": ("Vocabulary", "Lesson 2"),
+    "graphs.html": ("Writing Task 1", "Description of the graphs"),
+    "fce-education-flashcards.html": ("FCE", "FCE Education"),
+}
+
+
+def ru_plural(n, one, few, many):
+    """Russian noun form for n: 1 карточка, 2 карточки, 5 карточек."""
+    if n % 10 == 1 and n % 100 != 11:
+        return one
+    if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14:
+        return few
+    return many
+
+
 def natural_key(name):
-    # numbered lessons first (lesson1, lesson2, ... lesson10), then other decks
     parts = [int(p) if p.isdigit() else p for p in re.split(r"(\d+)", name)]
-    return (0 if name.startswith("lesson") else 1, parts)
+    order = list(DECK_INFO)
+    return (order.index(name) if name in order else len(order), parts)
 
 
 def describe(path):
@@ -46,18 +65,17 @@ def build():
     cards = []
     for f in decks:
         title, total, cats = describe(os.path.join(IELTS, f))
-        label = os.path.splitext(f)[0]
-        m = re.match(r"lesson(\d+)$", label)
-        eyebrow = f"Lesson {m.group(1)}" if m else "Deck"
+        eyebrow, title = DECK_INFO.get(f, ("Deck", title))
         tags = "".join(f"<span>{html.escape(c)}</span>" for c in cats)
         cards.append(f'''    <a class="deck" href="{html.escape(f)}">
       <div class="eyebrow">{eyebrow}</div>
       <h2>{html.escape(title)}</h2>
-      <div class="count">{total} карточек · cards</div>
+      <div class="count">{total} {ru_plural(total, "карточка", "карточки", "карточек")} · cards</div>
       <div class="tags">{tags}</div>
       <div class="go">Открыть →</div>
     </a>''')
 
+    grand = sum(describe(os.path.join(IELTS, f))[1] for f in decks)
     page = f'''<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -73,9 +91,7 @@ def build():
   *{{box-sizing:border-box;margin:0;padding:0}}
   body{{min-height:100vh;background:radial-gradient(120% 80% at 50% -10%,#163741 0%,var(--ink) 45%,var(--ink2) 100%);color:#E8F0F1;font-family:"Inter",system-ui,sans-serif;padding:48px 20px 40px}}
   .wrap{{max-width:880px;margin:0 auto}}
-  .back{{color:var(--muted);text-decoration:none;font-size:13px}}
-  .back:hover{{color:#E8F0F1}}
-  h1{{font-family:"Source Serif 4",serif;font-weight:600;font-size:34px;margin:18px 0 6px}}
+  h1{{font-family:"Source Serif 4",serif;font-weight:600;font-size:34px;margin:0 0 6px}}
   h1 i{{color:var(--accent);font-style:normal}}
   .lead{{color:var(--muted);font-size:15px;margin-bottom:32px}}
   .grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}}
@@ -92,13 +108,12 @@ def build():
 </head>
 <body>
   <div class="wrap">
-    <a class="back" href="/">← rocketlauncher.space</a>
     <h1>IELTS <i>/</i> FCE Flashcards</h1>
     <p class="lead">Карточки для запоминания слов · English ↔ Русский</p>
     <div class="grid">
 {chr(10).join(cards)}
     </div>
-    <footer>{len(decks)} наборов · {sum(describe(os.path.join(IELTS, f))[1] for f in decks)} карточек</footer>
+    <footer>{len(decks)} {ru_plural(len(decks), "набор", "набора", "наборов")} · {grand} {ru_plural(grand, "карточка", "карточки", "карточек")}</footer>
   </div>
 </body>
 </html>
