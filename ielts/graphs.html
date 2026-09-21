@@ -50,6 +50,8 @@
   #cat-fluct:checked ~ .app .card:not(.fluct){display:none}
   #cat-peak:checked ~ .app .card:not(.peak){display:none}
   #cat-degree:checked ~ .app .card:not(.degree){display:none}
+  #cat-compare:checked ~ .app .card:not(.compare){display:none}
+  #cat-phrase:checked ~ .app .card:not(.phrase){display:none}
   #cat-approx:checked ~ .app .card:not(.approx){display:none}
   #cat-all:checked ~ .app label[for=cat-all],
   #cat-rise:checked ~ .app label[for=cat-rise],
@@ -58,6 +60,8 @@
   #cat-fluct:checked ~ .app label[for=cat-fluct],
   #cat-peak:checked ~ .app label[for=cat-peak],
   #cat-degree:checked ~ .app label[for=cat-degree],
+  #cat-compare:checked ~ .app label[for=cat-compare],
+  #cat-phrase:checked ~ .app label[for=cat-phrase],
   #cat-approx:checked ~ .app label[for=cat-approx]{background:var(--accent); color:#1a1200; border-color:var(--accent); font-weight:600}
   @media (prefers-reduced-motion:reduce){.inner{transition:none}}
 </style>
@@ -72,6 +76,8 @@
   <input class="ctrl" type="radio" name="cat" id="cat-fluct">
   <input class="ctrl" type="radio" name="cat" id="cat-peak">
   <input class="ctrl" type="radio" name="cat" id="cat-degree">
+  <input class="ctrl" type="radio" name="cat" id="cat-compare">
+  <input class="ctrl" type="radio" name="cat" id="cat-phrase">
   <input class="ctrl" type="radio" name="cat" id="cat-approx">
   <div class="app">
     <header>
@@ -83,13 +89,15 @@
     </header>
     <div class="cats">
       <button class="chip shuffle-btn" id="shuffleBtn" type="button">🔀 Shuffle</button>
-      <label class="chip" for="cat-all">All 13</label>
+      <label class="chip" for="cat-all">All 19</label>
       <label class="chip" for="cat-rise">Rise 1</label>
       <label class="chip" for="cat-fall">Fall 1</label>
       <label class="chip" for="cat-stable">No change 1</label>
       <label class="chip" for="cat-fluct">Fluctuation 1</label>
       <label class="chip" for="cat-peak">Peak &amp; low 2</label>
-      <label class="chip" for="cat-degree">Degree of change 3</label>
+      <label class="chip" for="cat-degree">Degree of change 5</label>
+      <label class="chip" for="cat-compare">Comparison 3</label>
+      <label class="chip" for="cat-phrase">Useful phrases 1</label>
       <label class="chip" for="cat-approx">Approximation 4</label>
     </div>
     <div class="deck" id="deck">
@@ -234,6 +242,102 @@
             <div class="kind">Degree of change</div>
             <div class="term t-ru">средне (менялся)</div>
             <div class="term t-en">moderately, modestly</div>
+          </div>
+        </div>
+      </label>
+      <label class="card degree">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Degree of change</div>
+            <div class="term t-en">steadily</div>
+            <div class="term t-ru">стабильно, равномерно</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Degree of change</div>
+            <div class="term t-ru">стабильно, равномерно</div>
+            <div class="term t-en">steadily</div>
+          </div>
+        </div>
+      </label>
+      <label class="card degree">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Degree of change</div>
+            <div class="term t-en">gradually</div>
+            <div class="term t-ru">постепенно</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Degree of change</div>
+            <div class="term t-ru">постепенно</div>
+            <div class="term t-en">gradually</div>
+          </div>
+        </div>
+      </label>
+      <label class="card compare">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Comparison</div>
+            <div class="term t-en">gender distribution</div>
+            <div class="term t-ru">распределение по полу</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Comparison</div>
+            <div class="term t-ru">распределение по полу</div>
+            <div class="term t-en">gender distribution</div>
+          </div>
+        </div>
+      </label>
+      <label class="card compare">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Comparison</div>
+            <div class="term t-en">gap</div>
+            <div class="term t-ru">разрыв, разница</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Comparison</div>
+            <div class="term t-ru">разрыв, разница</div>
+            <div class="term t-en">gap</div>
+          </div>
+        </div>
+      </label>
+      <label class="card compare">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Comparison</div>
+            <div class="term t-en">predominate</div>
+            <div class="term t-ru">преобладать</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Comparison</div>
+            <div class="term t-ru">преобладать</div>
+            <div class="term t-en">predominate</div>
+          </div>
+        </div>
+      </label>
+      <label class="card phrase">
+        <input type="checkbox" class="flip" aria-label="flip card">
+        <div class="inner">
+          <div class="face front">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-en">as can be seen from the graph</div>
+            <div class="term t-ru">как видно из графика</div>
+            <div class="cue">tap to reveal</div>
+          </div>
+          <div class="face back">
+            <div class="kind">Useful phrases</div>
+            <div class="term t-ru">как видно из графика</div>
+            <div class="term t-en">as can be seen from the graph</div>
           </div>
         </div>
       </label>

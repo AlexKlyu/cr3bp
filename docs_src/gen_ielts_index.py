@@ -18,6 +18,7 @@ OUT = os.path.join(IELTS, "index.html")
 DECK_INFO = {
     "lesson1.html": ("Vocabulary", "Lesson 1"),
     "lesson2.html": ("Vocabulary", "Lesson 2"),
+    "lesson3.html": ("Vocabulary", "Lesson 3"),
     "graphs.html": ("Writing Task 1", "Description of the graphs"),
     "fce-education-flashcards.html": ("FCE", "FCE Education"),
 }

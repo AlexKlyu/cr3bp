@@ -28,6 +28,19 @@ DECKS = [
         ],
     },
     {
+        "file": "lesson3.html",
+        "name": "Lesson 3",
+        "categories": [
+            ("words", "Words & phrases", [
+                ("to intend to", "намереваться"),
+                ("to set an assignment", "задать задание"),
+                ("terrific", "потрясающий, замечательный"),
+                ("acquainted", "знакомый (be acquainted with — быть знакомым с)"),
+                ("to be fond of", "любить, увлекаться"),
+            ]),
+        ],
+    },
+    {
         "file": "graphs.html",
         "name": "Description of the graphs",
         "categories": [
@@ -53,6 +66,16 @@ DECKS = [
                 ("sharply, rapidly, dramatically, significantly, considerably, "
                  "substantially, major", "сильно (менялся)"),
                 ("moderately, modestly", "средне (менялся)"),
+                ("steadily", "стабильно, равномерно"),
+                ("gradually", "постепенно"),
+            ]),
+            ("compare", "Comparison", [
+                ("gender distribution", "распределение по полу"),
+                ("gap", "разрыв, разница"),
+                ("predominate", "преобладать"),
+            ]),
+            ("phrase", "Useful phrases", [
+                ("as can be seen from the graph", "как видно из графика"),
             ]),
             ("approx", "Approximation", [
                 ("nearly, approximately", "примерно"),
